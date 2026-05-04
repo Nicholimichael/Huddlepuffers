@@ -2,6 +2,10 @@
 
 Reads platform/rankings_data.json (augmented by build_platform_v2.py) and emits
 huddlepuffers_platform.html into the same directory.
+
+The JSON is NOT embedded inline — the HTML fetches rankings_data.json at runtime
+(using the meta.generated_at timestamp as a cache-buster). This keeps the HTML
+shell small (~125 KB) so the browser can cache it independently of the data.
 """
 import json
 import os
@@ -14,8 +18,24 @@ PLATFORM_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(PLATFORM_DIR, "rankings_data.json")
 OUT_PATH  = os.path.join(PLATFORM_DIR, "huddlepuffers_platform.html")
 
+# Read the JSON for two reasons:
+#   1) Grab generated_at for cache-busting in the HTML
+#   2) Sanitize bare NaN / Infinity tokens before the browser fetches it.
+#      Python's json module emits these for float('nan') / float('inf'), but
+#      JSON.parse() in the browser rejects them — they're not valid JSON.
+#      We rewrite the file in place with NaN/Infinity replaced by null.
 with open(DATA_PATH) as f:
-    DATA_JSON = f.read()
+    _raw_json = f.read()
+
+_data_meta = json.loads(_raw_json).get("meta", {})
+DATA_VERSION = _data_meta.get("generated_at", "")
+
+_sanitized = re.sub(r'\bNaN\b', 'null', _raw_json)
+_sanitized = re.sub(r'-?\bInfinity\b', 'null', _sanitized)
+if _sanitized != _raw_json:
+    with open(DATA_PATH, "w") as f:
+        f.write(_sanitized)
+    print(f"sanitized rankings_data.json (NaN/Infinity → null)")
 
 HTML = r"""<!doctype html>
 <html lang="en">
@@ -797,10 +817,37 @@ HTML = r"""<!doctype html>
   </section>
 </div>
 
-<script id="data-blob" type="application/json">__DATA_PLACEHOLDER__</script>
+<div id="hp-loading" style="position:fixed;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;background:#f6f7fb;z-index:9999;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;flex-direction:column;gap:12px;">
+  <div style="font-size:14px;color:#475569;font-weight:600;">Loading Huddlepuffers dashboard…</div>
+  <div id="hp-loading-detail" style="font-size:11px;color:#94a3b8;">Fetching latest rankings</div>
+</div>
+<script>window.__DATA_VERSION__ = "__DATA_VERSION_PLACEHOLDER__";</script>
 <script>
-(function(){
-  const DATA = JSON.parse(document.getElementById('data-blob').textContent);
+(async function(){
+  // Fetch rankings_data.json at runtime instead of embedding it inline.
+  // Cache-buster: ?v=<generated_at> — browser re-downloads only when the
+  // build emits a new timestamp, otherwise serves from cache.
+  const v = window.__DATA_VERSION__ ? "?v=" + encodeURIComponent(window.__DATA_VERSION__) : "";
+  let DATA;
+  try {
+    const resp = await fetch("rankings_data.json" + v);
+    if (!resp.ok) throw new Error("HTTP " + resp.status + " loading rankings_data.json");
+    DATA = await resp.json();
+  } catch (err) {
+    const loader = document.getElementById("hp-loading");
+    if (loader) {
+      loader.innerHTML = '<div style="text-align:center;font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:#dc2626;max-width:500px;padding:24px;">' +
+        '<h2 style="margin:0 0 8px;font-size:18px;">Failed to load dashboard data</h2>' +
+        '<p style="margin:0 0 8px;font-size:13px;color:#475569;">' + String(err).replace(/[<>&]/g, c => ({"<":"&lt;",">":"&gt;","&":"&amp;"}[c])) + '</p>' +
+        '<p style="margin:0;font-size:12px;color:#94a3b8;">Try a hard refresh (Cmd+Shift+R / Ctrl+Shift+R).</p>' +
+      '</div>';
+    }
+    return;
+  }
+  // Hide the loading overlay once data is in hand and rendering can proceed.
+  const _loader = document.getElementById("hp-loading");
+  if (_loader) _loader.remove();
+
   const PLAYERS = DATA.players;
   const PICKS = DATA.picks;
   const TEAMS = DATA.teams;
@@ -2253,20 +2300,22 @@ HTML = r"""<!doctype html>
 </html>
 """
 
-# Browser JSON.parse rejects bare NaN/Infinity
-DATA_JSON_SAFE = re.sub(r'\bNaN\b', 'null', DATA_JSON)
-DATA_JSON_SAFE = re.sub(r'-?\bInfinity\b', 'null', DATA_JSON_SAFE)
-
-# HTML.replace uses backslash-escape semantics for the replacement — avoid that by chunking
-# instead of .replace: write the two halves around the placeholder.
-PLACEHOLDER = "__DATA_PLACEHOLDER__"
+# Inject the cache-buster version (just the generated_at timestamp — ~30 bytes,
+# vs. ~2 MB of inlined JSON we used to embed here). The browser will fetch the
+# full rankings_data.json at runtime via fetch().
+PLACEHOLDER = "__DATA_VERSION_PLACEHOLDER__"
 idx = HTML.find(PLACEHOLDER)
 if idx < 0:
     raise SystemExit("placeholder not found in template")
-OUT = HTML[:idx] + DATA_JSON_SAFE + HTML[idx + len(PLACEHOLDER):]
+# Escape the version string so it can't break out of the JS string literal.
+safe_version = DATA_VERSION.replace("\\", "\\\\").replace('"', '\\"')
+OUT = HTML[:idx] + safe_version + HTML[idx + len(PLACEHOLDER):]
 
 with open(OUT_PATH, "w") as f:
     f.write(OUT)
+
+print(f"wrote {OUT_PATH}")
+print(f"size: {len(OUT):,} bytes (data version: {DATA_VERSION or 'unset'})")
 
 print(f"wrote {OUT_PATH}")
 print(f"size: {os.path.getsize(OUT_PATH):,} bytes")
