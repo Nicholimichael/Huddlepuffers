@@ -19,25 +19,30 @@ import json
 import csv
 import glob
 import os
+import sys
 from collections import defaultdict
 from datetime import datetime
 import math
+from pathlib import Path
 
-# Anchor to this script's location — works in any session, local or sandbox.
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Make project-root config importable.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+import config
 
-RANKINGS_JSON = os.path.join(PROJECT_ROOT, "platform", "rankings_data.json")
-SNAPSHOT_GLOB = os.path.join(PROJECT_ROOT, "data", "snapshots", "rankings_*.json")
-TRADED_PICKS_CSV = os.path.join(PROJECT_ROOT, "data", "csv", "traded_picks.csv")
-ROSTERS_CSV = os.path.join(PROJECT_ROOT, "data", "csv", "rosters.csv")
-USERS_CSV = os.path.join(PROJECT_ROOT, "data", "csv", "users.csv")
+PROJECT_ROOT = str(config.PROJECT_ROOT)
+
+RANKINGS_JSON = str(config.PLATFORM_DIR / "rankings_data.json")
+SNAPSHOT_GLOB = str(config.SNAPSHOTS_DIR / "rankings_*.json")
+TRADED_PICKS_CSV = str(config.DATA_DIR / "csv" / "traded_picks.csv")
+ROSTERS_CSV = str(config.DATA_DIR / "csv" / "rosters.csv")
+USERS_CSV = str(config.DATA_DIR / "csv" / "users.csv")
 OUTPUT_JSON = RANKINGS_JSON  # rewrite in place
 
-# League constants
-CURRENT_LEAGUE_ID = "1182393556535246848"
-MY_USER_ID = "472596585608376320"
+# League constants — sourced from config.py (single source of truth)
+CURRENT_LEAGUE_ID = config.CURRENT_LEAGUE_ID
+MY_USER_ID = config.MY_USER_ID
 ROOKIE_DRAFT_ROUNDS = 5
-FUTURE_SEASONS = [2026, 2027, 2028]
+FUTURE_SEASONS = [config.NEXT_DRAFT_SEASON, config.NEXT_DRAFT_SEASON + 1, config.NEXT_DRAFT_SEASON + 2]
 
 # ────────────────────────────────────────────────────────────────────────────
 # Load base data

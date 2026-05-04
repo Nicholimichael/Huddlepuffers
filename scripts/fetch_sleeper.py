@@ -23,18 +23,23 @@ from urllib.error import HTTPError, URLError
 
 import pandas as pd
 
+# Make project-root config importable.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+import config
+
 # ---------- CONFIG ----------
-USERNAME = "nmhochstedler"
-LEAGUE_NAME_FILTER = "Huddlepuffers"   # Set to None to pull ALL leagues for this user
-START_SEASON = 2025
+# Identity comes from config.py — single source of truth.
+USERNAME = config.SLEEPER_USERNAME
+LEAGUE_NAME_FILTER = config.LEAGUE_NAME_FILTER  # Set to None in config to pull ALL leagues
+START_SEASON = config.CURRENT_SEASON  # walks backwards from here
 MIN_SEASON = 2018
 # ----------------------------
 
 BASE = "https://api.sleeper.app/v1"
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = config.PROJECT_ROOT
 RAW = ROOT / "data" / "raw"
 CSV = ROOT / "data" / "csv"
-DB_PATH = ROOT / "db" / "fantasy.sqlite"
+DB_PATH = config.DB_PATH
 
 for d in (RAW, CSV, DB_PATH.parent):
     d.mkdir(parents=True, exist_ok=True)

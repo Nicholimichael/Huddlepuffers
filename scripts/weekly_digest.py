@@ -16,14 +16,19 @@ Outputs:
 from __future__ import annotations
 import json
 import sqlite3
+import sys
 import datetime as dt
 from pathlib import Path
 
-PROJECT = Path(__file__).resolve().parent.parent  # session-agnostic anchor
-SNAPSHOTS = PROJECT / "data" / "snapshots"
-REPORTS = PROJECT / "reports"
-DB = PROJECT / "db" / "fantasy.sqlite"
-ME_DEFAULT = "472596585608376320"  # nmhochstedler — overridden by snapshot meta if present
+# Make project-root config importable.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+import config
+
+PROJECT = config.PROJECT_ROOT
+SNAPSHOTS = config.SNAPSHOTS_DIR
+REPORTS = config.REPORTS_DIR
+DB = config.DB_PATH
+ME_DEFAULT = config.MY_USER_ID  # overridden by snapshot meta if present
 
 
 def latest_two_snapshots() -> tuple[Path | None, Path | None]:

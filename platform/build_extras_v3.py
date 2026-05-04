@@ -18,17 +18,21 @@ from pathlib import Path
 from collections import defaultdict
 from datetime import datetime
 
-HERE = Path(__file__).resolve().parent
-PROJECT = HERE.parent
-DB = PROJECT / "db" / "fantasy.sqlite"
+# Make project-root config importable.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+import config
+
+HERE = config.PLATFORM_DIR
+PROJECT = config.PROJECT_ROOT
+DB = config.DB_PATH
 RANKINGS_JSON = HERE / "rankings_data.json"
 
 # Where to take snap data from. Use the most recent season we have.
-TARGET_SNAP_SEASON = 2025
+TARGET_SNAP_SEASON = config.SNAP_DATA_SEASON
 RECENT_GAMES = 8
 
 # Where to take team-context aggregates from (need full weekly_stats coverage).
-TARGET_TEAM_SEASON = 2024
+TARGET_TEAM_SEASON = config.LAST_COMPLETE_SEASON
 
 
 def clean_num(v):
@@ -104,11 +108,12 @@ def main():
     # Combined "rookies" list for backwards compatibility
     rookie_players = incoming + second_year
 
-    # Add 2026 rookie picks from the picks list
-    pick_2026 = []
+    # Add upcoming-draft-class rookie picks from the picks list
+    next_draft_prefix = f"{config.NEXT_DRAFT_SEASON} "
+    pick_2026 = []  # variable name kept for downstream compatibility (= next-draft picks)
     for pk in picks:
         nm = pk.get("full_name") or ""
-        if not nm.startswith("2026 "):
+        if not nm.startswith(next_draft_prefix):
             continue
         pick_2026.append({
             "label":     nm,
@@ -138,7 +143,7 @@ def main():
         if not owner:
             continue
         for pk in team_picks.get("picks", []):
-            if pk.get("season") != 2026:
+            if pk.get("season") != config.NEXT_DRAFT_SEASON:
                 continue
             by_owner[owner]["picks"] += 1
             by_owner[owner]["pick_value"] += pk.get("value", 0) or 0
@@ -149,7 +154,7 @@ def main():
             "owner_name":  owner,
             "young_players": stats["players"],
             "young_value":   round(stats["young_value"]),
-            "picks_2026":    stats["picks"],
+            "picks_2026":    stats["picks"],  # field name kept for backwards compat
             "pick_value":    round(stats["pick_value"]),
             "total_value":   round(stats["young_value"] + stats["pick_value"]),
         })
@@ -161,7 +166,7 @@ def main():
         "rookies":         rookie_players,  # combined list
         "top_picks":       pick_2026,
         "owner_capital":   rookie_capital,
-        "season":          2026,
+        "season":          config.NEXT_DRAFT_SEASON,
     }
     print(f"      incoming(yrs=0): {len(incoming)}  "
           f"2nd-yr(yrs=1): {len(second_year)}  picks: {len(pick_2026)}  "
@@ -493,28 +498,31 @@ def main():
               f"{len(owner_counts)} owners affected")
 
     # ──────────────────────────────────────────────────────────
-    # 5) 2026 Strength of Schedule (proxy)
-    #    DvP rankings from 2024 + each team's 2025 schedule (most recent
-    #    full season we have, used as proxy until the 2026 schedule drops).
+    # 5) Strength of Schedule for the upcoming draft season (proxy)
+    #    DvP rankings from the LAST_COMPLETE_SEASON + each team's CURRENT_SEASON
+    #    schedule, used as a proxy until the next-season schedule drops.
     # ──────────────────────────────────────────────────────────
-    print("[extras_v3] Building 2026 SoS (2024 DvP × 2025 schedule proxy)")
+    dvp_season = config.LAST_COMPLETE_SEASON
+    sched_season = config.CURRENT_SEASON
+    target_sos_season = config.NEXT_DRAFT_SEASON
+    print(f"[extras_v3] Building {target_sos_season} SoS ({dvp_season} DvP × {sched_season} schedule proxy)")
     if not DB.exists():
         extras["sos"] = {"available": False}
     else:
         con = sqlite3.connect(str(DB))
 
-        # 1. Defense vs Position from 2024 — points allowed per game
+        # 1. Defense vs Position from LAST_COMPLETE_SEASON — points allowed per game
         cur = con.execute("""
             SELECT opponent_team AS def_team,
                    position,
                    SUM(COALESCE(fantasy_points_ppr, 0))         AS pts,
                    COUNT(DISTINCT season || '_' || week)        AS games
             FROM nfl_weekly_stats
-            WHERE season = 2024 AND season_type = 'REG'
+            WHERE season = ? AND season_type = 'REG'
               AND opponent_team IS NOT NULL AND opponent_team <> ''
               AND position IN ('QB','RB','WR','TE')
             GROUP BY opponent_team, position
-        """)
+        """, (dvp_season,))
         cols = [d[0] for d in cur.description]
         dvp_rows = [dict(zip(cols, r)) for r in cur.fetchall()]
 
@@ -522,14 +530,14 @@ def main():
         for r in dvp_rows:
             r["ppr_per_game"] = round(r["pts"] / max(r["games"], 1), 1)
 
-        # 2. Team's 2025 schedule (used as 2026 proxy)
+        # 2. Team's CURRENT_SEASON schedule (used as next-season proxy)
         cur = con.execute("""
             SELECT DISTINCT week, team, opponent
             FROM nfl_snap_counts
-            WHERE season = 2025 AND game_type = 'REG'
+            WHERE season = ? AND game_type = 'REG'
               AND team IS NOT NULL AND opponent IS NOT NULL
             ORDER BY team, week
-        """)
+        """, (sched_season,))
         sched_rows = [{"week": r[0], "team": r[1], "opp": r[2]} for r in cur.fetchall()]
         con.close()
 
@@ -622,16 +630,16 @@ def main():
 
         extras["sos"] = {
             "available":      True,
-            "dvp_season":     2024,
-            "schedule_season": 2025,
-            "schedule_label": "2025 schedule used as 2026 proxy (NFL releases 2026 schedule mid-May)",
+            "dvp_season":     dvp_season,
+            "schedule_season": sched_season,
+            "schedule_label": f"{sched_season} schedule used as {target_sos_season} proxy (NFL releases {target_sos_season} schedule mid-May)",
             "positions":      positions,
             "dvp":            ranks_per_pos,    # for each position, every team's pts allowed and rank
             "team_sos":       team_sos,         # per team, schedule difficulty 1..32 per pos
             "roster_sos":     roster_sos,       # per owner, aggregated
         }
-        print(f"      DvP season: 2024 · schedule: 2025 (proxy)")
-        print(f"      {len(team_sos)} teams scored · {len(roster_sos)} Huddlepuffers rosters aggregated")
+        print(f"      DvP season: {dvp_season} · schedule: {sched_season} (proxy)")
+        print(f"      {len(team_sos)} teams scored · {len(roster_sos)} {config.LEAGUE_NAME_FILTER} rosters aggregated")
 
     # ──────────────────────────────────────────────────────────
     # 6) Persist

@@ -1,18 +1,19 @@
 """Build composite dynasty + win-now rankings JSON for the Huddlepuffers interactive platform."""
-import sqlite3, json, pandas as pd, numpy as np, os
+import sqlite3, json, pandas as pd, numpy as np, os, sys
 from datetime import datetime
 from pathlib import Path
 
-# Path flexibility: works locally on macOS and inside the Cowork Linux sandbox.
-HERE = Path(__file__).resolve().parent           # .../Fantasy Football/platform
-PROJECT = HERE.parent                            # .../Fantasy Football
-DB = str(PROJECT / "db" / "fantasy.sqlite")
-OUTPUT_JSON = str(HERE / "rankings_data.json")
+# Make project-root config importable.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+import config
+
+DB = str(config.DB_PATH)
+OUTPUT_JSON = str(config.PLATFORM_DIR / "rankings_data.json")
 
 con = sqlite3.connect(DB)
 LATEST_NFL_SEASON = int(pd.read_sql("SELECT MAX(season) AS s FROM nfl_weekly_stats", con).iloc[0, 0])
-ACTIVE_LEAGUE = pd.read_sql("SELECT league_id FROM leagues WHERE season='2025'", con).iloc[0, 0]
-MY_USER_ID = "472596585608376320"  # Nmhochstedler
+ACTIVE_LEAGUE = config.active_league_id_from_db(con)
+MY_USER_ID = config.MY_USER_ID
 
 # Users (one row per unique user across all seasons, keep most recent display name)
 # Join to leagues so we can order by season DESC and pick the latest known name.
@@ -25,14 +26,16 @@ users = pd.read_sql(
 
 # Rosters for active league
 rosters = pd.read_sql(
-    f"SELECT roster_id, owner_id, wins, losses, fpts, fpts_against, ppts FROM rosters WHERE league_id='{ACTIVE_LEAGUE}'", con
+    "SELECT roster_id, owner_id, wins, losses, fpts, fpts_against, ppts FROM rosters WHERE league_id = ?",
+    con, params=[ACTIVE_LEAGUE],
 )
 rosters = rosters.merge(users, left_on="owner_id", right_on="user_id", how="left")
 
 # Player -> owner
 rp = pd.read_sql(
-    f"SELECT player_id, owner_id, roster_id, is_starter, is_taxi, is_reserve "
-    f"FROM roster_players WHERE league_id='{ACTIVE_LEAGUE}'", con,
+    "SELECT player_id, owner_id, roster_id, is_starter, is_taxi, is_reserve "
+    "FROM roster_players WHERE league_id = ?",
+    con, params=[ACTIVE_LEAGUE],
 )
 rp = rp.merge(users, left_on="owner_id", right_on="user_id", how="left")
 
@@ -257,10 +260,10 @@ for c in ["dynasty_total", "winnow_total", "starters_winnow", "starters_dynasty"
 out = {
     "meta": {
         "league_id": str(ACTIVE_LEAGUE),
-        "league_name": "The Huddlepuffers",
-        "season": "2025",
+        "league_name": config.LEAGUE_DISPLAY_NAME,
+        "season": config.CURRENT_SEASON_STR,
         "my_user_id": MY_USER_ID,
-        "my_display_name": "Nmhochstedler",
+        "my_display_name": config.MY_DISPLAY_NAME,
         "latest_nfl_season": LATEST_NFL_SEASON,
         "latest_nfl_week": max_week,
         "recent_window_weeks": last_n,
@@ -291,6 +294,6 @@ print("\n=== Top 20 Win Now ===")
 print(pdf.sort_values("winnow_score", ascending=False)[
     ["full_name", "position", "team", "age", "winnow_score", "dynasty_score", "winnow_pos_rank", "owner_name"]
 ].head(20).to_string(index=False))
-print("\n=== My roster (Nmhochstedler) ===")
+print(f"\n=== My roster ({config.MY_DISPLAY_NAME}) ===")
 mine = pdf[pdf["owner_id"] == MY_USER_ID].sort_values("dynasty_score", ascending=False)
 print(mine[["full_name", "position", "age", "dynasty_score", "winnow_score", "is_starter"]].to_string(index=False))
