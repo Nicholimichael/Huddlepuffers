@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- LaunchAgent that refreshes the Huddlepuffers dynasty platform every
+       Wednesday at 7:00 AM local time. Runs as the logged-in user.
+
+       Install with: scripts/install_launchd.sh
+       Uninstall with: launchctl unload ~/Library/LaunchAgents/com.hossautomation.huddlepuffers-refresh.plist
+  -->
+  <key>Label</key>
+  <string>com.hossautomation.huddlepuffers-refresh</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/Consulting/Documents/Claude/Projects/Fantasy Football/scripts/refresh_platform.sh</string>
+  </array>
+
+  <!-- Every Wednesday (Weekday=3) at 07:00 local time -->
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Weekday</key>
+    <integer>3</integer>
+    <key>Hour</key>
+    <integer>7</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+
+  <!-- If the Mac was asleep at 7 AM Wednesday, run at next wake -->
+  <key>RunAtLoad</key>
+  <false/>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/Consulting/Documents/Claude/Projects/Fantasy Football/scripts</string>
+
+  <key>StandardOutPath</key>
+  <string>/Users/Consulting/Documents/Claude/Projects/Fantasy Football/logs/launchd_out.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/Consulting/Documents/Claude/Projects/Fantasy Football/logs/launchd_err.log</string>
+
+  <!-- Give the job a full PATH so python3 and bash utilities resolve -->
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+  </dict>
+
+  <!-- Keep process alive only long enough to finish; don't relaunch on exit -->
+  <key>KeepAlive</key>
+  <false/>
+
+  <!-- Don't throttle re-runs — weekly schedule is far longer than default throttle anyway -->
+  <key>ThrottleInterval</key>
+  <integer>10</integer>
+</dict>
+</plist>

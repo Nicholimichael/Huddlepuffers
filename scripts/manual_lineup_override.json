@@ -1,0 +1,30 @@
+{
+  "_doc": "Manual lineup override applied after rankings_data.json is built but before the HTML artifact is rendered. Use during offseason because Sleeper API returns last-played-week starters, not the user's current planned lineup. Edit this file when you reorder your Sleeper lineup, then run bash scripts/refresh_platform.sh.",
+  "owner_id": "472596585608376320",
+  "owner_name": "Nmhochstedler",
+  "as_of": "2026-05-02",
+  "starters": [
+    {"player_id": "6904",  "name": "Jalen Hurts",         "slot": "QB"},
+    {"player_id": "4034",  "name": "Christian McCaffrey", "slot": "RB"},
+    {"player_id": "12527", "name": "Ashton Jeanty",       "slot": "RB"},
+    {"player_id": "12514", "name": "Emeka Egbuka",        "slot": "WR"},
+    {"player_id": "7525",  "name": "DeVonta Smith",       "slot": "WR"},
+    {"player_id": "9484",  "name": "Tucker Kraft",        "slot": "TE"},
+    {"player_id": "7543",  "name": "Travis Etienne",      "slot": "FLEX"},
+    {"player_id": "6801",  "name": "Tee Higgins",         "slot": "FLEX"},
+    {"player_id": "6183",  "name": "Andrew Van Ginkel",   "slot": "DL"},
+    {"player_id": "6949",  "name": "Jordyn Brooks",       "slot": "LB"},
+    {"player_id": "5876",  "name": "Julian Love",         "slot": "DB"},
+    {"player_id": "11742", "name": "Cedric Gray",         "slot": "IDP_FLEX"}
+  ],
+  "taxi": [
+    {"player_id": "12467", "name": "Jordan James"}
+  ],
+  "reserve": [
+    {"player_id": "7811",  "name": "Talanoa Hufanga"}
+  ],
+  "extra_roster_players": [
+    {"player_id": "8161", "name": "Malik Willis",    "note": "Added in offseason FA — not yet visible in Sleeper API rosters endpoint"},
+    {"player_id": "7600", "name": "Pat Freiermuth",  "note": "Added in offseason FA — not yet visible in Sleeper API rosters endpoint"}
+  ]
+}

@@ -1,0 +1,35 @@
+# --- Regeneratable data (rebuild via scripts/refresh.sh) ---
+db/*.sqlite
+db/*.sqlite-journal*
+db/_writetest
+data/raw/
+data/csv/
+
+# --- Generated build artifacts (rebuilt via refresh_platform.sh) ---
+platform/rankings_data.json
+platform/huddlepuffers_platform.html
+platform/huddlepuffers_platform_compact.html
+platform/index.html
+
+# --- Logs ---
+logs/
+
+# --- Netlify auth state ---
+platform/.netlify/state.json
+
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+.Python
+*.egg-info/
+.venv/
+venv/
+
+# --- macOS ---
+.DS_Store
+
+# --- Editors ---
+.vscode/
+.idea/
+*.swp
