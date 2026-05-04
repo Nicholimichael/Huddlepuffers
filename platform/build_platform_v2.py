@@ -60,17 +60,7 @@ roster_lookup = {t["roster_id"]: t for t in teams}
 owner_lookup = {t["owner_id"]: t for t in teams}
 
 
-def clean_num(v):
-    """Coerce NaN/None/string to float or None."""
-    if v is None:
-        return None
-    try:
-        f = float(v)
-        if math.isnan(f) or math.isinf(f):
-            return None
-        return f
-    except (TypeError, ValueError):
-        return None
+from lib.utils import clean_num
 
 
 # ────────────────────────────────────────────────────────────────────────────

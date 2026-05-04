@@ -10,10 +10,15 @@ shell small (~125 KB) so the browser can cache it independently of the data.
 import json
 import os
 import re
+import sys
 
 # ---- Path flexibility (sandbox VM vs local) ----
-# Always anchor to the directory this script lives in — works in any session.
+# Always anchor to the directory this script lives in — works in any season.
 PLATFORM_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(PLATFORM_DIR)
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+import config
 
 DATA_PATH = os.path.join(PLATFORM_DIR, "rankings_data.json")
 OUT_PATH  = os.path.join(PLATFORM_DIR, "huddlepuffers_platform.html")
@@ -589,7 +594,7 @@ HTML = r"""<!doctype html>
       <div class="small muted" style="margin-top:10px">
         Values use FantasyCalc dynasty & redraft values (updated from the last refresh). The posture toggle
         re-weights both sides of the deal from <em>your</em> perspective — use Contender if you're pushing for
-        a 2025 championship, Rebuild if you're trading for future picks and youth.
+        a __SEASON__ championship, Rebuild if you're trading for future picks and youth.
       </div>
     </div>
   </section>
@@ -615,9 +620,9 @@ HTML = r"""<!doctype html>
   <!-- ROOKIES -->
   <section id="tab-rookies" class="tab-panel hidden">
     <div class="card">
-      <h2>2026 Rookies & Recent Draftees</h2>
+      <h2>__NEXT_DRAFT__ Rookies & Recent Draftees</h2>
       <div class="small muted" style="margin-bottom:8px">
-        <strong>Incoming class</strong> = players with 0 NFL years experience (2026 NFL draft class — pre-rookie-draft, almost all FA).
+        <strong>Incoming class</strong> = players with 0 NFL years experience (__NEXT_DRAFT__ NFL draft class — pre-rookie-draft, almost all FA).
         <strong>2nd-year</strong> = last year's dynasty rookie draftees, currently rostered.
         Values are FantasyCalc dynasty.
       </div>
@@ -625,7 +630,7 @@ HTML = r"""<!doctype html>
         <div class="toggle" id="rookie-toggle">
           <button class="active" data-view="incoming">Incoming (yrs 0)</button>
           <button data-view="second_year">2nd-year (yrs 1)</button>
-          <button data-view="picks">2026 Pick Values</button>
+          <button data-view="picks">__NEXT_DRAFT__ Pick Values</button>
         </div>
         <input type="text" id="rookie-search" placeholder="Search…"/>
         <div class="filter-chips" id="rookie-pos-chips"></div>
@@ -639,12 +644,12 @@ HTML = r"""<!doctype html>
       <h2>Rookie Capital by Owner</h2>
       <div class="small muted" style="margin-bottom:8px">
         Combines dynasty value of rostered 2nd-year players (last dynasty rookie draft class) plus
-        the FantasyCalc dynasty value of 2026 rookie picks each owner currently holds.
+        the FantasyCalc dynasty value of __NEXT_DRAFT__ rookie picks each owner currently holds.
       </div>
       <div class="table-wrap">
         <table id="t-rookie-capital"><thead><tr>
           <th>Owner</th><th>2nd-yr Players</th><th>Young Value</th>
-          <th>2026 Picks</th><th>Pick Value</th><th>Total Capital</th>
+          <th>__NEXT_DRAFT__ Picks</th><th>Pick Value</th><th>Total Capital</th>
         </tr></thead><tbody></tbody></table>
       </div>
     </div>
@@ -756,12 +761,12 @@ HTML = r"""<!doctype html>
   <!-- STRENGTH OF SCHEDULE -->
   <section id="tab-sos" class="tab-panel hidden">
     <div class="card">
-      <h2>2026 Strength of Schedule (proxy)</h2>
+      <h2>__NEXT_DRAFT__ Strength of Schedule (proxy)</h2>
       <div class="small muted" style="margin-bottom:8px">
-        <strong>How this works:</strong> defense-vs-position points-per-game allowed in <strong>2024</strong>
-        rank each NFL team 1–32 per position (1 = toughest D). Each NFL team's 2025 schedule is then averaged
+        <strong>How this works:</strong> defense-vs-position points-per-game allowed in <strong>__DVP_SEASON__</strong>
+        rank each NFL team 1–32 per position (1 = toughest D). Each NFL team's __SEASON__ schedule is then averaged
         through that rank, giving an opponent-strength proxy per position.
-        <em>The 2026 NFL schedule typically releases mid-May; this view will auto-update once it's available.</em>
+        <em>The __NEXT_DRAFT__ NFL schedule typically releases mid-May; this view will auto-update once it's available.</em>
         <br>Higher avg-rank ⇒ <span class="delta-up">easier schedule</span>.
         Lower avg-rank ⇒ <span class="delta-dn">tougher schedule</span>.
       </div>
@@ -769,7 +774,7 @@ HTML = r"""<!doctype html>
         <div class="toggle" id="sos-view">
           <button class="active" data-view="rosters">Huddlepuffers Rosters</button>
           <button data-view="teams">All NFL Teams</button>
-          <button data-view="dvp">DvP — 2024 Defense Rankings</button>
+          <button data-view="dvp">DvP — __DVP_SEASON__ Defense Rankings</button>
         </div>
         <select id="sos-pos">
           <option value="ALL">All positions</option>
@@ -1471,7 +1476,7 @@ HTML = r"""<!doctype html>
   // ============================================================
   const FP = EXTRAS.future_picks || {matrix:[], totals:[], seasons:[]};
   const FP_ROSTERS = FP.matrix || [];
-  const FP_SEASONS = FP.seasons || [2026, 2027, 2028];
+  const FP_SEASONS = FP.seasons || [__NEXT_DRAFT__, __NEXT_DRAFT_PLUS_1__, __NEXT_DRAFT_PLUS_2__];
   const FP_TOTALS = FP.totals || [];
 
   // Build season toggle
@@ -2229,7 +2234,7 @@ HTML = r"""<!doctype html>
       const tbody = document.querySelector("#t-sos tbody");
 
       if (view === "dvp") {
-        // 2024 DvP rankings
+        // __DVP_SEASON__ DvP rankings
         const positions = pos === "ALL" ? S.positions : [pos];
         thead.innerHTML = "<tr><th>Defense</th>" +
           positions.map(p => `<th class='num'>${p} Pts/G</th><th class='num'>${p} Rank</th>`).join("") + "</tr>";
@@ -2310,6 +2315,20 @@ if idx < 0:
 # Escape the version string so it can't break out of the JS string literal.
 safe_version = DATA_VERSION.replace("\\", "\\\\").replace('"', '\\"')
 OUT = HTML[:idx] + safe_version + HTML[idx + len(PLACEHOLDER):]
+
+# Inject season-derived year labels from config — keeps year strings out of
+# the HTML template so a season rollover only requires editing config.py.
+SEASON_TOKENS = {
+    "__SEASON__":            str(config.CURRENT_SEASON),
+    "__NEXT_DRAFT__":        str(config.NEXT_DRAFT_SEASON),
+    "__NEXT_DRAFT_PLUS_1__": str(config.NEXT_DRAFT_SEASON + 1),
+    "__NEXT_DRAFT_PLUS_2__": str(config.NEXT_DRAFT_SEASON + 2),
+    "__DVP_SEASON__":        str(config.LAST_COMPLETE_SEASON),
+}
+for token, value in SEASON_TOKENS.items():
+    if token not in OUT:
+        raise SystemExit(f"season token {token} not found in template")
+    OUT = OUT.replace(token, value)
 
 with open(OUT_PATH, "w") as f:
     f.write(OUT)

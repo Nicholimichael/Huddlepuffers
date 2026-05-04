@@ -35,16 +35,7 @@ RECENT_GAMES = 8
 TARGET_TEAM_SEASON = config.LAST_COMPLETE_SEASON
 
 
-def clean_num(v):
-    if v is None:
-        return None
-    try:
-        f = float(v)
-        if math.isnan(f) or math.isinf(f):
-            return None
-        return f
-    except (TypeError, ValueError):
-        return None
+from lib.utils import clean_num
 
 
 def linear_slope(xs, ys):

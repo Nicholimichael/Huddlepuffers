@@ -67,4 +67,4 @@ _No new transactions in the last 7 days._
 
 ---
 
-*Generated automatically by weekly_digest.py at 2026-05-04T13:27:19.*
+*Generated automatically by weekly_digest.py at 2026-05-04T14:53:50.*

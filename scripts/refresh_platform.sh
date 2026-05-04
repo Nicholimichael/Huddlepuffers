@@ -69,9 +69,8 @@ run_step "[6/8] Augmenting with v3 modules"       "python3 build_extras_v3.py"
 run_step "[6b/8] Applying manual lineup override" "python3 \"$SCRIPTS_DIR/apply_lineup_override.py\""
 FINAL_STATUS=1
 if run_step "[7/8] Rebuilding dashboard HTML"     "python3 build_artifact_v2.py"; then
-  # Copy generated file from outputs (where the build script writes it) into platform/
-  # build_artifact.py writes to /sessions/... in Cowork; running locally it'll write
-  # wherever the script is configured. Adjust if/when you run it outside Cowork.
+  # build_artifact_v2.py writes directly into platform/. The fallback below
+  # handles legacy Cowork sandbox runs (script wrote to ../outputs/).
   if [ -f "$PLATFORM_DIR/huddlepuffers_platform.html" ]; then
     FINAL_STATUS=0
   elif [ -f "$PLATFORM_DIR/../outputs/huddlepuffers_platform.html" ]; then

@@ -108,9 +108,31 @@ def main():
             write(pd.concat(frames, ignore_index=True), f"nfl_ngs_{stat_type}", conn)
             print(f"    seasons ok: {ok}")
 
+    # Indexes — `to_sql(if_exists="replace")` drops the table on every refresh,
+    # so indexes must be (re)created after the loads complete. Composite indexes
+    # cover the (season, season_type, week) and (season, week) filters used by
+    # build_rankings.py and build_extras_v3.py.
+    print("\n=== Building indexes ===")
+    cur = conn.cursor()
+    INDEXES = [
+        ("idx_nfl_weekly_stats_season_type_week",
+         "nfl_weekly_stats", "(season, season_type, week)"),
+        ("idx_nfl_snap_counts_season_week",
+         "nfl_snap_counts",  "(season, week)"),
+    ]
+    for name, table, cols in INDEXES:
+        # Only create if the table actually exists (a failed pull may have skipped it).
+        exists = cur.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)
+        ).fetchone()
+        if exists:
+            cur.execute(f'CREATE INDEX IF NOT EXISTS {name} ON "{table}" {cols}')
+            print(f"  {name} on {table}{cols}")
+        else:
+            print(f"  {table}: missing — skipped index {name}")
+
     # Summary
     print("\n=== Summary ===")
-    cur = conn.cursor()
     for t in sorted([r[0] for r in cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'nfl_%'")]):
         n = cur.execute(f'SELECT COUNT(*) FROM "{t}"').fetchone()[0]
         print(f"  {t}: {n:,} rows")
