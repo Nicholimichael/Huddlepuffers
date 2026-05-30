@@ -53,6 +53,7 @@ cd "$SCRIPTS_DIR" || { echo "scripts dir missing"; exit 1; }
 run_step "[1/5] Pulling Sleeper (Huddlepuffers)"  "python3 fetch_sleeper.py"
 run_step "[2/5] Pulling FantasyCalc values"       "python3 fetch_fantasycalc.py"
 run_step "[3/5] Pulling nfl-data-py stats"        "python3 fetch_nfl_stats.py"
+run_step "[3b/5] Pulling ESPN player news"        "python3 fetch_news.py"
 
 # ---- Step 2: rebuild the platform ----
 cd "$PLATFORM_DIR" || { echo "platform dir missing"; exit 1; }

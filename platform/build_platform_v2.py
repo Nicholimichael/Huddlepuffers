@@ -36,6 +36,7 @@ SNAPSHOT_GLOB = str(config.SNAPSHOTS_DIR / "rankings_*.json")
 TRADED_PICKS_CSV = str(config.DATA_DIR / "csv" / "traded_picks.csv")
 ROSTERS_CSV = str(config.DATA_DIR / "csv" / "rosters.csv")
 USERS_CSV = str(config.DATA_DIR / "csv" / "users.csv")
+NEWS_JSON = str(config.DATA_DIR / "news.json")
 OUTPUT_JSON = RANKINGS_JSON  # rewrite in place
 
 # League constants — sourced from config.py (single source of truth)
@@ -410,6 +411,85 @@ for t in sorted(teams, key=lambda x: int(x["roster_id"])):
 pick_totals.sort(key=lambda x: (-x["total_value"], -x["total_picks"]))
 
 # ────────────────────────────────────────────────────────────────────────────
+# Feature 4: Player / team news (ESPN) matched to rostered players
+# ────────────────────────────────────────────────────────────────────────────
+print(f"[4b/5] Matching ESPN news to rosters")
+
+import re
+
+def _norm_name(s):
+    """Normalize a player name for matching: lowercase, strip suffixes/punct."""
+    if not s:
+        return ""
+    s = s.lower()
+    s = re.sub(r"[.’']", "", s)             # drop periods / apostrophes
+    s = re.sub(r"\b(jr|sr|ii|iii|iv|v)\b", "", s)  # drop generational suffixes
+    s = re.sub(r"[^a-z0-9]+", " ", s)             # non-alnum -> space
+    return re.sub(r"\s+", " ", s).strip()
+
+# Index rostered players by normalized name (only players on a team are relevant
+# to a "my team news" view — keeps matching cheap and avoids free-agent noise).
+name_index = {}
+for p in players:
+    if not p.get("owner_id"):
+        continue
+    name_index.setdefault(_norm_name(p.get("full_name")), p)
+
+news_items = []
+news_meta = {"available": False, "source": "ESPN", "generated_at": None}
+try:
+    with open(NEWS_JSON) as f:
+        news_raw = json.load(f)
+    news_meta["available"] = True
+    news_meta["source"] = news_raw.get("source", "ESPN")
+    news_meta["generated_at"] = news_raw.get("generated_at")
+
+    for a in news_raw.get("articles", []):
+        matched = {}  # player_id -> slim player ref (dedupe per article)
+        # 1) explicit athlete tags from ESPN
+        for ath in a.get("athletes", []):
+            p = name_index.get(_norm_name(ath.get("name")))
+            if p:
+                matched[p["player_id"]] = p
+        # 2) fallback: scan headline + description for any rostered full name
+        text = _norm_name(f"{a.get('headline','')} {a.get('description','')}")
+        for nm, p in name_index.items():
+            if nm and nm in text:
+                matched[p["player_id"]] = p
+
+        if not matched:
+            continue  # only surface news that touches a rostered player
+
+        news_items.append({
+            "id": a.get("id"),
+            "headline": a.get("headline"),
+            "description": a.get("description"),
+            "published": a.get("published"),
+            "link": a.get("link"),
+            "image": a.get("image"),
+            "players": [
+                {
+                    "player_id": p["player_id"],
+                    "full_name": p["full_name"],
+                    "position": p.get("position"),
+                    "team": p.get("team"),
+                    "owner_id": p.get("owner_id"),
+                    "owner_name": p.get("owner_name"),
+                }
+                for p in matched.values()
+            ],
+            # convenience: owner_ids touched by this story, for fast frontend filtering
+            "owner_ids": sorted({p.get("owner_id") for p in matched.values() if p.get("owner_id")}),
+        })
+    # newest first
+    news_items.sort(key=lambda x: x.get("published") or "", reverse=True)
+    print(f"      {len(news_items)} stories matched to rostered players")
+except FileNotFoundError:
+    print(f"      no {NEWS_JSON} found — skipping news (run scripts/fetch_news.py)")
+except Exception as e:
+    print(f"      news matching failed ({e}) — skipping")
+
+# ────────────────────────────────────────────────────────────────────────────
 # Write augmented JSON
 # ────────────────────────────────────────────────────────────────────────────
 print(f"[5/5] Writing {OUTPUT_JSON}")
@@ -428,6 +508,10 @@ data["extras"] = {
         "seasons": FUTURE_SEASONS,
         "rounds": list(range(1, ROOKIE_DRAFT_ROUNDS + 1)),
     },
+    "news": {
+        **news_meta,
+        "items": news_items,
+    },
 }
 
 # Also clean up trend_30day NaN values in the base players array
@@ -445,6 +529,7 @@ print(f"Players w/hist: {len(history)}")
 print(f"Risers:         {len(risers_fallers['risers'])}, Fallers: {len(risers_fallers['fallers'])}")
 print(f"Teams scored:   {len(construction)}")
 print(f"Future picks:   {sum(len(p['picks']) for p in pick_matrix)} total across {len(pick_matrix)} teams")
+print(f"News stories:   {len(news_items)} matched to rostered players")
 print(f"\nPosture breakdown:")
 from collections import Counter
 for p, n in Counter(c["posture"] for c in construction).most_common():
