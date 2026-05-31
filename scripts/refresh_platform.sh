@@ -47,12 +47,26 @@ run_step() {
   fi
 }
 
+# ---- Step 0: sync latest code from GitHub ----
+# Pull the newest committed code before running, so changes merged to the repo
+# (e.g. from Claude Code on the web / phone) flow into the weekly refresh
+# automatically — no manual pull needed.
+#
+# --ff-only keeps this safe: if local history diverged, or a tracked file was
+# hand-edited (e.g. manual_lineup_override.json) and would conflict, the pull
+# aborts cleanly and we continue on the code already on disk rather than
+# creating a merge mess. The failure is logged but NON-FATAL by design, matching
+# this script's "make partial progress" philosophy.
+cd "$PROJECT_ROOT" || { echo "project root missing"; exit 1; }
+run_step "[0/5] Syncing latest code (git pull --ff-only)" "git pull --ff-only"
+
 # ---- Step 1: pull source data ----
 cd "$SCRIPTS_DIR" || { echo "scripts dir missing"; exit 1; }
 
 run_step "[1/5] Pulling Sleeper (Huddlepuffers)"  "python3 fetch_sleeper.py"
 run_step "[2/5] Pulling FantasyCalc values"       "python3 fetch_fantasycalc.py"
 run_step "[3/5] Pulling nfl-data-py stats"        "python3 fetch_nfl_stats.py"
+run_step "[3b/5] Pulling ESPN player news"        "python3 fetch_news.py"
 
 # ---- Step 2: rebuild the platform ----
 cd "$PLATFORM_DIR" || { echo "platform dir missing"; exit 1; }

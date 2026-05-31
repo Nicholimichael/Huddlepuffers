@@ -271,6 +271,19 @@ HTML = r"""<!doctype html>
   .rf-row .rf-name { font-weight: 600; }
   .rf-row .rf-val { font-weight: 700; font-variant-numeric: tabular-nums; }
 
+  /* Team / player news (My Team tab) */
+  .news-item { padding: 10px 0; border-bottom: 1px dashed var(--line); }
+  .news-item:last-child { border-bottom: 0; }
+  .news-head { display: flex; gap: 6px; align-items: baseline; flex-wrap: wrap; }
+  .news-item a.news-title { font-weight: 600; color: var(--ink); text-decoration: none; font-size: 14px; }
+  .news-item a.news-title:hover { color: var(--accent); text-decoration: underline; }
+  .news-item .news-desc { font-size: 12px; color: var(--ink-2); margin: 4px 0 6px; }
+  .news-item .news-when { font-size: 11px; color: var(--ink-2); white-space: nowrap; }
+  .news-players { display: flex; flex-wrap: wrap; gap: 4px; }
+  .news-chip { font-size: 11px; padding: 1px 7px; border-radius: 999px; background: var(--bg);
+    border: 1px solid var(--line); color: var(--ink-2); }
+  .news-chip .pos { font-weight: 700; margin-right: 3px; }
+
   /* Trend chart wrapper */
   #trend-chart-wrap { position: relative; height: 320px; }
 
@@ -601,6 +614,10 @@ HTML = r"""<!doctype html>
 
   <!-- MY TEAM -->
   <section id="tab-myteam" class="tab-panel hidden">
+    <div class="card" id="myteam-news-card">
+      <h2>📰 Team / Player News <span class="muted small" id="myteam-news-meta"></span></h2>
+      <div id="myteam-news"></div>
+    </div>
     <div class="card">
       <div class="controls">
         <div class="toggle" id="myteam-view">
@@ -1796,6 +1813,56 @@ HTML = r"""<!doctype html>
   });
   renderMyTeam();
   registerRenderer(renderMyTeam);
+
+  // ── Team / Player News (ESPN) ───────────────────────────────────────────
+  const NEWS = EXTRAS.news || {available:false, items:[]};
+  function escNews(s) {
+    return String(s == null ? '' : s).replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+  }
+  function newsWhen(iso) {
+    if (!iso) return '';
+    const d = new Date(iso), now = new Date(), mins = Math.round((now - d) / 60000);
+    if (isNaN(mins)) return '';
+    if (mins < 60) return mins <= 1 ? 'just now' : mins + 'm ago';
+    const hrs = Math.round(mins / 60);
+    if (hrs < 24) return hrs + 'h ago';
+    const days = Math.round(hrs / 24);
+    if (days < 7) return days + 'd ago';
+    return d.toLocaleDateString();
+  }
+  function renderTeamNews() {
+    const wrap = document.getElementById('myteam-news');
+    const meta = document.getElementById('myteam-news-meta');
+    if (!wrap) return;
+    if (!NEWS.available) {
+      wrap.innerHTML = '<div class="muted small">No news feed yet — run scripts/fetch_news.py during the next refresh.</div>';
+      if (meta) meta.textContent = '';
+      return;
+    }
+    // Only stories that touch a player on the selected team.
+    const mine = (NEWS.items || []).filter(it => (it.owner_ids || []).includes(ME));
+    if (meta) meta.textContent = NEWS.source ? '· via ' + NEWS.source : '';
+    if (!mine.length) {
+      wrap.innerHTML = '<div class="muted small">No recent news for your roster. Check back after the next data refresh.</div>';
+      return;
+    }
+    wrap.innerHTML = mine.slice(0, 25).map(it => {
+      const chips = (it.players || [])
+        .filter(p => p.owner_id === ME)
+        .map(p => `<span class="news-chip"><span class="pos pos-${escNews(p.position)}">${escNews(p.position)}</span>${escNews(p.full_name)}</span>`)
+        .join('');
+      const title = it.link
+        ? `<a class="news-title" href="${escNews(it.link)}" target="_blank" rel="noopener">${escNews(it.headline)}</a>`
+        : `<span class="news-title">${escNews(it.headline)}</span>`;
+      return `<div class="news-item">
+        <div class="news-head">${title}<span class="news-when">${escNews(newsWhen(it.published))}</span></div>
+        ${it.description ? `<div class="news-desc">${escNews(it.description)}</div>` : ''}
+        <div class="news-players">${chips}</div>
+      </div>`;
+    }).join('');
+  }
+  renderTeamNews();
+  registerRenderer(renderTeamNews);
 
   // --- Methodology ---
   document.getElementById('methodology').innerHTML =
