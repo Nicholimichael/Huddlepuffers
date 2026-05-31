@@ -2,7 +2,8 @@
 # refresh_platform.sh — End-to-end refresh of the Huddlepuffers dynasty platform.
 #
 # What this does:
-#   1) Pulls fresh Sleeper + FantasyCalc + NFL data into db/fantasy.sqlite
+#   1) Pulls fresh Sleeper + FantasyCalc + KeepTradeCut + NFL + ESPN news data
+#      into db/fantasy.sqlite
 #   2) Recomputes composite dynasty + win-now rankings
 #   3) Regenerates platform/huddlepuffers_platform.html
 #
@@ -11,7 +12,7 @@
 
 set -u  # error on unset vars; but NOT set -e — we want partial progress
 
-PROJECT_ROOT="/Users/Consulting/Documents/Claude/Projects/Fantasy Football"
+PROJECT_ROOT="/Users/Consulting/Claude/Fantasy Football"
 SCRIPTS_DIR="$PROJECT_ROOT/scripts"
 PLATFORM_DIR="$PROJECT_ROOT/platform"
 LOG_DIR="$PROJECT_ROOT/logs"
@@ -65,11 +66,9 @@ cd "$SCRIPTS_DIR" || { echo "scripts dir missing"; exit 1; }
 
 run_step "[1/5] Pulling Sleeper (Huddlepuffers)"  "python3 fetch_sleeper.py"
 run_step "[2/5] Pulling FantasyCalc values"       "python3 fetch_fantasycalc.py"
-run_step "[3/5] Pulling nfl-data-py stats"        "python3 fetch_nfl_stats.py"
-run_step "[3b/5] Pulling ESPN player news"        "python3 fetch_news.py"
-
-# ---- Step 2: rebuild the platform ----
-cd "$PLATFORM_DIR" || { echo "platform dir missing"; exit 1; }
+run_step "[3/5] Pulling KeepTradeCut values"      "python3 fetch_keeptradecut.py"
+run_step "[4/5] Pulling nfl-data-py stats"        "python3 fetch_nfl_stats.py"
+run_step "[5/5] Pulling ESPN player news"         "python3 fetch_news.py"
 
 run_step "[4/8] Rebuilding composite rankings"    "python3 build_rankings.py"
 run_step "[5/8] Augmenting with v2 features"      "python3 build_platform_v2.py"
