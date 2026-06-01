@@ -17,6 +17,25 @@ SCRIPTS_DIR="$PROJECT_ROOT/scripts"
 PLATFORM_DIR="$PROJECT_ROOT/platform"
 LOG_DIR="$PROJECT_ROOT/logs"
 
+# ---- Bootstrap: sync code FIRST, then re-exec the fresh copy ----
+# A running script can't benefit from its own `git pull`: bash has already read
+# the old bytes off disk, so changes merged from Claude Code (web/phone) wouldn't
+# take effect until the *next* run. To fix that, we pull before anything else and
+# then re-exec the just-updated script exactly once. HP_REFRESH_BOOTSTRAPPED
+# guards against an infinite re-exec loop.
+#
+# --ff-only keeps the pull safe: if history diverged or a tracked file was
+# hand-edited and would conflict, the pull aborts cleanly and we continue on the
+# code already on disk rather than creating a merge mess (non-fatal by design).
+if [ -z "${HP_REFRESH_BOOTSTRAPPED:-}" ]; then
+  cd "$PROJECT_ROOT" || { echo "project root missing"; exit 1; }
+  echo "=== [bootstrap] Syncing latest code (git pull --ff-only) ==="
+  git pull --ff-only || echo "!!! git pull failed — continuing on on-disk code !!!"
+  export HP_REFRESH_BOOTSTRAPPED=1
+  # Re-exec the freshly pulled version so this run uses the updated code.
+  exec /bin/bash "$SCRIPTS_DIR/refresh_platform.sh" "$@"
+fi
+
 mkdir -p "$LOG_DIR"
 STAMP="$(date +%Y-%m-%d_%H%M%S)"
 LOG_FILE="$LOG_DIR/refresh_${STAMP}.log"
@@ -48,20 +67,8 @@ run_step() {
   fi
 }
 
-# ---- Step 0: sync latest code from GitHub ----
-# Pull the newest committed code before running, so changes merged to the repo
-# (e.g. from Claude Code on the web / phone) flow into the weekly refresh
-# automatically — no manual pull needed.
-#
-# --ff-only keeps this safe: if local history diverged, or a tracked file was
-# hand-edited (e.g. manual_lineup_override.json) and would conflict, the pull
-# aborts cleanly and we continue on the code already on disk rather than
-# creating a merge mess. The failure is logged but NON-FATAL by design, matching
-# this script's "make partial progress" philosophy.
-cd "$PROJECT_ROOT" || { echo "project root missing"; exit 1; }
-run_step "[0/5] Syncing latest code (git pull --ff-only)" "git pull --ff-only"
-
 # ---- Step 1: pull source data ----
+# (Code sync already happened in the bootstrap block above, before this re-exec.)
 cd "$SCRIPTS_DIR" || { echo "scripts dir missing"; exit 1; }
 
 run_step "[1/5] Pulling Sleeper (Huddlepuffers)"  "python3 fetch_sleeper.py"
