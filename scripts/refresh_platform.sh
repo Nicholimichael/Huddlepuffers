@@ -70,6 +70,10 @@ run_step "[3/5] Pulling KeepTradeCut values"      "python3 fetch_keeptradecut.py
 run_step "[4/5] Pulling nfl-data-py stats"        "python3 fetch_nfl_stats.py"
 run_step "[5/5] Pulling ESPN player news"         "python3 fetch_news.py"
 
+# ---- Step 2: rebuild the platform ----
+# The build scripts live in platform/, not scripts/ — switch in before running them.
+cd "$PLATFORM_DIR" || { echo "platform dir missing"; exit 1; }
+
 run_step "[4/8] Rebuilding composite rankings"    "python3 build_rankings.py"
 run_step "[5/8] Augmenting with v2 features"      "python3 build_platform_v2.py"
 run_step "[6/8] Augmenting with v3 modules"       "python3 build_extras_v3.py"
