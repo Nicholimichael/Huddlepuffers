@@ -12,7 +12,10 @@
 
 set -u  # error on unset vars; but NOT set -e — we want partial progress
 
-PROJECT_ROOT="/Users/Consulting/Claude/Fantasy Football"
+# Self-locating: resolve to the repo root (parent of this scripts/ dir) so the
+# script works wherever the project lives. Relocated 2026-06-08 from the old
+# ~/Claude root to ~/Documents/Claude/Projects.
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SCRIPTS_DIR="$PROJECT_ROOT/scripts"
 PLATFORM_DIR="$PROJECT_ROOT/platform"
 LOG_DIR="$PROJECT_ROOT/logs"
