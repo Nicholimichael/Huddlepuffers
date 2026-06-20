@@ -4,8 +4,8 @@ name: Refresh Huddlepuffers Dashboard
 # (scripts/com.hossautomation.huddlepuffers-refresh.plist).
 # Builds and deploys the REDESIGNED dashboard — the live ~1.9MB site — by
 # mirroring scripts/refresh_redesign.sh:
-#   pull data -> build rankings_data.json -> (optional) weekly AI copy ->
-#   inject into the redesign template -> deploy to the same Netlify site.
+#   pull data -> guard season -> build rankings_data.json -> (optional) weekly AI
+#   copy -> inject into the redesign template -> deploy to the same Netlify site.
 # Runs on a GitHub-hosted runner so the dashboard refreshes whether or not the
 # MacBook is open. Deploy target is unchanged: https://huddlepuffers.hossautomation.com
 
@@ -60,6 +60,12 @@ jobs:
           python3 fetch_nfl_stats.py    || echo "::warning::nfl-data-py fetch failed — using prior stats"
           python3 fetch_news.py         || echo "::warning::ESPN news fetch failed — news section may be stale"
 
+      - name: Guard against a silent season rollover
+        # If Sleeper has rolled the dynasty to a season newer than config.CURRENT_SEASON,
+        # fail LOUDLY (→ failure-alert SMS) instead of deploying last year's standings
+        # forever. fetch_sleeper already stored the new league in the step above.
+        run: python3 scripts/check_season.py
+
       - name: Build league data (rankings_data.json)
         # Same pipeline as refresh_platform.sh. build_artifact_v2 is kept because
         # it also sanitizes rankings_data.json (NaN/Infinity -> null) that the
@@ -83,6 +89,17 @@ jobs:
       - name: Build redesigned dashboard (index.html)
         run: python3 scripts/build_redesign.py
 
+      - name: Stage clean deploy directory
+        # Publish ONLY the self-contained dashboard + its asset — never the build
+        # source (platform/*.py) or other junk in platform/, which would otherwise
+        # ship to the public CDN. The redesign is self-contained: index.html + assets/.
+        run: |
+          rm -rf _site && mkdir -p _site
+          cp platform/index.html _site/index.html
+          cp -R platform/assets _site/assets
+          test -f _site/index.html && test -d _site/assets \
+            || { echo "::error::deploy staging incomplete — refusing to publish"; exit 1; }
+
       - name: Deploy to Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
@@ -91,7 +108,7 @@ jobs:
         run: |
           npx --yes netlify-cli@17 deploy \
             --prod \
-            --dir=platform \
+            --dir=_site \
             --site="$NETLIFY_SITE_ID" \
             --message="Auto-refresh (GitHub Actions run ${GITHUB_RUN_ID})"
 
@@ -100,6 +117,10 @@ jobs:
         run: python3 weekly_digest.py
 
       - name: Commit refreshed history + AI copy
+        # Non-fatal: deploy is the real deliverable. A git hiccup here (conflict,
+        # non-fast-forward) must NOT turn a successful deploy into a red run — the
+        # snapshot/digest just re-commits on the next run.
+        continue-on-error: true
         run: |
           git config user.name  "huddlepuffers-bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -120,10 +141,10 @@ jobs:
           {
             echo "## Huddlepuffers refresh"
             echo ""
-            if [ -f platform/index.html ]; then
-              echo "- ✅ Redesign built: \`$(wc -c < platform/index.html | tr -d ' ')\` bytes"
+            if [ -f _site/index.html ]; then
+              echo "- ✅ Built + staged for deploy: \`$(wc -c < _site/index.html | tr -d ' ')\` bytes"
             else
-              echo "- ⚠️ index.html was NOT produced"
+              echo "- ⚠️ index.html was NOT produced (build or season guard failed)"
             fi
             if [ -n "${ANTHROPIC_API_KEY:-}" ]; then
               echo "- 🧠 Weekly AI copy: regenerated from this week's numbers"
@@ -133,3 +154,29 @@ jobs:
             echo "- Live: https://huddlepuffers.hossautomation.com"
             echo "- Run \`${GITHUB_RUN_ID}\` · $(date -u '+%Y-%m-%d %H:%M UTC')"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Send failure alert (SMS)
+        # Fires ONLY if a prior step failed. The commit-back step is non-fatal, so a
+        # snapshot hiccup does NOT alert. NO-OP unless the Twilio secrets are set, so
+        # the workflow ships safely until you wire up texting.
+        if: failure()
+        env:
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_FROM: ${{ secrets.TWILIO_FROM }}
+          ALERT_PHONE: ${{ secrets.ALERT_PHONE }}
+        run: |
+          if [ -z "${TWILIO_ACCOUNT_SID:-}" ] || [ -z "${ALERT_PHONE:-}" ]; then
+            echo "::warning::Refresh FAILED but no Twilio secrets set — add TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM, ALERT_PHONE to enable SMS alerts."
+            exit 0
+          fi
+          RUN_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          BODY="Huddlepuffers weekly refresh FAILED (run ${GITHUB_RUN_ID}). The dashboard may be stale. ${RUN_URL}"
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+            "https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json" \
+            --data-urlencode "To=${ALERT_PHONE}" \
+            --data-urlencode "From=${TWILIO_FROM}" \
+            --data-urlencode "Body=${BODY}" \
+            -u "${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}")
+          echo "Twilio responded HTTP ${CODE}"
+          [ "${CODE}" = "201" ] || echo "::warning::Twilio did not accept the SMS (HTTP ${CODE}) — check creds / A2P 10DLC registration."

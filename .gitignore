@@ -33,3 +33,15 @@ venv/
 .vscode/
 .idea/
 *.swp
+
+# --- CI deploy staging (rebuilt every run) ---
+_site/
+
+# --- Local-only build/refresh clutter (regeneratable; never needed on the runner) ---
+platform/*.zip
+platform/*_legacy_*.html
+platform/huddlepuffers_design_snapshot.html
+db/*.new
+db/*.rebuild
+db/*.fresh-journal
+reports/_write_test*

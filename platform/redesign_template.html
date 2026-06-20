@@ -1113,9 +1113,11 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
 <script>window.__RANKINGS_DATA__=__HP_RANKINGS_DATA__;</script>
 <script>
 (async function(){
-  // Fetch rankings_data.json at runtime instead of embedding it inline.
-  // Cache-buster: ?v=<generated_at> — browser re-downloads only when the
-  // build emits a new timestamp, otherwise serves from cache.
+  // Data is INLINED at build time into window.__RANKINGS_DATA__ (above) by
+  // scripts/build_redesign.py — there is NO runtime fetch. The deployed
+  // index.html is self-contained and does not depend on rankings_data.json
+  // being present on the CDN. (Do not "fix" this into a fetch() without also
+  // deploying rankings_data.json — it is git-ignored and not published.)
   const v = window.__DATA_VERSION__ ? "?v=" + encodeURIComponent(window.__DATA_VERSION__) : "";
   let DATA;
   try {
