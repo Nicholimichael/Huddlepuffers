@@ -112,9 +112,12 @@ fi
 cd "$SCRIPTS_DIR" || exit $FINAL_STATUS
 run_step "[8/9] Snapshot + weekly digest"         "python3 weekly_digest.py"
 
-# ---- Step 4: deploy to Netlify ----
-# Only deploy if the build actually produced a fresh artifact. Never push a broken build.
-# Set SKIP_DEPLOY=1 in the environment to bypass deploy (useful for local testing).
+# ---- Step 4: deploy — DISABLED locally ----
+# The live dashboard is deployed by GitHub Actions (.github/workflows/refresh.yml).
+# A local run of this script builds the OLD layout and must NEVER publish, or it would
+# overwrite the redesigned site. Forcing SKIP_DEPLOY=1 hard-disables the deploy below;
+# local runs still refresh data. (To re-enable, remove this line / restore from git.)
+SKIP_DEPLOY=1
 DEPLOY_STATUS=1
 if [ $FINAL_STATUS -eq 0 ] && [ "${SKIP_DEPLOY:-0}" != "1" ]; then
   cd "$PLATFORM_DIR" || exit $FINAL_STATUS

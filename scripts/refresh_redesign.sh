@@ -19,6 +19,11 @@ set -u
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT" || { echo "project root missing"; exit 1; }
 
+# Deploy DISABLED locally — the live site is published by GitHub Actions
+# (.github/workflows/refresh.yml). Force the skip so a local run rebuilds
+# platform/index.html for preview but never publishes (avoids racing the Action).
+REDESIGN_SKIP_DEPLOY=1
+
 echo "=== [1/3] Refreshing data (SKIP_DEPLOY=1) ==="
 SKIP_DEPLOY=1 bash scripts/refresh_platform.sh \
   || echo "!!! data refresh reported issues — continuing with the rankings_data.json already on disk"

@@ -33,6 +33,7 @@ LEAGUE_NAME_FILTER  = "Huddlepuffers"          # Sleeper API name filter
 LEAGUE_DISPLAY_NAME = "The Huddlepuffers"      # Used in HTML titles, digests
 
 # Update CURRENT_SEASON each year when the dynasty league rolls over.
+# 2026 rollover → set CURRENT_SEASON = 2026 and CURRENT_LEAGUE_ID = "1332930069093453824"
 CURRENT_SEASON      = 2025                     # int — the active Sleeper season
 CURRENT_LEAGUE_ID   = "1182393556535246848"    # Sleeper league_id for CURRENT_SEASON
 
