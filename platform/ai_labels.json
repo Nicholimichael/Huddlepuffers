@@ -1,17 +1,47 @@
 {
-  "_comment": "AI personality copy for the Huddlepuffers redesign. Regenerate EVERY weekly refresh from that week's numbers (friendly buddy-league tone). Keyed by owner_name. build_redesign.py merges these into the data object. See HANDOFF.md section 4.",
   "generated_for_snapshot": "2026-06-15",
-  "state_of_league": "The top four are a knife fight: colsheske leads on points, chochstedler and Nmhochstedler hoard the richest rosters, and isaacimel keeps winning anyway at 12-2. The middle — aigo100 and thedukestill — will decide their season at the deadline. Down low, Forshey11 and Swerve33 are racing for rookie picks more than wins.",
+  "state_of_league": "isaacimel sits at 12-2 despite scoring 84 fewer points than colsheske, who leads the league at 2,857 — the classic Wins Merchant vs. Frontrunner standoff. chochstedler hoards the richest roster (1,632 dynasty) at 10-4, and dashboard owner Nmhochstedler lurks at 9-5 with the second-deepest war chest (1,614). The bottom three — SpeedwayJesus, mmmatlock, and the twin 2-12 dumpster fires of Swerve33 and Forshey11 — are already drafting in their heads.",
   "teams": {
-    "colsheske":      { "nickname": "THE FRONTRUNNER",   "blurb": "League-best 2,857 points and a top-three dynasty roster — the clear team to beat." },
-    "chochstedler":   { "nickname": "THE WAR CHEST",     "blurb": "Owns the league's deepest dynasty haul and a 10-4 record to match — built to last." },
-    "isaacimel":      { "nickname": "THE WINS MERCHANT", "blurb": "League-best 12-2 record; the roster value lags the wins, but a banner counts the same." },
-    "Nmhochstedler":  { "nickname": "LOADED & LURKING",  "blurb": "Second-richest roster in the league — the 9-5 record undersells what this team can do." },
-    "aigo100":        { "nickname": "ON THE BUBBLE",     "blurb": "An 8-6 tweener with a middling war chest — one bold trade from contention or the lottery." },
-    "thedukestill":   { "nickname": "THE COIN FLIP",     "blurb": "Perfectly 7-7 with a roster to match — the league's most genuinely average team." },
-    "SpeedwayJesus":  { "nickname": "REBUILD MODE",      "blurb": "At 5-9 with a lighter roster, the rebuild is on — swap veterans for youth and picks." },
-    "mmmatlock":      { "nickname": "OPEN FOR BUSINESS", "blurb": "A 4-10 season and the league's thinnest scoring — a prime seller; the phone should be ringing." },
-    "Forshey11":      { "nickname": "THE TEARDOWN",      "blurb": "Rock-bottom at 2-12 with the lightest roster — but a full teardown means premium picks incoming." },
-    "Swerve33":       { "nickname": "NOWHERE BUT UP",    "blurb": "Anchoring the power index at 2-12 — the good news is the only way left is up." }
-  }
+    "isaacimel": {
+      "nickname": "WINS MERCHANT",
+      "blurb": "League-best 12-2 on 2,773 points and the fourth-lowest points-against (2,443) — the schedule gods and a banner don't ask how."
+    },
+    "colsheske": {
+      "nickname": "THE FRONTRUNNER",
+      "blurb": "League-high 2,857 points and a 765 starter-dynasty top — only an 84-point gap and one loss keep you from the throne."
+    },
+    "chochstedler": {
+      "nickname": "THE WAR CHEST",
+      "blurb": "League-deepest 1,632 dynasty roster at 10-4 — built to outlast everyone above you."
+    },
+    "Nmhochstedler": {
+      "nickname": "LOADED AND LURKING",
+      "blurb": "Second-richest roster (1,614) and 2,757 points, yet stuck at 9-5 — this team is better than its seed."
+    },
+    "aigo100": {
+      "nickname": "ON THE BUBBLE",
+      "blurb": "8-6 with a near-even 2,558-for to 2,575-against — the league's truest .500 fraud, one trade from either direction."
+    },
+    "thedukestill": {
+      "nickname": "BLED OUT",
+      "blurb": "7-7 but bleeding 2,765 points against — the worst defense in the league is quietly capping this season."
+    },
+    "SpeedwayJesus": {
+      "nickname": "REBUILD MODE",
+      "blurb": "5-9 with 2,423 points and a 1,270 roster — the youth movement is officially underway."
+    },
+    "mmmatlock": {
+      "nickname": "EMPTY TANK",
+      "blurb": "4-10 and the league's lowest scoring at 2,229 — the offense never showed up this year."
+    },
+    "Swerve33": {
+      "nickname": "ROCK BOTTOM",
+      "blurb": "2-12 with the league's thinnest roster (1,082 dynasty) despite scoring more than Forshey — pure cellar dweller."
+    },
+    "Forshey11": {
+      "nickname": "THE TEARDOWN",
+      "blurb": "2-12 with a league-worst 2,696-point projection and 2,687 points allowed — premium picks are the only consolation."
+    }
+  },
+  "_comment": "AI personality copy for the Huddlepuffers redesign, auto-generated weekly by scripts/generate_labels.py from that week's numbers. Hand-edit freely; the next run will overwrite."
 }
