@@ -1,46 +1,46 @@
 {
   "generated_for_snapshot": "2026-06-15",
-  "state_of_league": "isaacimel clings to the top seed at 12-2 despite scoring 84 fewer points than colsheske (2,857) AND 62 fewer than chochstedler (2,835) — the luckiest banner in Huddlepuffers history. colsheske at 11-3 and chochstedler at 10-4 are both better teams stuck looking up, while dashboard owner Nmhochstedler sits 9-5 on the second-deepest roster (1,614 dynasty). The bottom four are a graveyard: thedukestill bleeding 2,765 against, and the trio of mmmatlock, Swerve33, and Forshey11 combining for an 8-34 disaster.",
+  "state_of_league": "isaacimel holds the 1-seed at 12-2 while getting outscored by BOTH colsheske (2,857) and chochstedler (2,835) — same luckiest banner in league history, just with more receipts now. colsheske's 11-3 with the league-high scoring AND top starter-dynasty (765.2) is the best team without the top seed, and chochstedler still owns the deepest war chest at 1,632. Down in the swamp, thedukestill is somehow 7-7 while leaking a league-worst 2,765 against, and the Swerve33/Forshey11 pairing limps to a matching 2-12.",
   "teams": {
     "isaacimel": {
       "nickname": "WINS MERCHANT",
-      "blurb": "12-2 on the league's THIRD-most points (2,773) and fourth-fewest against (2,443) — you out-lucked two better teams to keep the top seed."
+      "blurb": "12-2 on the third-most points (2,773) and the fewest given up among contenders (2,443) — you turned mediocre scoring into the top seed and we all know it."
     },
     "colsheske": {
       "nickname": "ROBBED FRONTRUNNER",
-      "blurb": "League-high 2,857 points and a 765 starter-dynasty crown, yet 11-3 and one seed short — the scoreboard loves you, the standings don't."
+      "blurb": "League-high 2,857 points and a league-best 765.2 starter-dynasty, yet 11-3 and still staring up at a team you outscore weekly."
     },
     "chochstedler": {
       "nickname": "THE WAR CHEST",
-      "blurb": "Deepest roster in the league (1,632 dynasty) and 2,835 points at 10-4 — built to bury everyone above you, just not yet."
+      "blurb": "Deepest roster alive (1,632 dynasty) and 2,835 points at 10-4 — loaded enough to win it all and seeded too low to start."
     },
     "Nmhochstedler": {
       "nickname": "LOADED AND LURKING",
-      "blurb": "Second-richest war chest (1,614) and 2,757 points still trapped at 9-5 — the most dangerous team nobody's seeded right."
+      "blurb": "Biggest roster in the league (36 players, 1,613 dynasty) and 2,757 points stuck at 9-5 — the scariest 4-seed nobody wants to draw."
     },
     "aigo100": {
-      "nickname": "TRUE FRAUD",
-      "blurb": "8-6 with 2,558 for and 2,575 against — the only team in the league that actually earned its sub-.500 vibe while winning."
+      "nickname": "TRUE .500",
+      "blurb": "8-6 with 2,558 for against 2,575 — the only owner whose record is an honest reflection of being exactly fine."
     },
     "thedukestill": {
       "nickname": "BLED OUT",
-      "blurb": "7-7 surviving despite a league-worst 2,765 points against — your defense is quietly the single saddest stat here."
+      "blurb": "7-7 while surrendering a league-worst 2,764 — your starter-dynasty (592.4) ranks ahead of only the four teams below you, so .500 is a gift."
     },
     "SpeedwayJesus": {
       "nickname": "REBUILD MODE",
-      "blurb": "5-9 on 2,423 points and a 1,270 roster — still scoring more than four teams, so the youth movement has a pulse."
+      "blurb": "5-9 on 2,423 points and a 1,268 roster — still outscoring three teams, so the youth project hasn't flatlined yet."
     },
     "mmmatlock": {
       "nickname": "EMPTY TANK",
-      "blurb": "4-10 and dead last in scoring at 2,229 — nobody else in the league failed to crack 2,300."
+      "blurb": "4-10 and dead last in scoring at 2,229 — the only team that couldn't crack 2,300 all season."
     },
     "Swerve33": {
       "nickname": "ROCK BOTTOM",
-      "blurb": "2-12 with the league's thinnest roster at 1,082 dynasty — you out-scored Forshey by 58 and still tied him for last."
+      "blurb": "2-12 with the thinnest war chest in the league (1,082 dynasty) and a 478 starter-winnow that's the worst of anyone."
     },
     "Forshey11": {
       "nickname": "THE TEARDOWN",
-      "blurb": "2-12 with a league-worst 2,696 projection and 2,232 actual — the only consolation is your war chest (1,148) beats Swerve's."
+      "blurb": "2-12 on a league-low 2,696 projection and 2,233 actual — outscored Swerve by nothing and tied him for the basement anyway."
     }
   },
   "_comment": "AI personality copy for the Huddlepuffers redesign, auto-generated weekly by scripts/generate_labels.py from that week's numbers. Hand-edit freely; the next run will overwrite."
