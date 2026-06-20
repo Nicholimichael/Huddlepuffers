@@ -14,7 +14,12 @@ on:
     # Wednesday 12:00 UTC = 7:00 AM ET in-season (EST) / 8:00 AM ET in summer (EDT).
     # GitHub cron is always UTC and does not observe DST.
     - cron: "0 12 * * 3"
-  workflow_dispatch: {} # manual "refresh now" button in the Actions tab
+  workflow_dispatch:
+    inputs:
+      force_fail:
+        description: "Test the failure alert: fail early (before any deploy) to email you"
+        type: boolean
+        default: false
 
 # contents: commit the regenerated snapshot/digest/AI-copy back to main.
 # issues: open a failure-alert issue (which GitHub emails to you).
@@ -35,6 +40,15 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # full history so the commit-back rebase/push is safe
+
+      - name: (test only) Force an early failure to verify the alert
+        # Manual dispatch with force_fail=true fails HERE — before any build or
+        # deploy — so it exercises the failure-alert path without publishing
+        # anything. Scheduled runs never set this input, so it is a no-op for them.
+        if: ${{ inputs.force_fail }}
+        run: |
+          echo "force_fail=true → deliberately failing to test the alert path (nothing deploys)."
+          exit 1
 
       - name: Set up Python
         uses: actions/setup-python@v5
