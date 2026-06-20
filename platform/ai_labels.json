@@ -1,0 +1,17 @@
+{
+  "_comment": "AI personality copy for the Huddlepuffers redesign. Regenerate EVERY weekly refresh from that week's numbers (friendly buddy-league tone). Keyed by owner_name. build_redesign.py merges these into the data object. See HANDOFF.md section 4.",
+  "generated_for_snapshot": "2026-06-15",
+  "state_of_league": "The top four are a knife fight: colsheske leads on points, chochstedler and Nmhochstedler hoard the richest rosters, and isaacimel keeps winning anyway at 12-2. The middle — aigo100 and thedukestill — will decide their season at the deadline. Down low, Forshey11 and Swerve33 are racing for rookie picks more than wins.",
+  "teams": {
+    "colsheske":      { "nickname": "THE FRONTRUNNER",   "blurb": "League-best 2,857 points and a top-three dynasty roster — the clear team to beat." },
+    "chochstedler":   { "nickname": "THE WAR CHEST",     "blurb": "Owns the league's deepest dynasty haul and a 10-4 record to match — built to last." },
+    "isaacimel":      { "nickname": "THE WINS MERCHANT", "blurb": "League-best 12-2 record; the roster value lags the wins, but a banner counts the same." },
+    "Nmhochstedler":  { "nickname": "LOADED & LURKING",  "blurb": "Second-richest roster in the league — the 9-5 record undersells what this team can do." },
+    "aigo100":        { "nickname": "ON THE BUBBLE",     "blurb": "An 8-6 tweener with a middling war chest — one bold trade from contention or the lottery." },
+    "thedukestill":   { "nickname": "THE COIN FLIP",     "blurb": "Perfectly 7-7 with a roster to match — the league's most genuinely average team." },
+    "SpeedwayJesus":  { "nickname": "REBUILD MODE",      "blurb": "At 5-9 with a lighter roster, the rebuild is on — swap veterans for youth and picks." },
+    "mmmatlock":      { "nickname": "OPEN FOR BUSINESS", "blurb": "A 4-10 season and the league's thinnest scoring — a prime seller; the phone should be ringing." },
+    "Forshey11":      { "nickname": "THE TEARDOWN",      "blurb": "Rock-bottom at 2-12 with the lightest roster — but a full teardown means premium picks incoming." },
+    "Swerve33":       { "nickname": "NOWHERE BUT UP",    "blurb": "Anchoring the power index at 2-12 — the good news is the only way left is up." }
+  }
+}
