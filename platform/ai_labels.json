@@ -1,46 +1,46 @@
 {
   "generated_for_snapshot": "2026-06-15",
-  "state_of_league": "isaacimel sits at 12-2 despite scoring 84 fewer points than colsheske, who leads the league at 2,857 — the classic Wins Merchant vs. Frontrunner standoff. chochstedler hoards the richest roster (1,632 dynasty) at 10-4, and dashboard owner Nmhochstedler lurks at 9-5 with the second-deepest war chest (1,614). The bottom three — SpeedwayJesus, mmmatlock, and the twin 2-12 dumpster fires of Swerve33 and Forshey11 — are already drafting in their heads.",
+  "state_of_league": "isaacimel clings to the top seed at 12-2 despite scoring 84 fewer points than colsheske (2,857) AND 62 fewer than chochstedler (2,835) — the luckiest banner in Huddlepuffers history. colsheske at 11-3 and chochstedler at 10-4 are both better teams stuck looking up, while dashboard owner Nmhochstedler sits 9-5 on the second-deepest roster (1,614 dynasty). The bottom four are a graveyard: thedukestill bleeding 2,765 against, and the trio of mmmatlock, Swerve33, and Forshey11 combining for an 8-34 disaster.",
   "teams": {
     "isaacimel": {
       "nickname": "WINS MERCHANT",
-      "blurb": "League-best 12-2 on 2,773 points and the fourth-lowest points-against (2,443) — the schedule gods and a banner don't ask how."
+      "blurb": "12-2 on the league's THIRD-most points (2,773) and fourth-fewest against (2,443) — you out-lucked two better teams to keep the top seed."
     },
     "colsheske": {
-      "nickname": "THE FRONTRUNNER",
-      "blurb": "League-high 2,857 points and a 765 starter-dynasty top — only an 84-point gap and one loss keep you from the throne."
+      "nickname": "ROBBED FRONTRUNNER",
+      "blurb": "League-high 2,857 points and a 765 starter-dynasty crown, yet 11-3 and one seed short — the scoreboard loves you, the standings don't."
     },
     "chochstedler": {
       "nickname": "THE WAR CHEST",
-      "blurb": "League-deepest 1,632 dynasty roster at 10-4 — built to outlast everyone above you."
+      "blurb": "Deepest roster in the league (1,632 dynasty) and 2,835 points at 10-4 — built to bury everyone above you, just not yet."
     },
     "Nmhochstedler": {
       "nickname": "LOADED AND LURKING",
-      "blurb": "Second-richest roster (1,614) and 2,757 points, yet stuck at 9-5 — this team is better than its seed."
+      "blurb": "Second-richest war chest (1,614) and 2,757 points still trapped at 9-5 — the most dangerous team nobody's seeded right."
     },
     "aigo100": {
-      "nickname": "ON THE BUBBLE",
-      "blurb": "8-6 with a near-even 2,558-for to 2,575-against — the league's truest .500 fraud, one trade from either direction."
+      "nickname": "TRUE FRAUD",
+      "blurb": "8-6 with 2,558 for and 2,575 against — the only team in the league that actually earned its sub-.500 vibe while winning."
     },
     "thedukestill": {
       "nickname": "BLED OUT",
-      "blurb": "7-7 but bleeding 2,765 points against — the worst defense in the league is quietly capping this season."
+      "blurb": "7-7 surviving despite a league-worst 2,765 points against — your defense is quietly the single saddest stat here."
     },
     "SpeedwayJesus": {
       "nickname": "REBUILD MODE",
-      "blurb": "5-9 with 2,423 points and a 1,270 roster — the youth movement is officially underway."
+      "blurb": "5-9 on 2,423 points and a 1,270 roster — still scoring more than four teams, so the youth movement has a pulse."
     },
     "mmmatlock": {
       "nickname": "EMPTY TANK",
-      "blurb": "4-10 and the league's lowest scoring at 2,229 — the offense never showed up this year."
+      "blurb": "4-10 and dead last in scoring at 2,229 — nobody else in the league failed to crack 2,300."
     },
     "Swerve33": {
       "nickname": "ROCK BOTTOM",
-      "blurb": "2-12 with the league's thinnest roster (1,082 dynasty) despite scoring more than Forshey — pure cellar dweller."
+      "blurb": "2-12 with the league's thinnest roster at 1,082 dynasty — you out-scored Forshey by 58 and still tied him for last."
     },
     "Forshey11": {
       "nickname": "THE TEARDOWN",
-      "blurb": "2-12 with a league-worst 2,696-point projection and 2,687 points allowed — premium picks are the only consolation."
+      "blurb": "2-12 with a league-worst 2,696 projection and 2,232 actual — the only consolation is your war chest (1,148) beats Swerve's."
     }
   },
   "_comment": "AI personality copy for the Huddlepuffers redesign, auto-generated weekly by scripts/generate_labels.py from that week's numbers. Hand-edit freely; the next run will overwrite."
