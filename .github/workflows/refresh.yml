@@ -16,9 +16,11 @@ on:
     - cron: "0 12 * * 3"
   workflow_dispatch: {} # manual "refresh now" button in the Actions tab
 
-# Allow the job to commit the regenerated snapshot/digest/AI-copy back to main.
+# contents: commit the regenerated snapshot/digest/AI-copy back to main.
+# issues: open a failure-alert issue (which GitHub emails to you).
 permissions:
   contents: write
+  issues: write
 
 # Never let two refreshes run at once (they'd race on the same Netlify deploy).
 concurrency:
@@ -155,28 +157,16 @@ jobs:
             echo "- Run \`${GITHUB_RUN_ID}\` · $(date -u '+%Y-%m-%d %H:%M UTC')"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Send failure alert (SMS)
+      - name: Alert on failure (opens an issue → emails you)
         # Fires ONLY if a prior step failed. The commit-back step is non-fatal, so a
-        # snapshot hiccup does NOT alert. NO-OP unless the Twilio secrets are set, so
-        # the workflow ships safely until you wire up texting.
+        # snapshot hiccup does NOT alert. Opens a GitHub issue and @mentions you, which
+        # GitHub delivers as an email — no SMS/SMTP/SendGrid infra or secrets needed.
         if: failure()
         env:
-          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
-          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
-          TWILIO_FROM: ${{ secrets.TWILIO_FROM }}
-          ALERT_PHONE: ${{ secrets.ALERT_PHONE }}
+          GH_TOKEN: ${{ github.token }}
         run: |
-          if [ -z "${TWILIO_ACCOUNT_SID:-}" ] || [ -z "${ALERT_PHONE:-}" ]; then
-            echo "::warning::Refresh FAILED but no Twilio secrets set — add TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM, ALERT_PHONE to enable SMS alerts."
-            exit 0
-          fi
           RUN_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-          BODY="Huddlepuffers weekly refresh FAILED (run ${GITHUB_RUN_ID}). The dashboard may be stale. ${RUN_URL}"
-          CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
-            "https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json" \
-            --data-urlencode "To=${ALERT_PHONE}" \
-            --data-urlencode "From=${TWILIO_FROM}" \
-            --data-urlencode "Body=${BODY}" \
-            -u "${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}")
-          echo "Twilio responded HTTP ${CODE}"
-          [ "${CODE}" = "201" ] || echo "::warning::Twilio did not accept the SMS (HTTP ${CODE}) — check creds / A2P 10DLC registration."
+          gh issue create --repo "${GITHUB_REPOSITORY}" \
+            --title "🔴 Huddlepuffers weekly refresh failed ($(date -u +%Y-%m-%d))" \
+            --body "@Nicholimichael the weekly refresh failed — the live dashboard may be stale. Run: ${RUN_URL} · Likely causes: a season rollover (bump config.py), a dead Netlify/Anthropic key, or a data-source outage. Fix, then re-run from the Actions tab." \
+            || echo "::warning::could not open failure issue"
