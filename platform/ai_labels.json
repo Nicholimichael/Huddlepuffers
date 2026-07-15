@@ -1,46 +1,46 @@
 {
   "generated_for_snapshot": "2026-06-15",
-  "state_of_league": "isaacimel locks the banner at 12-2 despite the fourth-most points (2,773), thanks to a league-friendly +330 while colsheske (2,857) and chochstedler (2,835) both outscore him and finish 11-3 and 10-4 behind him. chochstedler still sits on the deepest war chest (1,631 dynasty) and Nmhochstedler lurks at 9-5 with the biggest roster alive (36 players, 1,612 dynasty). The floor is a mass grave: SpeedwayJesus (5-9), mmmatlock (4-10, worst scoring at 2,230), and the twin 2-12 headstones of Swerve33 and Forshey11.",
+  "state_of_league": "isaacimel banners at 12-2 on the fourth-most points (2,773), floated there by a league-best +330 differential while colsheske (2,857) and chochstedler (2,835) both outscored him and finished 11-3 and 10-4. chochstedler still hoards the fattest war chest at 1,640 dynasty, and Nmhochstedler lurks at 9-5 with the biggest roster in the league (36 players, 1,618 dynasty). Below aigo100's dead-flat 8-6, the basement is stacked bodies: mmmatlock scoring a league-worst 2,230, and Swerve33 and Forshey11 sharing a 2-12 grave.",
   "teams": {
     "isaacimel": {
       "nickname": "SCHEDULE MERCHANT",
-      "blurb": "12-2 on the fourth-most points (2,773) and a soft +330 — you're hanging a banner you got outscored into by both teams chasing you."
+      "blurb": "12-2 on the fourth-most points (2,773), levitating on a +330 gap while both teams you outscore glare up at your banner."
     },
     "colsheske": {
-      "nickname": "BEST TEAM, SECOND",
-      "blurb": "League-high 2,857 points and a top starter-dynasty of 764.7, and it still only bought an 11-3 runner-up seat behind a team you outscore by 84."
+      "nickname": "OUTSCORED THE CHAMP",
+      "blurb": "League-high 2,857 points and a top 765.3 starter-dynasty, and it still only rented an 11-3 second place behind a team you beat by 84."
     },
     "chochstedler": {
       "nickname": "THE WAR CHEST",
-      "blurb": "Deepest roster alive at 1,631 dynasty and 2,835 points, all of it spent on a 10-4 three-seed that peaked one rung short."
+      "blurb": "Fattest roster alive at 1,640 dynasty and 2,835 points, all of it cashed in for a 10-4 three-seed that stalled one rung short."
     },
     "Nmhochstedler": {
       "nickname": "LOADED AND LURKING",
-      "blurb": "36 players and 1,612 dynasty at 9-5 with 2,758 points — the 4-seed built to wreck a bracket and reload the same week."
+      "blurb": "36 players and 1,618 dynasty at 9-5 with 2,758 points and a 737 starter-dynasty — the 4-seed built to blow up a bracket and reload by Tuesday."
     },
     "aigo100": {
       "nickname": "DEAD EVEN",
-      "blurb": "8-6 with 2,558 for and 2,575 against — the only owner sitting at basically zero differential, and the middling record is the proof."
+      "blurb": "8-6 with 2,558 for and 2,575 against — the only owner sitting at basically zero differential, and the .571 says exactly that."
     },
     "thedukestill": {
       "nickname": "BLED DRY",
-      "blurb": "7-7 while surrendering a league-worst 2,765 on a 597.1 starter-dynasty that outguns only the four dead teams below you."
+      "blurb": "7-7 while bleeding a league-worst 2,765 against on a 602.5 starter-dynasty that only outguns the four corpses beneath you."
     },
     "SpeedwayJesus": {
       "nickname": "PULSE DETECTED",
-      "blurb": "5-9 on 2,423 points with a 1,273 roster — still topping the three teams beneath you, so the rebuild isn't in the ground yet."
+      "blurb": "5-9 on 2,423 points and 1,281 dynasty — still clearing the three teams under you, so the rebuild has a heartbeat."
     },
     "mmmatlock": {
       "nickname": "EMPTY TANK",
-      "blurb": "4-10 and dead last in scoring at 2,230 — the only team that never once cracked 2,300 all season."
+      "blurb": "4-10 and dead last in scoring at 2,230, the only team that never once touched 2,300 all season."
     },
     "Swerve33": {
       "nickname": "ROCK BOTTOM",
-      "blurb": "2-12 with the thinnest war chest alive (1,083 dynasty) even after scoring 2,291 — you found the subfloor of the cellar."
+      "blurb": "2-12 with the thinnest war chest alive at 1,089 dynasty despite 2,291 points — you dug below your own cellar."
     },
     "Forshey11": {
       "nickname": "CO-CELLAR",
-      "blurb": "2-12 on a league-low 2,696 projected and 2,233 actual — tied Swerve for last with barely more to sell off."
+      "blurb": "2-12 on a league-low 2,696 projected and 2,233 actual — tied Swerve for last with a 477.4 starter-dynasty barely worth selling."
     }
   },
   "_comment": "AI personality copy for the Huddlepuffers redesign, auto-generated weekly by scripts/generate_labels.py from that week's numbers. Hand-edit freely; the next run will overwrite."
