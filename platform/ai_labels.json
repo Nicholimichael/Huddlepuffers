@@ -1,86 +1,86 @@
 {
   "generated_for_snapshot": "2026-06-28",
-  "state_of_league": "It's Week 18 and the records are wiped to 0-0 — pure offseason, where the only scoreboard is roster value. Nmhochstedler now owns the fattest war chest in the league at 1,822.9 dynasty and a league-best 1,621.1 winnow, dethroning chochstedler (1,682.7) for the paper crown. Swerve33 is the offseason's poorest at 1,203.4 dynasty on the thinnest roster (35), while colsheske's 851.7 starter-dynasty is the best top-end unit anyone's rolling into the new season.",
+  "state_of_league": "Still deep in preseason with everyone at 0-0, so dynasty value is the only scoreboard that matters. Nmhochstedler keeps the paper crown at 1,824.6 dynasty and a league-best 1,621.6 winnow, with chochstedler (1,687.1) and colsheske (1,642.6) right on the tail. Swerve33 remains the offseason's poorest at 1,206.6, while colsheske's 852.9 starter-dynasty is still the scariest top-end unit anyone owns.",
   "teams": {
     "colsheske": {
-      "nickname_friendly": "STARTER SUPREME",
-      "blurb_friendly": "League-best 851.7 starter-dynasty and a hefty 1,637.9 total — your ones are the scariest lineup in the offseason.",
+      "nickname_friendly": "STARTER KINGS",
+      "blurb_friendly": "League-best 852.9 starter-dynasty and a stout 1,642.6 total — your ones would ruin anyone's Sunday.",
       "nickname_spicy": "TOP-HEAVY",
-      "blurb_spicy": "851.7 in starters is elite, but 1,637.9 total means the drop-off past your ones is steeper than you want to admit.",
+      "blurb_spicy": "852.9 starters is elite, but 1,642.6 total across 37 bodies means the cliff behind your ones is a nasty one.",
       "nickname": "TOP-HEAVY",
-      "blurb": "851.7 in starters is elite, but 1,637.9 total means the drop-off past your ones is steeper than you want to admit."
+      "blurb": "852.9 starters is elite, but 1,642.6 total across 37 bodies means the cliff behind your ones is a nasty one."
     },
     "mmmatlock": {
       "nickname_friendly": "QUIET BUILDER",
-      "blurb_friendly": "1,351.8 dynasty with 37 bodies to develop — the depth is there, now it just needs to sprout.",
+      "blurb_friendly": "1,356.0 dynasty with 37 bodies to develop — the raw material is there, just waiting to click.",
       "nickname_spicy": "BARGAIN BIN",
-      "blurb_spicy": "1,351.8 total and a league-worst 564.1 starter-dynasty — 37 players and still can't field a starting lineup anyone fears.",
+      "blurb_spicy": "1,356.0 total and a league-worst 565.9 starter-dynasty — 37 players and still nobody's afraid of your lineup.",
       "nickname": "BARGAIN BIN",
-      "blurb": "1,351.8 total and a league-worst 564.1 starter-dynasty — 37 players and still can't field a starting lineup anyone fears."
+      "blurb": "1,356.0 total and a league-worst 565.9 starter-dynasty — 37 players and still nobody's afraid of your lineup."
     },
     "thedukestill": {
       "nickname_friendly": "SOLID CORE",
-      "blurb_friendly": "756.0 starter-dynasty on a lean 36-man roster — a legit top-end unit that just needs bench reinforcements.",
+      "blurb_friendly": "757.3 starter-dynasty on a lean 36-man roster — a legit top-end unit that just needs bench help.",
       "nickname_spicy": "TOP-ONLY",
-      "blurb_spicy": "1,494.2 total with 756 in starters means barely 738 sitting behind them — one injury and this whole thing wobbles.",
+      "blurb_spicy": "1,501.0 total with 757.3 in starters leaves barely 744 on the bench — one injury and this house of cards folds.",
       "nickname": "TOP-ONLY",
-      "blurb": "1,494.2 total with 756 in starters means barely 738 sitting behind them — one injury and this whole thing wobbles."
+      "blurb": "1,501.0 total with 757.3 in starters leaves barely 744 on the bench — one injury and this house of cards folds."
     },
     "chochstedler": {
       "nickname_friendly": "STILL STACKED",
-      "blurb_friendly": "1,682.7 dynasty and 792.7 in starters — the number-two war chest that's built to contend on day one.",
-      "nickname_spicy": "DETHRONED",
-      "blurb_spicy": "1,682.7 total used to be the league crown, but Nmhochstedler's 1,822.9 just took your war-chest belt clean off.",
-      "nickname": "DETHRONED",
-      "blurb": "1,682.7 total used to be the league crown, but Nmhochstedler's 1,822.9 just took your war-chest belt clean off."
+      "blurb_friendly": "1,687.1 dynasty and 793.6 in starters — the number-two war chest, built to contend from snap one.",
+      "nickname_spicy": "RUNNER-UP",
+      "blurb_spicy": "1,687.1 total is second-richest and still 137 points shy of Nmhochstedler's crown — always the bridesmaid on paper.",
+      "nickname": "RUNNER-UP",
+      "blurb": "1,687.1 total is second-richest and still 137 points shy of Nmhochstedler's crown — always the bridesmaid on paper."
     },
     "Nmhochstedler": {
       "nickname_friendly": "CHEST CHAMPION",
-      "blurb_friendly": "League-best 1,822.9 dynasty and 1,621.1 winnow — the richest roster in the Huddlepuffers, finally on top of the paper standings.",
+      "blurb_friendly": "League-best 1,824.6 dynasty and 1,621.6 winnow — the richest roster in the Huddlepuffers, no contest.",
       "nickname_spicy": "PAPER CHAMP",
-      "blurb_spicy": "1,822.9 total and 1,621.1 winnow lead the league, yet only 724.2 in starters — richest roster alive, still fifth-best lineup when it's time to play.",
+      "blurb_spicy": "1,824.6 total and 1,621.6 winnow lead everyone, yet just 724.8 in starters — richest wallet alive, still only fifth-best lineup on gameday.",
       "nickname": "PAPER CHAMP",
-      "blurb": "1,822.9 total and 1,621.1 winnow lead the league, yet only 724.2 in starters — richest roster alive, still fifth-best lineup when it's time to play."
+      "blurb": "1,824.6 total and 1,621.6 winnow lead everyone, yet just 724.8 in starters — richest wallet alive, still only fifth-best lineup on gameday."
     },
     "Swerve33": {
       "nickname_friendly": "LEAN AND YOUNG",
-      "blurb_friendly": "Smallest roster (35) at 1,203.4, but 595.7 in starters means the young core is already competitive.",
+      "blurb_friendly": "Smallest roster (35) at 1,206.6, but 597.3 in starters means the young core is already scrappy.",
       "nickname_spicy": "BASEMENT DWELLER",
-      "blurb_spicy": "1,203.4 dynasty is dead last by 148 points on the league's thinnest roster — the offseason cellar has your name on it again.",
+      "blurb_spicy": "1,206.6 dynasty is dead last on the league's thinnest roster — the offseason cellar still has your nameplate on the door.",
       "nickname": "BASEMENT DWELLER",
-      "blurb": "1,203.4 dynasty is dead last by 148 points on the league's thinnest roster — the offseason cellar has your name on it again."
+      "blurb": "1,206.6 dynasty is dead last on the league's thinnest roster — the offseason cellar still has your nameplate on the door."
     },
     "SpeedwayJesus": {
       "nickname_friendly": "DEEP STASH",
-      "blurb_friendly": "Biggest roster in the league (38) at 1,461.6 — a hoard of prospects with room for a couple to hit.",
+      "blurb_friendly": "Biggest roster in the league (38) at 1,468.0 — a hoard of prospects and only takes a couple hitting.",
       "nickname_spicy": "QUANTITY GUY",
-      "blurb_spicy": "38 players and only 646.8 in starters — you own the most bodies and one of the weakest lineups, which is a choice.",
+      "blurb_spicy": "38 players and only 647.4 in starters — most bodies in the league, one of the flimsiest lineups, still a puzzling combo.",
       "nickname": "QUANTITY GUY",
-      "blurb": "38 players and only 646.8 in starters — you own the most bodies and one of the weakest lineups, which is a choice."
+      "blurb": "38 players and only 647.4 in starters — most bodies in the league, one of the flimsiest lineups, still a puzzling combo."
     },
     "Forshey11": {
       "nickname_friendly": "ON THE RISE",
-      "blurb_friendly": "1,396.6 dynasty on 35 players — a tidy little roster that's climbed off the floor since last season.",
+      "blurb_friendly": "1,401.2 dynasty on 35 players — a tidy roster that keeps inching up the value board.",
       "nickname_spicy": "MIDDLING",
-      "blurb_spicy": "1,396.6 total and 603.5 starters — better than Swerve's basement, but still bottom-four in every value column that matters.",
+      "blurb_spicy": "1,401.2 total and 604.2 starters — above Swerve's basement, but still bottom-four in every column that counts.",
       "nickname": "MIDDLING",
-      "blurb": "1,396.6 total and 603.5 starters — better than Swerve's basement, but still bottom-four in every value column that matters."
+      "blurb": "1,401.2 total and 604.2 starters — above Swerve's basement, but still bottom-four in every column that counts."
     },
     "aigo100": {
       "nickname_friendly": "EFFICIENT SQUAD",
-      "blurb_friendly": "727.8 in starters on just 33 players — the smallest active roster is punching well above its size.",
+      "blurb_friendly": "728.1 in starters on just 33 players — the league's smallest roster punching way above its headcount.",
       "nickname_spicy": "SHORT-HANDED",
-      "blurb_spicy": "Fewest players in the league (33) at 1,544.8 total — your starters are fine, but there's nothing behind them if it goes sideways.",
+      "blurb_spicy": "Fewest players in the league (33) at 1,548.0 — your starters play, but there's almost nothing behind them if it goes sideways.",
       "nickname": "SHORT-HANDED",
-      "blurb": "Fewest players in the league (33) at 1,544.8 total — your starters are fine, but there's nothing behind them if it goes sideways."
+      "blurb": "Fewest players in the league (33) at 1,548.0 — your starters play, but there's almost nothing behind them if it goes sideways."
     },
     "isaacimel": {
       "nickname_friendly": "COMPLETE PACKAGE",
-      "blurb_friendly": "1,634.0 dynasty and 770.9 in starters on a 38-man roster — elite up top and stacked all the way down.",
+      "blurb_friendly": "1,637.5 dynasty and 772.2 in starters across 38 bodies — elite up top and loaded all the way down.",
       "nickname_spicy": "NO EXCUSES",
-      "blurb_spicy": "770.9 starters, 1,634.0 total, 38 players — third-richest roster in the league, so any stumble this season is entirely on you.",
+      "blurb_spicy": "772.2 starters, 1,637.5 total, 38 players — top-three roster in the league, so any stumble this year is 100% on you.",
       "nickname": "NO EXCUSES",
-      "blurb": "770.9 starters, 1,634.0 total, 38 players — third-richest roster in the league, so any stumble this season is entirely on you."
+      "blurb": "772.2 starters, 1,637.5 total, 38 players — top-three roster in the league, so any stumble this year is 100% on you."
     }
   },
   "_comment": "AI personality copy for the Huddlepuffers redesign, auto-generated weekly by scripts/generate_labels.py from that week's numbers. Hand-edit freely; the next run will overwrite."
