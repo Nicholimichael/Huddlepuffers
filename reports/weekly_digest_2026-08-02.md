@@ -50,15 +50,15 @@ _Comparing **2026-08-02** to **2026-07-29**._
 
 ## New entries to the rankings
 
+- **Anthony Hill** (LB) — dyn 50.0 — Swerve33
 - **Arvell Reese** (LB) — dyn 50.0 — SpeedwayJesus
 - **Caleb Downs** (DB) — dyn 50.0 — Forshey11
-- **Dillon Thieneman** (DB) — dyn 50.0 — colsheske
 - **Sonny Styles** (LB) — dyn 50.0 — colsheske
 - **David Bailey** (LB) — dyn 50.0 — Forshey11
-- **Rueben Bain** (DL) — dyn 50.0 — Forshey11
-- **Anthony Hill** (LB) — dyn 50.0 — Swerve33
+- **CJ Allen** (LB) — dyn 50.0 — aigo100
+- **Dillon Thieneman** (DB) — dyn 50.0 — colsheske
 - **Caleb Banks** (DT) — dyn 50.0 — aigo100
 
 ---
 
-*Generated automatically by weekly_digest.py at 2026-08-02T13:41:30.*
+*Generated automatically by weekly_digest.py at 2026-08-02T17:45:54.*

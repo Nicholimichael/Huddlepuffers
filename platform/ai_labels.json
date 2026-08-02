@@ -1,87 +1,87 @@
 {
   "generated_for_snapshot": "2026-06-28",
-  "state_of_league": "isaacimel holds the 1-seed at 12-2 while getting outscored by BOTH colsheske (2,857) and chochstedler (2,835) — same luckiest banner in league history, just with more receipts now. colsheske's 11-3 with the league-high scoring AND top starter-dynasty (765.2) is the best team without the top seed, and chochstedler still owns the deepest war chest at 1,632. Down in the swamp, thedukestill is somehow 7-7 while leaking a league-worst 2,765 against, and the Swerve33/Forshey11 pairing limps to a matching 2-12.",
+  "state_of_league": "It's Week 18 and the records are wiped to 0-0 — pure offseason, where the only scoreboard is roster value. Nmhochstedler now owns the fattest war chest in the league at 1,822.9 dynasty and a league-best 1,621.1 winnow, dethroning chochstedler (1,682.7) for the paper crown. Swerve33 is the offseason's poorest at 1,203.4 dynasty on the thinnest roster (35), while colsheske's 851.7 starter-dynasty is the best top-end unit anyone's rolling into the new season.",
   "teams": {
     "colsheske": {
-      "nickname_friendly": "SCOREBOARD KING",
-      "blurb_friendly": "League-high 2,857 points and the starter-dynasty crown — an 11-3 powerhouse who just missed the top seed.",
-      "nickname_spicy": "ROBBED FRONTRUNNER",
-      "blurb_spicy": "League-high 2,857 points and a 765 starter-dynasty crown, yet 11-3 and one seed short — the scoreboard loves you, the standings don't.",
-      "nickname": "ROBBED FRONTRUNNER",
-      "blurb": "League-high 2,857 points and a 765 starter-dynasty crown, yet 11-3 and one seed short — the scoreboard loves you, the standings don't."
+      "nickname_friendly": "STARTER SUPREME",
+      "blurb_friendly": "League-best 851.7 starter-dynasty and a hefty 1,637.9 total — your ones are the scariest lineup in the offseason.",
+      "nickname_spicy": "TOP-HEAVY",
+      "blurb_spicy": "851.7 in starters is elite, but 1,637.9 total means the drop-off past your ones is steeper than you want to admit.",
+      "nickname": "TOP-HEAVY",
+      "blurb": "851.7 in starters is elite, but 1,637.9 total means the drop-off past your ones is steeper than you want to admit."
     },
     "mmmatlock": {
-      "nickname_friendly": "BOUNCE-BACK BOUND",
-      "blurb_friendly": "4-10 and looking for points, but every rebuild starts somewhere — brighter days are ahead.",
-      "nickname_spicy": "EMPTY TANK",
-      "blurb_spicy": "4-10 and dead last in scoring at 2,229 — nobody else in the league failed to crack 2,300.",
-      "nickname": "EMPTY TANK",
-      "blurb": "4-10 and dead last in scoring at 2,229 — nobody else in the league failed to crack 2,300."
+      "nickname_friendly": "QUIET BUILDER",
+      "blurb_friendly": "1,351.8 dynasty with 37 bodies to develop — the depth is there, now it just needs to sprout.",
+      "nickname_spicy": "BARGAIN BIN",
+      "blurb_spicy": "1,351.8 total and a league-worst 564.1 starter-dynasty — 37 players and still can't field a starting lineup anyone fears.",
+      "nickname": "BARGAIN BIN",
+      "blurb": "1,351.8 total and a league-worst 564.1 starter-dynasty — 37 players and still can't field a starting lineup anyone fears."
     },
     "thedukestill": {
-      "nickname_friendly": "SURVIVOR",
-      "blurb_friendly": "7-7 and hanging tough despite a league-high points-against — grit is keeping this season afloat.",
-      "nickname_spicy": "BLED OUT",
-      "blurb_spicy": "7-7 surviving despite a league-worst 2,765 points against — your defense is quietly the single saddest stat here.",
-      "nickname": "BLED OUT",
-      "blurb": "7-7 surviving despite a league-worst 2,765 points against — your defense is quietly the single saddest stat here."
+      "nickname_friendly": "SOLID CORE",
+      "blurb_friendly": "756.0 starter-dynasty on a lean 36-man roster — a legit top-end unit that just needs bench reinforcements.",
+      "nickname_spicy": "TOP-ONLY",
+      "blurb_spicy": "1,494.2 total with 756 in starters means barely 738 sitting behind them — one injury and this whole thing wobbles.",
+      "nickname": "TOP-ONLY",
+      "blurb": "1,494.2 total with 756 in starters means barely 738 sitting behind them — one injury and this whole thing wobbles."
     },
     "chochstedler": {
-      "nickname_friendly": "THE WAR CHEST",
-      "blurb_friendly": "Deepest roster in the league at 1,632 and 2,835 points — this 10-4 squad is built to climb.",
-      "nickname_spicy": "THE WAR CHEST",
-      "blurb_spicy": "Deepest roster in the league (1,632 dynasty) and 2,835 points at 10-4 — built to bury everyone above you, just not yet.",
-      "nickname": "THE WAR CHEST",
-      "blurb": "Deepest roster in the league (1,632 dynasty) and 2,835 points at 10-4 — built to bury everyone above you, just not yet."
+      "nickname_friendly": "STILL STACKED",
+      "blurb_friendly": "1,682.7 dynasty and 792.7 in starters — the number-two war chest that's built to contend on day one.",
+      "nickname_spicy": "DETHRONED",
+      "blurb_spicy": "1,682.7 total used to be the league crown, but Nmhochstedler's 1,822.9 just took your war-chest belt clean off.",
+      "nickname": "DETHRONED",
+      "blurb": "1,682.7 total used to be the league crown, but Nmhochstedler's 1,822.9 just took your war-chest belt clean off."
     },
     "Nmhochstedler": {
-      "nickname_friendly": "LOADED AND LURKING",
-      "blurb_friendly": "Second-richest roster at 1,614 and 2,757 points — this 9-5 contender is one hot streak from dangerous.",
-      "nickname_spicy": "LOADED AND LURKING",
-      "blurb_spicy": "Second-richest war chest (1,614) and 2,757 points still trapped at 9-5 — the most dangerous team nobody's seeded right.",
-      "nickname": "LOADED AND LURKING",
-      "blurb": "Second-richest war chest (1,614) and 2,757 points still trapped at 9-5 — the most dangerous team nobody's seeded right."
+      "nickname_friendly": "CHEST CHAMPION",
+      "blurb_friendly": "League-best 1,822.9 dynasty and 1,621.1 winnow — the richest roster in the Huddlepuffers, finally on top of the paper standings.",
+      "nickname_spicy": "PAPER CHAMP",
+      "blurb_spicy": "1,822.9 total and 1,621.1 winnow lead the league, yet only 724.2 in starters — richest roster alive, still fifth-best lineup when it's time to play.",
+      "nickname": "PAPER CHAMP",
+      "blurb": "1,822.9 total and 1,621.1 winnow lead the league, yet only 724.2 in starters — richest roster alive, still fifth-best lineup when it's time to play."
     },
     "Swerve33": {
-      "nickname_friendly": "FRESH START",
-      "blurb_friendly": "2-12 with the youngest roster — out-scored a rival and has nothing but upside from here.",
-      "nickname_spicy": "ROCK BOTTOM",
-      "blurb_spicy": "2-12 with the league's thinnest roster at 1,082 dynasty — you out-scored Forshey by 58 and still tied him for last.",
-      "nickname": "ROCK BOTTOM",
-      "blurb": "2-12 with the league's thinnest roster at 1,082 dynasty — you out-scored Forshey by 58 and still tied him for last."
+      "nickname_friendly": "LEAN AND YOUNG",
+      "blurb_friendly": "Smallest roster (35) at 1,203.4, but 595.7 in starters means the young core is already competitive.",
+      "nickname_spicy": "BASEMENT DWELLER",
+      "blurb_spicy": "1,203.4 dynasty is dead last by 148 points on the league's thinnest roster — the offseason cellar has your name on it again.",
+      "nickname": "BASEMENT DWELLER",
+      "blurb": "1,203.4 dynasty is dead last by 148 points on the league's thinnest roster — the offseason cellar has your name on it again."
     },
     "SpeedwayJesus": {
-      "nickname_friendly": "YOUTH MOVEMENT",
-      "blurb_friendly": "5-9 but still out-scoring four teams at 2,423 — the rebuild has real signs of life.",
-      "nickname_spicy": "REBUILD MODE",
-      "blurb_spicy": "5-9 on 2,423 points and a 1,270 roster — still scoring more than four teams, so the youth movement has a pulse.",
-      "nickname": "REBUILD MODE",
-      "blurb": "5-9 on 2,423 points and a 1,270 roster — still scoring more than four teams, so the youth movement has a pulse."
+      "nickname_friendly": "DEEP STASH",
+      "blurb_friendly": "Biggest roster in the league (38) at 1,461.6 — a hoard of prospects with room for a couple to hit.",
+      "nickname_spicy": "QUANTITY GUY",
+      "blurb_spicy": "38 players and only 646.8 in starters — you own the most bodies and one of the weakest lineups, which is a choice.",
+      "nickname": "QUANTITY GUY",
+      "blurb": "38 players and only 646.8 in starters — you own the most bodies and one of the weakest lineups, which is a choice."
     },
     "Forshey11": {
-      "nickname_friendly": "THE REBUILD",
-      "blurb_friendly": "2-12 this year, but the war chest holds promise — plenty of room to build something new.",
-      "nickname_spicy": "THE TEARDOWN",
-      "blurb_spicy": "2-12 with a league-worst 2,696 projection and 2,232 actual — the only consolation is your war chest (1,148) beats Swerve's.",
-      "nickname": "THE TEARDOWN",
-      "blurb": "2-12 with a league-worst 2,696 projection and 2,232 actual — the only consolation is your war chest (1,148) beats Swerve's."
+      "nickname_friendly": "ON THE RISE",
+      "blurb_friendly": "1,396.6 dynasty on 35 players — a tidy little roster that's climbed off the floor since last season.",
+      "nickname_spicy": "MIDDLING",
+      "blurb_spicy": "1,396.6 total and 603.5 starters — better than Swerve's basement, but still bottom-four in every value column that matters.",
+      "nickname": "MIDDLING",
+      "blurb": "1,396.6 total and 603.5 starters — better than Swerve's basement, but still bottom-four in every value column that matters."
     },
     "aigo100": {
-      "nickname_friendly": "RIGHT IN IT",
-      "blurb_friendly": "8-6 with points for and against nearly even — a true middle-of-the-pack team that could swing either way.",
-      "nickname_spicy": "TRUE FRAUD",
-      "blurb_spicy": "8-6 with 2,558 for and 2,575 against — the only team in the league that actually earned its sub-.500 vibe while winning.",
-      "nickname": "TRUE FRAUD",
-      "blurb": "8-6 with 2,558 for and 2,575 against — the only team in the league that actually earned its sub-.500 vibe while winning."
+      "nickname_friendly": "EFFICIENT SQUAD",
+      "blurb_friendly": "727.8 in starters on just 33 players — the smallest active roster is punching well above its size.",
+      "nickname_spicy": "SHORT-HANDED",
+      "blurb_spicy": "Fewest players in the league (33) at 1,544.8 total — your starters are fine, but there's nothing behind them if it goes sideways.",
+      "nickname": "SHORT-HANDED",
+      "blurb": "Fewest players in the league (33) at 1,544.8 total — your starters are fine, but there's nothing behind them if it goes sideways."
     },
     "isaacimel": {
-      "nickname_friendly": "TOP SEED",
-      "blurb_friendly": "12-2 and holding the top seed with strong scoring and tidy defense — sitting pretty atop the standings.",
-      "nickname_spicy": "WINS MERCHANT",
-      "blurb_spicy": "12-2 on the league's THIRD-most points (2,773) and fourth-fewest against (2,443) — you out-lucked two better teams to keep the top seed.",
-      "nickname": "WINS MERCHANT",
-      "blurb": "12-2 on the league's THIRD-most points (2,773) and fourth-fewest against (2,443) — you out-lucked two better teams to keep the top seed."
+      "nickname_friendly": "COMPLETE PACKAGE",
+      "blurb_friendly": "1,634.0 dynasty and 770.9 in starters on a 38-man roster — elite up top and stacked all the way down.",
+      "nickname_spicy": "NO EXCUSES",
+      "blurb_spicy": "770.9 starters, 1,634.0 total, 38 players — third-richest roster in the league, so any stumble this season is entirely on you.",
+      "nickname": "NO EXCUSES",
+      "blurb": "770.9 starters, 1,634.0 total, 38 players — third-richest roster in the league, so any stumble this season is entirely on you."
     }
   },
-  "_comment": "AI personality copy for the Huddlepuffers redesign. Two tone sets per team (friendly/spicy) drive the dashboard toggle; legacy nickname/blurb mirrors the spicy set for backward compat. Auto-regenerated weekly by scripts/generate_labels.py when ANTHROPIC_API_KEY is set; hand-edit freely, next run overwrites."
+  "_comment": "AI personality copy for the Huddlepuffers redesign, auto-generated weekly by scripts/generate_labels.py from that week's numbers. Hand-edit freely; the next run will overwrite."
 }
