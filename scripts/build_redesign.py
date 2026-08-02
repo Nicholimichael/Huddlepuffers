@@ -66,6 +66,49 @@ def main():
     if labels.get("state_of_league"):
         data["meta"]["state_of_league"] = labels["state_of_league"]
 
+    # --- payload diet (v3/A1): the page ships as ONE self-contained file, so every
+    # byte here is page weight on a phone. Three trims, applied only to the embedded
+    # copy (rankings_data.json on disk stays full-fat for digests/snapshots):
+    #   1. history.by_player: keep only rostered players + picks (FA history is
+    #      dead weight — was ~615 players / 1MB), and only the last HISTORY_KEEP
+    #      snapshots per player.
+    #   2. history values quantized to ints (sparklines don't need decimals).
+    #   3. every float in the object rounded to 1 decimal.
+    size_before = len(json.dumps(data, separators=(",", ":")))
+    HISTORY_KEEP = 13
+
+    keep_ids = {p.get("player_id") for p in data.get("players", [])
+                if p.get("owner_id")} | {p.get("player_id") for p in data.get("picks", [])}
+    hist = (data.get("extras") or {}).get("history") or {}
+    byp = hist.get("by_player") or {}
+    pruned = {}
+    for pid, rows in byp.items():
+        if pid not in keep_ids:
+            continue
+        slim = []
+        for r in rows[-HISTORY_KEEP:]:
+            slim.append({k: (round(v) if isinstance(v, float) else v)
+                         for k, v in r.items() if v is not None or k == "date"})
+        pruned[pid] = slim
+    if byp:
+        hist["by_player"] = pruned
+        dates = hist.get("snapshot_dates") or []
+        hist["snapshot_dates"] = dates[-HISTORY_KEEP:]
+
+    def _round_floats(o):
+        if isinstance(o, float):
+            return round(o, 1)
+        if isinstance(o, list):
+            return [_round_floats(x) for x in o]
+        if isinstance(o, dict):
+            return {k: _round_floats(v) for k, v in o.items()}
+        return o
+
+    data = _round_floats(data)
+    size_after = len(json.dumps(data, separators=(",", ":")))
+    print(f"[build_redesign] payload diet: {size_before/1024:.0f} KB -> {size_after/1024:.0f} KB "
+          f"(history {len(byp)} -> {len(pruned)} players, last {HISTORY_KEEP} snapshots)")
+
     # --- timestamp: bump so movement arrows + label caches refresh (HANDOFF S3/S4) ---
     if not args.keep_generated_at:
         data["meta"]["generated_at"] = datetime.datetime.now(

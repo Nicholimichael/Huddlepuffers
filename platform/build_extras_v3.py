@@ -27,12 +27,38 @@ PROJECT = config.PROJECT_ROOT
 DB = config.DB_PATH
 RANKINGS_JSON = HERE / "rankings_data.json"
 
-# Where to take snap data from. Use the most recent season we have.
-TARGET_SNAP_SEASON = config.SNAP_DATA_SEASON
+# Where to take snap data from. config.SNAP_DATA_SEASON is the *ceiling*; during
+# the offseason the current season has no snaps yet, so cap at what the DB
+# actually holds (otherwise every snap query hits an empty season and the whole
+# view silently renders blank — happened at the 2026 rollover).
 RECENT_GAMES = 8
 
+
+def _max_db_season(table, ceiling):
+    """Most recent season present in `table`, capped at `ceiling`; ceiling if unknown."""
+    try:
+        import sqlite3 as _sq
+        con = _sq.connect(str(DB))
+        row = con.execute(f'SELECT MAX(season) FROM "{table}" WHERE season <= ?',
+                          (ceiling,)).fetchone()
+        con.close()
+        if row and row[0] is not None:
+            return int(row[0])
+    except Exception:
+        pass
+    return ceiling
+
+
+TARGET_SNAP_SEASON = _max_db_season("nfl_snap_counts", config.SNAP_DATA_SEASON)
+if TARGET_SNAP_SEASON != config.SNAP_DATA_SEASON:
+    print(f"[extras_v3] snap season capped to {TARGET_SNAP_SEASON} "
+          f"(config ceiling {config.SNAP_DATA_SEASON} has no data yet)")
+
 # Where to take team-context aggregates from (need full weekly_stats coverage).
-TARGET_TEAM_SEASON = config.LAST_COMPLETE_SEASON
+TARGET_TEAM_SEASON = _max_db_season("nfl_weekly_stats", config.LAST_COMPLETE_SEASON)
+if TARGET_TEAM_SEASON != config.LAST_COMPLETE_SEASON:
+    print(f"::warning::[extras_v3] team context anchored to {TARGET_TEAM_SEASON} — "
+          f"weekly stats for {config.LAST_COMPLETE_SEASON} not in DB")
 
 
 from lib.utils import clean_num

@@ -56,19 +56,104 @@ def fmt_delta(v: float | None, sign: bool = True) -> str:
     return f"{s}{v:.1f}"
 
 
-def transactions_since(conn: sqlite3.Connection, since: dt.date) -> list[dict]:
+def transactions_since(conn: sqlite3.Connection, since: dt.date,
+                       league_id: str | None = None) -> list[dict]:
+    """Transactions in the window, scoped to the CURRENT league (the table holds
+    the whole dynasty chain — unscoped counts silently mix seasons)."""
     cur = conn.cursor()
-    cur.execute(
-        """
-        SELECT type, status, created, settings
-        FROM transactions
-        WHERE created/1000 >= ?
-        ORDER BY created DESC
-        LIMIT 200
-        """,
-        (int(dt.datetime.combine(since, dt.time.min).timestamp()),),
-    )
+    ts = int(dt.datetime.combine(since, dt.time.min).timestamp())
+    try:
+        cur.execute(
+            """
+            SELECT type, status, created FROM transactions
+            WHERE created/1000 >= ? AND _league_id = ?
+            ORDER BY created DESC LIMIT 200
+            """, (ts, league_id or config.CURRENT_LEAGUE_ID))
+    except sqlite3.OperationalError:  # old DB without _league_id
+        cur.execute(
+            """
+            SELECT type, status, created FROM transactions
+            WHERE created/1000 >= ? ORDER BY created DESC LIMIT 200
+            """, (ts,))
     return [dict(zip([d[0] for d in cur.description], r)) for r in cur.fetchall()]
+
+
+def _owner_names(conn: sqlite3.Connection, league_id: str) -> dict[int, str]:
+    """roster_id -> display_name for one league."""
+    try:
+        rows = conn.execute(
+            """
+            SELECT r.roster_id, u.display_name
+            FROM rosters r JOIN users u
+              ON u.user_id = r.owner_id AND u._league_id = r._league_id
+            WHERE r._league_id = ?
+            """, (league_id,)).fetchall()
+        return {int(rid): name for rid, name in rows}
+    except sqlite3.OperationalError:
+        return {}
+
+
+def _player_names(conn: sqlite3.Connection, pids: set[str]) -> dict[str, str]:
+    out = {}
+    for pid in pids:
+        try:
+            row = conn.execute(
+                "SELECT full_name, position FROM players WHERE player_id = ?",
+                (pid,)).fetchone()
+            if row and row[0]:
+                out[pid] = f"{row[0]} ({row[1] or '?'})"
+        except sqlite3.OperationalError:
+            break
+    return out
+
+
+def trade_details(conn: sqlite3.Connection, since: dt.date,
+                  league_id: str) -> list[str]:
+    """Human-readable one-liners for each trade in the window, with player names
+    and picks. The transactions table stores adds/drops as exploded per-player
+    columns (adds_<pid> = receiving roster_id), so read trade rows as full dicts."""
+    ts = int(dt.datetime.combine(since, dt.time.min).timestamp())
+    try:
+        cur = conn.execute(
+            "SELECT * FROM transactions WHERE type='trade' AND status='complete' "
+            "AND created/1000 >= ? AND _league_id = ? ORDER BY created DESC",
+            (ts, league_id))
+    except sqlite3.OperationalError:
+        return []
+    cols = [d[0] for d in cur.description]
+    owners = _owner_names(conn, league_id)
+    lines = []
+    for row in cur.fetchall():
+        t = dict(zip(cols, row))
+        # adds_<pid> columns: value = roster_id that RECEIVES player <pid>
+        received: dict[int, list[str]] = {}
+        pids = set()
+        for k, v in t.items():
+            if k.startswith("adds_") and v is not None and v == v:  # not None/NaN
+                pid = k[5:]
+                pids.add(pid)
+                received.setdefault(int(v), []).append(pid)
+        names = _player_names(conn, pids)
+        # picks: draft_picks JSON — owner_id = receiving roster_id
+        try:
+            picks = json.loads(t.get("draft_picks") or "[]")
+        except (TypeError, ValueError):
+            picks = []
+        for pk in picks:
+            rid = pk.get("owner_id")
+            if rid is not None:
+                received.setdefault(int(rid), []).append(
+                    f"{pk.get('season')} R{pk.get('round')} pick")
+        if not received:
+            continue
+        when = dt.datetime.fromtimestamp((t.get("created") or 0) / 1000).strftime("%m/%d")
+        sides = []
+        for rid, assets in sorted(received.items()):
+            who = owners.get(rid, f"roster {rid}")
+            named = [names.get(a, a) if not a.endswith("pick") else a for a in assets]
+            sides.append(f"**{who}** gets {', '.join(named)}")
+        lines.append(f"- {when} trade: " + " · ".join(sides))
+    return lines
 
 
 def write_digest(prev: dict, curr: dict, me: str) -> Path:
@@ -115,15 +200,17 @@ def write_digest(prev: dict, curr: dict, me: str) -> Path:
             my_movers.append((p, d))
     my_movers.sort(key=lambda x: -x[1])
 
-    # Transactions
-    txns = []
+    # Transactions — scoped to the league this snapshot was built from
+    league_id = curr.get("meta", {}).get("league_id") or config.CURRENT_LEAGUE_ID
+    txns, trade_lines = [], []
     if DB.exists():
         try:
             conn = sqlite3.connect(DB)
-            txns = transactions_since(conn, today - dt.timedelta(days=7))
+            txns = transactions_since(conn, today - dt.timedelta(days=7), league_id)
+            trade_lines = trade_details(conn, today - dt.timedelta(days=7), league_id)
             conn.close()
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"warning: transaction lookup failed ({e}) — digest ships without activity")
 
     # ---- write ----
     lines = []
@@ -146,6 +233,9 @@ def write_digest(prev: dict, curr: dict, me: str) -> Path:
             by_type[t["type"]] = by_type.get(t["type"], 0) + 1
         parts = [f"{c} {k}{'s' if c != 1 else ''}" for k, c in sorted(by_type.items(), key=lambda x: -x[1])]
         lines.append(", ".join(parts) + ".")
+        if trade_lines:
+            lines.append("")
+            lines.extend(trade_lines)
     else:
         lines.append("_No new transactions in the last 7 days._")
     lines.append("")
@@ -235,6 +325,22 @@ def main() -> None:
 
     curr = load_snap(curr_path)
     prev = load_snap(prev_path) if prev_path else None
+
+    # League-rollover guard: never diff snapshots from different leagues (a 2025
+    # snapshot vs a 2026 build produces garbage movers). Walk back to the most
+    # recent snapshot from the SAME league; if none, treat as a fresh baseline.
+    curr_league = curr.get("meta", {}).get("league_id")
+    if prev and prev.get("meta", {}).get("league_id") != curr_league:
+        prev = None
+        for cand in sorted(SNAPSHOTS.glob("rankings_*.json"))[-10:-1][::-1]:
+            snap = load_snap(cand)
+            if snap.get("meta", {}).get("league_id") == curr_league and cand != curr_path:
+                prev = snap
+                break
+        if prev is None:
+            print(f"league rolled over ({curr_league}) — no same-league prior snapshot; "
+                  "baseline reset, no week-over-week compare this run")
+
     me = curr.get("meta", {}).get("my_user_id", ME_DEFAULT)
 
     out_path = write_digest(prev, curr, me)

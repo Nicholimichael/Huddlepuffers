@@ -232,6 +232,16 @@ base["market_sources"] = np.where(
     np.where(base["n_ktc_dyn"].notna(), "KTC", "imputed"))
 )
 
+# v3/B6: surface blend coverage in every run so a dying source is visible.
+_cov = base["market_sources"].value_counts().to_dict()
+print(f"[build_rankings] market coverage: {_cov}")
+_non_idp = base[~base["position"].isin(["LB", "DB", "DT", "DE", "DL", "IDP"])]
+if len(_non_idp):
+    _both = (_non_idp["market_sources"] == "FC+KTC").mean()
+    if _both < 0.70:
+        print(f"::warning::[build_rankings] only {_both:.0%} of non-IDP players have "
+              "both FC+KTC values (expected ~79%) — one market source is degraded")
+
 base["season_ppg"] = base["fantasy_points_ppr"] / base["games"].replace(0, np.nan)
 base["n_season_ppg"] = base.groupby("position")["season_ppg"].transform(norm).fillna(0)
 base["n_recent_ppg"] = base.groupby("position")["recent_ppg"].transform(norm).fillna(0)
@@ -306,6 +316,24 @@ picks_out = picks[["fantasycalc_id", "full_name", "fc_dyn", "fc_red", "fc_dyn_ra
 picks_out = picks_out.rename(columns={"fc_dyn": "trade_dyn_value", "fc_red": "trade_red_value", "fc_dyn_rank": "overall_rank"})
 picks_out["position"] = "PICK"
 picks_out["player_id"] = "PICK_" + picks_out["fantasycalc_id"].astype(str)
+
+# Drop pick entities from drafts that have already happened (e.g. "2026 Pick 1.01"
+# after the May 2026 rookie draft). FantasyCalc keeps listing them for leagues that
+# haven't drafted yet, but here they're consumed assets. Boundary comes from config
+# (NEXT_DRAFT_SEASON) so the next rollover can't leave stale picks behind. Fail-soft:
+# if the filter would empty the list (FC hasn't listed next-season picks yet), keep
+# the unfiltered set rather than shipping an empty Picks view.
+pick_year = pd.to_numeric(picks_out["full_name"].str.extract(r"^(\d{4})")[0], errors="coerce")
+future_mask = pick_year >= config.NEXT_DRAFT_SEASON
+if future_mask.any():
+    dropped = int((~future_mask).sum())
+    picks_out = picks_out[future_mask]
+    print(f"[build_rankings] picks: kept {len(picks_out)} (season >= {config.NEXT_DRAFT_SEASON}), "
+          f"dropped {dropped} already-drafted pick entities")
+else:
+    print(f"::warning::[build_rankings] no pick entities >= {config.NEXT_DRAFT_SEASON} found — "
+          f"keeping all {len(picks_out)} unfiltered")
+
 # Sort by dynasty value desc
 picks_out = picks_out.sort_values("trade_dyn_value", ascending=False)
 picks_out = picks_out.where(pd.notnull(picks_out), None)

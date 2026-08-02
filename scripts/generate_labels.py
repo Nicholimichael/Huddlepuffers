@@ -72,6 +72,10 @@ Rules:
 - Blurbs are a single sentence each.
 - Use the previous week's copy only for continuity of voice; do not just repeat it —
   reflect where teams actually are now.
+- Respect nfl_phase: if season_type is "off" or "pre", this is the OFFSEASON /
+  PRESEASON — records are 0-0, value and rosters are the story. Never reference a
+  stats week (e.g. "Week 18") as if it's current; latest_nfl_week is just the last
+  completed data week.
 """
 
 
@@ -80,6 +84,20 @@ def load_json(path, default=None):
         return default
     with open(path, encoding="utf-8") as f:
         return json.load(f)
+
+
+def nfl_phase():
+    """Real league phase from Sleeper (offseason/preseason/in-season) so the copy
+    never says 'Week 18' in July again (v3/B7b). Fail-soft to None."""
+    try:
+        req = urllib.request.Request("https://api.sleeper.app/v1/state/nfl",
+                                     headers={"User-Agent": "huddlepuffers-labels"})
+        with urllib.request.urlopen(req, timeout=15) as r:
+            st = json.load(r)
+        return {"season_type": st.get("season_type"), "week": st.get("week"),
+                "season": st.get("season")}
+    except Exception:
+        return None
 
 
 def build_context(data, prior_labels):
@@ -96,6 +114,9 @@ def build_context(data, prior_labels):
     return {
         "season": meta.get("season"),
         "latest_nfl_week": meta.get("latest_nfl_week"),
+        # Live NFL phase (offseason / pre / regular / post) — write copy for where
+        # the calendar ACTUALLY is, not for the last stats week in the data.
+        "nfl_phase": nfl_phase(),
         "owner_of_dashboard": meta.get("my_display_name"),
         "standings": standings,
         "previous_copy": prior_labels or {},

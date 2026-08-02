@@ -14,6 +14,9 @@ on:
     # Wednesday 12:00 UTC = 7:00 AM ET in-season (EST) / 8:00 AM ET in summer (EDT).
     # GitHub cron is always UTC and does not observe DST.
     - cron: "0 12 * * 3"
+    # Thursday backup (v3/B10): a second chance if Wednesday failed. The freshness
+    # gate below turns this into a no-op when the live site is already current.
+    - cron: "0 12 * * 4"
   workflow_dispatch:
     inputs:
       force_fail:
@@ -33,8 +36,33 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # v3/B10: the Thursday cron exists solely as a retry for a failed Wednesday.
+  # This gate turns it into a no-op when the live site is already fresh (<5 days).
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      skip: ${{ steps.fresh.outputs.skip }}
+    steps:
+      - name: Freshness check (Thursday backup runs only)
+        id: fresh
+        run: |
+          SKIP=false
+          if [ "$(date -u +%u)" = "4" ] && [ "${{ github.event_name }}" = "schedule" ]; then
+            GEN=$(curl -sL --max-time 30 https://huddlepuffers.hossautomation.com/ \
+              | grep -o '"generated_at":"[^"]*"' | head -1 | cut -d'"' -f4) || true
+            if [ -n "$GEN" ]; then
+              AGE_DAYS=$(( ( $(date -u +%s) - $(date -u -d "${GEN%%.*}" +%s 2>/dev/null || echo 0) ) / 86400 ))
+              echo "live generated_at=$GEN (${AGE_DAYS}d old)"
+              [ "$AGE_DAYS" -lt 5 ] && SKIP=true
+            fi
+          fi
+          echo "skip=$SKIP" >> "$GITHUB_OUTPUT"
+          [ "$SKIP" = "true" ] && echo "Live site is fresh — Thursday backup is a no-op." || true
+
   refresh:
     runs-on: ubuntu-latest
+    needs: gate
+    if: needs.gate.outputs.skip != 'true'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -77,9 +105,9 @@ jobs:
           python3 fetch_news.py         || echo "::warning::ESPN news fetch failed — news section may be stale"
 
       - name: Guard against a silent season rollover
-        # If Sleeper has rolled the dynasty to a season newer than config.CURRENT_SEASON,
-        # fail LOUDLY (→ failure-alert SMS) instead of deploying last year's standings
-        # forever. fetch_sleeper already stored the new league in the step above.
+        # Queries the Sleeper API for a successor league chained to ours; fails
+        # LOUDLY (→ failure-alert issue) instead of deploying last year's rosters
+        # forever. (v3: API-forward — the old DB-based version could never fire.)
         run: python3 scripts/check_season.py
 
       - name: Build league data (rankings_data.json)
@@ -93,6 +121,19 @@ jobs:
           python3 build_extras_v3.py
           python3 "$GITHUB_WORKSPACE/scripts/apply_lineup_override.py"
           python3 build_artifact_v2.py
+
+      - name: Validate built data (v3/B3 schema gate)
+        # Malformed rankings_data.json or tone-less ai_labels.json fails HERE,
+        # before anything is rendered or deployed.
+        run: python3 scripts/validate_data.py
+
+      - name: Verify rosters against live Sleeper (v3/B1 ground truth)
+        # The check that would have caught the 2026 season freeze: every rostered
+        # player in the built data must match the roster Sleeper says they're on.
+        run: python3 scripts/verify_rosters.py
+
+      - name: Digest regression fixtures (v3/B5)
+        run: python3 scripts/test_digest_fixtures.py
 
       - name: Write weekly AI copy
         # NO-OP unless ANTHROPIC_API_KEY is set: leaves platform/ai_labels.json as-is
@@ -113,8 +154,17 @@ jobs:
           rm -rf _site && mkdir -p _site
           cp platform/index.html _site/index.html
           cp -R platform/assets _site/assets
-          test -f _site/index.html && test -d _site/assets \
+          cp platform/manifest.json _site/manifest.json
+          test -f _site/index.html && test -d _site/assets && test -f _site/manifest.json \
             || { echo "::error::deploy staging incomplete — refusing to publish"; exit 1; }
+
+      - name: Upload deploy artifact (v3/B10 rollback safety)
+        # Keeps every published _site for 90 days — instant rollback material.
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-${{ github.run_id }}
+          path: _site/
+          retention-days: 90
 
       - name: Deploy to Netlify
         env:
@@ -127,6 +177,11 @@ jobs:
             --dir=_site \
             --site="$NETLIFY_SITE_ID" \
             --message="Auto-refresh (GitHub Actions run ${GITHUB_RUN_ID})"
+
+      - name: Smoke-test the LIVE site (v3/B2)
+        # Deploy already happened; a failure here trips the alert issue so a bad
+        # publish (wrong league, stale CDN, broken toggle) is loud, not silent.
+        run: python3 scripts/smoke_test.py
 
       - name: Snapshot + weekly digest
         working-directory: scripts

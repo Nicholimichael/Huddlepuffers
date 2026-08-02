@@ -207,6 +207,15 @@ def main() -> None:
         "redraft_tier":          "ktc_red_tier",
     })
 
+    # v3/B6 guard: KTC's free page covers ~500+ offense players (no IDP). A tiny
+    # pull means their markup changed — keep the previous good table instead of
+    # replacing it with a stub and silently degrading the 50/50 blend.
+    MIN_ROWS = 400
+    if len(pivot) < MIN_ROWS:
+        print(f"::warning::[fetch_keeptradecut] only {len(pivot)} rows (expected ~700+, "
+              f"floor {MIN_ROWS}) — keeping the previous ktc_values table")
+        sys.exit(1)
+
     pivot.to_csv(CSV / "keeptradecut_values.csv", index=False)
 
     conn = sqlite3.connect(DB_PATH)
