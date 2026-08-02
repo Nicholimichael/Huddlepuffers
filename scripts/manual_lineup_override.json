@@ -1,5 +1,6 @@
 {
-  "_doc": "Manual lineup override applied after rankings_data.json is built but before the HTML artifact is rendered. Use during offseason because Sleeper API returns last-played-week starters, not the user's current planned lineup. Edit this file when you reorder your Sleeper lineup, then run bash scripts/refresh_platform.sh.",
+  "_doc": "Manual lineup override applied after rankings_data.json is built but before the HTML artifact is rendered. Use during offseason because Sleeper API returns last-played-week starters, not the user's current planned lineup. ONLY applied when league_id below matches the league the data was built from — a stale override from last season is skipped automatically. To use: set league_id to the current league, update the lineup, bump as_of.",
+  "league_id": "1182393556535246848",
   "owner_id": "472596585608376320",
   "owner_name": "Nmhochstedler",
   "as_of": "2026-05-02",

@@ -46,13 +46,22 @@ def main():
             labels = json.load(f)
     team_labels = labels.get("teams", {})
     applied = 0
+    # Per-tone fields drive the Friendly/Spicy toggle on the static site; the
+    # legacy single set (nickname/blurb) is kept as a fallback for old label files.
+    LABEL_FIELDS = (
+        ("nickname",          "power_nickname"),
+        ("blurb",             "power_blurb"),
+        ("nickname_friendly", "power_nickname_friendly"),
+        ("blurb_friendly",    "power_blurb_friendly"),
+        ("nickname_spicy",    "power_nickname_spicy"),
+        ("blurb_spicy",       "power_blurb_spicy"),
+    )
     for t in data["teams"]:
         L = team_labels.get(t.get("owner_name"))
         if L:
-            if L.get("nickname"):
-                t["power_nickname"] = L["nickname"]
-            if L.get("blurb"):
-                t["power_blurb"] = L["blurb"]
+            for src, dst in LABEL_FIELDS:
+                if L.get(src):
+                    t[dst] = L[src]
             applied += 1
     if labels.get("state_of_league"):
         data["meta"]["state_of_league"] = labels["state_of_league"]

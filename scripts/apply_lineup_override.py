@@ -40,6 +40,19 @@ def main() -> int:
     with open(OVERRIDE_PATH) as f:
         override = json.load(f)
 
+    # League gate: an override written for a previous season's league must NOT be
+    # applied to the current one — a stale override forces old starter flags and
+    # benches players acquired since (this bit us after the 2026 rollover). The
+    # override only applies when its league_id matches the freshly-built data.
+    ov_league = override.get("league_id")
+    data_league = (rankings.get("meta") or {}).get("league_id")
+    if ov_league != data_league:
+        print(f"Lineup override SKIPPED — override is for league {ov_league!r} "
+              f"(as_of {override.get('as_of')}), data is league {data_league!r}. "
+              "To re-enable, update scripts/manual_lineup_override.json with the "
+              "current league_id and your current planned lineup.")
+        return 0
+
     owner_id = override["owner_id"]
     owner_name = override["owner_name"]
     starter_ids = {p["player_id"] for p in override["starters"]}

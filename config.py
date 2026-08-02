@@ -33,9 +33,13 @@ LEAGUE_NAME_FILTER  = "Huddlepuffers"          # Sleeper API name filter
 LEAGUE_DISPLAY_NAME = "The Huddlepuffers"      # Used in HTML titles, digests
 
 # Update CURRENT_SEASON each year when the dynasty league rolls over.
-# 2026 rollover → set CURRENT_SEASON = 2026 and CURRENT_LEAGUE_ID = "1332930069093453824"
-CURRENT_SEASON      = 2025                     # int — the active Sleeper season
-CURRENT_LEAGUE_ID   = "1182393556535246848"    # Sleeper league_id for CURRENT_SEASON
+# scripts/check_season.py queries the Sleeper API every refresh and fails the
+# workflow loudly (printing the new league_id) the moment a next-season league
+# exists, so this can never silently go stale again.
+# History: 2025 = "1182393556535246848" (bumped to 2026 on 2026-08-02 after a
+# summer of green-but-frozen refreshes).
+CURRENT_SEASON      = 2026                     # int — the active Sleeper season
+CURRENT_LEAGUE_ID   = "1332930069093453824"    # Sleeper league_id for CURRENT_SEASON
 
 # Derived season constants — usually you don't change these directly.
 CURRENT_SEASON_STR    = str(CURRENT_SEASON)

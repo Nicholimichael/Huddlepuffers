@@ -1385,10 +1385,16 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
       drawMeta(board, moveMap);
       const fb={}; board.forEach(t=>{ fb[t.owner_id]={ nickname:NICK[t.owner_name]||'', blurb:fallbackNote(t) }; });
       drawBoard(board, moveMap, fb);
-      // Prefer fun labels baked into the weekly data refresh (team.power_nickname / team.power_blurb), if present.
+      // Prefer fun labels baked into the weekly data refresh, if present. Each team carries
+      // BOTH tone sets (power_*_friendly / power_*_spicy) so the toggle works on the static
+      // site with no window.claude; legacy single-set power_nickname/power_blurb is the fallback.
       let hasBaked=false; const baked={};
-      board.forEach(t=>{ if(t.power_blurb || t.power_nickname){ hasBaked=true; baked[t.owner_id]={ nickname:String(t.power_nickname||NICK[t.owner_name]||'').toUpperCase(), blurb:t.power_blurb||fallbackNote(t) }; } });
-      if(hasBaked){ const notes={}; board.forEach(t=>{ notes[t.owner_id]=baked[t.owner_id]||fb[t.owner_id]; }); drawBoard(board, moveMap, notes); $('pr-commentary-meta').textContent='Commentary from weekly refresh'; return; }
+      board.forEach(t=>{
+        const nk = prTone==='Spicy' ? (t.power_nickname_spicy||t.power_nickname) : (t.power_nickname_friendly||t.power_nickname);
+        const bl = prTone==='Spicy' ? (t.power_blurb_spicy||t.power_blurb)       : (t.power_blurb_friendly||t.power_blurb);
+        if(bl || nk){ hasBaked=true; baked[t.owner_id]={ nickname:String(nk||NICK[t.owner_name]||'').toUpperCase(), blurb:bl||fallbackNote(t) }; }
+      });
+      if(hasBaked){ const notes={}; board.forEach(t=>{ notes[t.owner_id]=baked[t.owner_id]||fb[t.owner_id]; }); drawBoard(board, moveMap, notes); $('pr-commentary-meta').textContent='Commentary from weekly refresh · ' + prTone.toLowerCase() + ' tone'; return; }
       $('pr-commentary-meta').textContent = 'Stat-based notes \u00b7 fetching commentary\u2026';
       loadCommentary(board, prTone).then(arr=>{
         if(!arr){ $('pr-commentary-meta').textContent = 'Stat-based notes (AI commentary unavailable)'; return; }

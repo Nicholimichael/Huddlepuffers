@@ -1,47 +1,87 @@
 {
-  "generated_for_snapshot": "2026-06-15",
-  "state_of_league": "isaacimel holds the throne at 12-2 despite ranking fourth in points (2,773), living entirely off a league-best +330 differential while colsheske (2,857) and chochstedler (2,835) both outscore the champ and finish 11-3 and 10-4. chochstedler still hoards the fattest war chest at 1,646 dynasty and Nmhochstedler lurks fourth at 9-5 on the deepest roster in the league (36 players, 739 starter-dynasty). Below aigo100's break-even 8-6, it's a graveyard: mmmatlock's league-worst 2,230 and matching 2-12 finishes from Swerve33 and Forshey11.",
+  "generated_for_snapshot": "2026-06-28",
+  "state_of_league": "isaacimel holds the 1-seed at 12-2 while getting outscored by BOTH colsheske (2,857) and chochstedler (2,835) — same luckiest banner in league history, just with more receipts now. colsheske's 11-3 with the league-high scoring AND top starter-dynasty (765.2) is the best team without the top seed, and chochstedler still owns the deepest war chest at 1,632. Down in the swamp, thedukestill is somehow 7-7 while leaking a league-worst 2,765 against, and the Swerve33/Forshey11 pairing limps to a matching 2-12.",
   "teams": {
-    "isaacimel": {
-      "nickname": "SCHEDULE MERCHANT",
-      "blurb": "12-2 on the fourth-most points (2,773), coasting on a +330 cushion while both teams that outscored you salute your banner."
-    },
     "colsheske": {
-      "nickname": "ROBBED AT 11-3",
-      "blurb": "League-high 2,857 points and a top 769.4 starter-dynasty, and it only bought second place behind a team you outscored by 84."
-    },
-    "chochstedler": {
-      "nickname": "THE WAR CHEST",
-      "blurb": "Richest roster alive at 1,646 dynasty and 2,835 points, all of it cashed in for a 10-4 three-seed that stalled a rung short."
-    },
-    "Nmhochstedler": {
-      "nickname": "LOADED AND LURKING",
-      "blurb": "36 players, 1,616 dynasty and a 739 starter-dynasty at 9-5 on 2,758 points — the 4-seed built to torch a bracket and reload by Tuesday."
-    },
-    "aigo100": {
-      "nickname": "DEAD EVEN",
-      "blurb": "8-6 with 2,558 for and 2,575 against, the only owner floating at a negative differential the .571 record wears like a badge."
-    },
-    "thedukestill": {
-      "nickname": "BLED OUT",
-      "blurb": "7-7 while coughing up a league-worst 2,765 against on a 602.4 starter-dynasty that only clears the four corpses beneath you."
-    },
-    "SpeedwayJesus": {
-      "nickname": "PULSE DETECTED",
-      "blurb": "5-9 on 2,423 points and 1,274 dynasty — still outrunning all three teams below you, so the rebuild keeps a faint heartbeat."
+      "nickname_friendly": "SCOREBOARD KING",
+      "blurb_friendly": "League-high 2,857 points and the starter-dynasty crown — an 11-3 powerhouse who just missed the top seed.",
+      "nickname_spicy": "ROBBED FRONTRUNNER",
+      "blurb_spicy": "League-high 2,857 points and a 765 starter-dynasty crown, yet 11-3 and one seed short — the scoreboard loves you, the standings don't.",
+      "nickname": "ROBBED FRONTRUNNER",
+      "blurb": "League-high 2,857 points and a 765 starter-dynasty crown, yet 11-3 and one seed short — the scoreboard loves you, the standings don't."
     },
     "mmmatlock": {
+      "nickname_friendly": "BOUNCE-BACK BOUND",
+      "blurb_friendly": "4-10 and looking for points, but every rebuild starts somewhere — brighter days are ahead.",
+      "nickname_spicy": "EMPTY TANK",
+      "blurb_spicy": "4-10 and dead last in scoring at 2,229 — nobody else in the league failed to crack 2,300.",
       "nickname": "EMPTY TANK",
-      "blurb": "4-10 and dead last in scoring at 2,230, the only team that never once cracked 2,300 all season."
+      "blurb": "4-10 and dead last in scoring at 2,229 — nobody else in the league failed to crack 2,300."
+    },
+    "thedukestill": {
+      "nickname_friendly": "SURVIVOR",
+      "blurb_friendly": "7-7 and hanging tough despite a league-high points-against — grit is keeping this season afloat.",
+      "nickname_spicy": "BLED OUT",
+      "blurb_spicy": "7-7 surviving despite a league-worst 2,765 points against — your defense is quietly the single saddest stat here.",
+      "nickname": "BLED OUT",
+      "blurb": "7-7 surviving despite a league-worst 2,765 points against — your defense is quietly the single saddest stat here."
+    },
+    "chochstedler": {
+      "nickname_friendly": "THE WAR CHEST",
+      "blurb_friendly": "Deepest roster in the league at 1,632 and 2,835 points — this 10-4 squad is built to climb.",
+      "nickname_spicy": "THE WAR CHEST",
+      "blurb_spicy": "Deepest roster in the league (1,632 dynasty) and 2,835 points at 10-4 — built to bury everyone above you, just not yet.",
+      "nickname": "THE WAR CHEST",
+      "blurb": "Deepest roster in the league (1,632 dynasty) and 2,835 points at 10-4 — built to bury everyone above you, just not yet."
+    },
+    "Nmhochstedler": {
+      "nickname_friendly": "LOADED AND LURKING",
+      "blurb_friendly": "Second-richest roster at 1,614 and 2,757 points — this 9-5 contender is one hot streak from dangerous.",
+      "nickname_spicy": "LOADED AND LURKING",
+      "blurb_spicy": "Second-richest war chest (1,614) and 2,757 points still trapped at 9-5 — the most dangerous team nobody's seeded right.",
+      "nickname": "LOADED AND LURKING",
+      "blurb": "Second-richest war chest (1,614) and 2,757 points still trapped at 9-5 — the most dangerous team nobody's seeded right."
     },
     "Swerve33": {
+      "nickname_friendly": "FRESH START",
+      "blurb_friendly": "2-12 with the youngest roster — out-scored a rival and has nothing but upside from here.",
+      "nickname_spicy": "ROCK BOTTOM",
+      "blurb_spicy": "2-12 with the league's thinnest roster at 1,082 dynasty — you out-scored Forshey by 58 and still tied him for last.",
       "nickname": "ROCK BOTTOM",
-      "blurb": "2-12 with the thinnest war chest alive at 1,079 dynasty despite scoring 2,291 — you dug a floor beneath your own cellar."
+      "blurb": "2-12 with the league's thinnest roster at 1,082 dynasty — you out-scored Forshey by 58 and still tied him for last."
+    },
+    "SpeedwayJesus": {
+      "nickname_friendly": "YOUTH MOVEMENT",
+      "blurb_friendly": "5-9 but still out-scoring four teams at 2,423 — the rebuild has real signs of life.",
+      "nickname_spicy": "REBUILD MODE",
+      "blurb_spicy": "5-9 on 2,423 points and a 1,270 roster — still scoring more than four teams, so the youth movement has a pulse.",
+      "nickname": "REBUILD MODE",
+      "blurb": "5-9 on 2,423 points and a 1,270 roster — still scoring more than four teams, so the youth movement has a pulse."
     },
     "Forshey11": {
-      "nickname": "CO-CELLAR",
-      "blurb": "2-12 on a league-low 2,696 projected and 2,233 actual, tied for last on a 476.2 starter-dynasty barely worth the roster spot."
+      "nickname_friendly": "THE REBUILD",
+      "blurb_friendly": "2-12 this year, but the war chest holds promise — plenty of room to build something new.",
+      "nickname_spicy": "THE TEARDOWN",
+      "blurb_spicy": "2-12 with a league-worst 2,696 projection and 2,232 actual — the only consolation is your war chest (1,148) beats Swerve's.",
+      "nickname": "THE TEARDOWN",
+      "blurb": "2-12 with a league-worst 2,696 projection and 2,232 actual — the only consolation is your war chest (1,148) beats Swerve's."
+    },
+    "aigo100": {
+      "nickname_friendly": "RIGHT IN IT",
+      "blurb_friendly": "8-6 with points for and against nearly even — a true middle-of-the-pack team that could swing either way.",
+      "nickname_spicy": "TRUE FRAUD",
+      "blurb_spicy": "8-6 with 2,558 for and 2,575 against — the only team in the league that actually earned its sub-.500 vibe while winning.",
+      "nickname": "TRUE FRAUD",
+      "blurb": "8-6 with 2,558 for and 2,575 against — the only team in the league that actually earned its sub-.500 vibe while winning."
+    },
+    "isaacimel": {
+      "nickname_friendly": "TOP SEED",
+      "blurb_friendly": "12-2 and holding the top seed with strong scoring and tidy defense — sitting pretty atop the standings.",
+      "nickname_spicy": "WINS MERCHANT",
+      "blurb_spicy": "12-2 on the league's THIRD-most points (2,773) and fourth-fewest against (2,443) — you out-lucked two better teams to keep the top seed.",
+      "nickname": "WINS MERCHANT",
+      "blurb": "12-2 on the league's THIRD-most points (2,773) and fourth-fewest against (2,443) — you out-lucked two better teams to keep the top seed."
     }
   },
-  "_comment": "AI personality copy for the Huddlepuffers redesign, auto-generated weekly by scripts/generate_labels.py from that week's numbers. Hand-edit freely; the next run will overwrite."
+  "_comment": "AI personality copy for the Huddlepuffers redesign. Two tone sets per team (friendly/spicy) drive the dashboard toggle; legacy nickname/blurb mirrors the spicy set for backward compat. Auto-regenerated weekly by scripts/generate_labels.py when ANTHROPIC_API_KEY is set; hand-edit freely, next run overwrites."
 }

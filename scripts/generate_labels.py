@@ -54,14 +54,22 @@ Return ONLY a JSON object — no markdown, no commentary — in EXACTLY this sha
   "generated_for_snapshot": "YYYY-MM-DD",
   "state_of_league": "2-4 sentences on the league's overall shape this week, naming real teams and real numbers.",
   "teams": {
-    "<owner_name>": { "nickname": "ALL-CAPS, <=3 WORDS", "blurb": "one punchy sentence grounded in their numbers" }
+    "<owner_name>": {
+      "nickname_friendly": "ALL-CAPS, <=3 WORDS",
+      "blurb_friendly": "one punchy sentence grounded in their numbers",
+      "nickname_spicy": "ALL-CAPS, <=3 WORDS",
+      "blurb_spicy": "one punchy sentence grounded in their numbers"
+    }
   }
 }
 
 Rules:
 - Include EVERY owner_name present in the standings I give you — no more, no fewer.
-- Nicknames are ALL CAPS, at most 3 words.
-- Blurbs are a single sentence.
+- Write BOTH tone sets for every team. The dashboard has a Friendly/Spicy toggle:
+  * friendly = hype and affectionate — celebrate what's working, soften what isn't.
+  * spicy = roast-y and pointed — same numbers, no mercy (still league-banter, not cruel).
+- Nicknames are ALL CAPS, at most 3 words, and the two tones' nicknames should differ.
+- Blurbs are a single sentence each.
 - Use the previous week's copy only for continuity of voice; do not just repeat it —
   reflect where teams actually are now.
 """
@@ -94,7 +102,7 @@ def build_context(data, prior_labels):
     }
 
 
-def call_claude(api_key, model, context, max_tokens=2000):
+def call_claude(api_key, model, context, max_tokens=4000):
     user_msg = (
         "Here are this week's Huddlepuffers numbers (standings sorted best-to-worst) "
         "and last week's copy for voice continuity. Write this week's copy.\n\n"
@@ -137,7 +145,7 @@ def main():
     ap.add_argument("--data", default=DATA_PATH)
     ap.add_argument("--labels", default=LABELS_PATH)
     ap.add_argument("--model", default=DEFAULT_MODEL)
-    ap.add_argument("--max-tokens", type=int, default=2000)
+    ap.add_argument("--max-tokens", type=int, default=4000)
     ap.add_argument("--dry-run", action="store_true",
                     help="build + print the context the model would receive, then exit (no API call)")
     args = ap.parse_args()
@@ -171,6 +179,19 @@ def main():
     if "teams" not in labels or "state_of_league" not in labels:
         print("::warning::[generate_labels] model reply missing required keys; keeping existing labels.")
         return 0
+
+    # Backfill the legacy single-set fields (nickname/blurb) from the spicy set so
+    # older templates / consumers keep working; warn if a team is missing a tone.
+    for owner, L in labels["teams"].items():
+        if L.get("nickname_spicy") and not L.get("nickname"):
+            L["nickname"] = L["nickname_spicy"]
+        if L.get("blurb_spicy") and not L.get("blurb"):
+            L["blurb"] = L["blurb_spicy"]
+        missing = [k for k in ("nickname_friendly", "blurb_friendly",
+                               "nickname_spicy", "blurb_spicy") if not L.get(k)]
+        if missing:
+            print(f"::warning::[generate_labels] {owner} missing tone fields: {missing} "
+                  "(toggle will fall back to the legacy set for them).")
 
     labels.setdefault(
         "generated_for_snapshot",
