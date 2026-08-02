@@ -185,7 +185,8 @@ def write_digest(prev: dict, curr: dict, me: str) -> Path:
         lines.append("")
 
     # My team
-    lines.append("## Your roster (mmmatlock)")
+    my_name = curr.get("meta", {}).get("my_display_name") or "me"
+    lines.append(f"## Your roster ({my_name})")
     if my_movers:
         lines.append("")
         lines.append("| Player | Pos | Dynasty Score Δ |")

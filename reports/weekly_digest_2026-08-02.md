@@ -35,7 +35,7 @@ _Comparing **2026-08-02** to **2026-07-29**._
 | Oronde Gadsden | TE | isaacimel | -1.9 | -5.0 |
 | Gunnar Helm | TE | thedukestill | -1.9 | -9.0 |
 
-## Your roster (mmmatlock)
+## Your roster (Nmhochstedler)
 
 | Player | Pos | Dynasty Score Δ |
 |---|---|---:|
@@ -50,15 +50,15 @@ _Comparing **2026-08-02** to **2026-07-29**._
 
 ## New entries to the rankings
 
-- **Anthony Hill** (LB) — dyn 50.0 — Swerve33
-- **Arvell Reese** (LB) — dyn 50.0 — SpeedwayJesus
-- **Caleb Downs** (DB) — dyn 50.0 — Forshey11
-- **Sonny Styles** (LB) — dyn 50.0 — colsheske
-- **David Bailey** (LB) — dyn 50.0 — Forshey11
 - **CJ Allen** (LB) — dyn 50.0 — aigo100
 - **Dillon Thieneman** (DB) — dyn 50.0 — colsheske
+- **AJ Haulcy** (DB) — dyn 50.0 — chochstedler
+- **Caleb Downs** (DB) — dyn 50.0 — Forshey11
+- **David Bailey** (LB) — dyn 50.0 — Forshey11
+- **Arvell Reese** (LB) — dyn 50.0 — SpeedwayJesus
 - **Caleb Banks** (DT) — dyn 50.0 — aigo100
+- **Rueben Bain** (DL) — dyn 50.0 — Forshey11
 
 ---
 
-*Generated automatically by weekly_digest.py at 2026-08-02T17:45:54.*
+*Generated automatically by weekly_digest.py at 2026-08-02T14:13:14.*
