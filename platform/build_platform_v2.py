@@ -464,7 +464,10 @@ try:
             "id": a.get("id"),
             "headline": a.get("headline"),
             "description": a.get("description"),
-            "published": a.get("published"),
+            # ESPN sometimes yields non-string published values (float/NaN);
+            # coerce so the sort below can never die on mixed types (this
+            # silently killed the news feed pre-v3).
+            "published": str(a.get("published")) if a.get("published") is not None else None,
             "link": a.get("link"),
             "image": a.get("image"),
             "players": [
@@ -482,12 +485,13 @@ try:
             "owner_ids": sorted({p.get("owner_id") for p in matched.values() if p.get("owner_id")}),
         })
     # newest first
-    news_items.sort(key=lambda x: x.get("published") or "", reverse=True)
+    news_items.sort(key=lambda x: str(x.get("published") or ""), reverse=True)
     print(f"      {len(news_items)} stories matched to rostered players")
 except FileNotFoundError:
     print(f"      no {NEWS_JSON} found — skipping news (run scripts/fetch_news.py)")
 except Exception as e:
-    print(f"      news matching failed ({e}) — skipping")
+    # Escalate: a dead news feed was invisible for weeks as a plain log line.
+    print(f"::warning::[build_platform_v2] news matching failed ({e}) — news section skipped")
 
 # ────────────────────────────────────────────────────────────────────────────
 # Write augmented JSON
@@ -542,7 +546,7 @@ if me_c:
     print(f"  Avg starter age: {me_c['avg_starter_age']}")
     print(f"  Strengths: {me_c['strengths']}  Weaknesses: {me_c['weaknesses']}")
     print(f"  Rec: {me_c['recommendation']}")
-me_picks = next((p for p in pick_matrix if p["roster_id"] == 5), None)
+me_picks = next((p for p in pick_matrix if p["roster_id"] == config.MY_ROSTER_ID), None)
 if me_picks:
     print(f"  Future picks: {me_picks['total_picks']} total (value={me_picks['total_value']})")
     for pk in me_picks["picks"]:

@@ -2,13 +2,28 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <title>Huddlepuffers Dynasty Platform</title>
+<meta name="description" content="The Huddlepuffers dynasty league dashboard — power rankings, rosters, dynasty values, and draft capital. Est. 2019."/>
+<meta name="theme-color" content="#0E0B07"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png"/>
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="The Huddlepuffers"/>
+<meta property="og:title" content="The Huddlepuffers — Dynasty Dashboard"/>
+<meta property="og:description" content="Power rankings, rosters, dynasty values, and draft capital for the Huddlepuffers dynasty league."/>
+<meta property="og:url" content="https://huddlepuffers.hossautomation.com/"/>
+<meta property="og:image" content="https://huddlepuffers.hossautomation.com/assets/og-image.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta name="twitter:card" content="summary_large_image"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<!-- html2canvas is lazy-loaded on first image-export tap (v3/A8) — not on page load -->
+<link rel="preload" as="image" href="assets/mascot.webp"/>
 <style>
   :root {
     color-scheme: light;
@@ -564,7 +579,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
 <div class="app">
   <header>
     <div class="hp-brand">
-      <div class="hp-crest"><img src="assets/mascot.jpeg" alt="Huddlepuffers crest"/></div>
+      <div class="hp-crest"><img src="assets/mascot.webp" onerror="this.onerror=null;this.src='assets/mascot.jpeg'" alt="Huddlepuffers crest"/></div>
       <div>
         <div class="hp-kicker">Dynasty League · Est. 2019</div>
         <h1 id="title">The Huddlepuffers</h1>
@@ -1421,7 +1436,17 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     });
     const saveBtn=$('pr-save');
     if(saveBtn){ saveBtn.addEventListener('click', async ()=>{
-      if(!window.html2canvas){ alert('Image export is still loading \u2014 try again in a moment.'); return; }
+      if(!window.html2canvas){
+        // v3/A8: html2canvas loads on demand \u2014 first tap fetches it (~45KB gz).
+        saveBtn.textContent='\u2026loading';
+        try{
+          await new Promise((res, rej)=>{
+            const s=document.createElement('script');
+            s.src='https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+            s.onload=res; s.onerror=rej; document.head.appendChild(s);
+          });
+        }catch(_){ alert('Could not load the image exporter \u2014 check your connection.'); saveBtn.textContent='Save as image'; return; }
+      }
       const node=document.getElementById('tab-power'); const controls=$('pr-controls');
       const orig=saveBtn.textContent; saveBtn.textContent='\u2026rendering'; const prev=controls.style.display; controls.style.display='none';
       try{
@@ -2864,6 +2889,265 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     render();
     registerRenderer(render);
   })();
+})();
+</script>
+
+<!-- ================= v3 mobile + integrity layer (2026-08) =================
+     Self-contained: bottom nav (≤640px), More sheet, hash deep links, last-view
+     persistence, stale-data banner, data-vintage chips, sticky first table
+     column, a11y/motion polish. Talks to the app ONLY via the DOM and
+     window.__RANKINGS_DATA__ so the core IIFE stays untouched. -->
+<style>
+  /* numbers align everywhere */
+  table, .stat, .pr-hero { font-variant-numeric: tabular-nums; }
+  h1 { font-size: clamp(22px, 5.5vw, 34px); }
+  :focus-visible { outline: 2px solid var(--accent, #D8B255); outline-offset: 2px; border-radius: 4px; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  }
+
+  /* stale-data banner */
+  .v3-banner { display:flex; gap:10px; align-items:center; margin:10px 0 14px;
+    padding:10px 14px; border:1px solid rgba(216,162,74,.5); border-radius:10px;
+    background:var(--warn-soft, rgba(216,162,74,.15)); color:var(--warn, #d8a24a);
+    font: 600 13px 'Archivo', sans-serif; }
+
+  /* data-vintage chips */
+  .v3-chip { display:inline-block; margin:0 0 10px 0; padding:3px 9px;
+    border:1px solid var(--line-2, rgba(255,255,255,.16)); border-radius:999px;
+    font: 400 10px 'Space Mono', monospace; letter-spacing:.08em;
+    color:var(--ink-3, #857c6b); text-transform:uppercase; }
+
+  .v3-bottomnav, .v3-sheet { display: none; }
+
+  @media (max-width: 640px) {
+    /* the top tab rows hand off to the bottom bar on phones */
+    nav.tabs { display: none; }
+    body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
+
+    .v3-bottomnav { display: flex; position: fixed; z-index: 900; left: 0; right: 0; bottom: 0;
+      padding: 6px max(8px, env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-right));
+      background: color-mix(in srgb, var(--bg, #0E0B07) 88%, transparent);
+      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      border-top: 1px solid var(--line-2, rgba(255,255,255,.16)); }
+    .v3-bottomnav button { flex: 1 1 0; min-height: 52px; border: 0; background: none;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+      color: var(--ink-3, #857c6b); border-radius: 12px;
+      font: 600 10px 'Archivo', sans-serif; letter-spacing: .04em; cursor: pointer; }
+    .v3-bottomnav button .ico { font-size: 19px; line-height: 1; }
+    .v3-bottomnav button.active { color: var(--accent, #D8B255); background: var(--accent-soft, rgba(216,178,85,.14)); }
+
+    .v3-sheet { position: fixed; inset: 0; z-index: 950; }
+    .v3-sheet.open { display: block; }
+    .v3-sheet .v3-scrim { position: absolute; inset: 0; background: rgba(0,0,0,.55); }
+    .v3-sheet .v3-panel { position: absolute; left: 0; right: 0; bottom: 0; max-height: 72vh; overflow-y: auto;
+      background: var(--card, #16120C); border-top-left-radius: 18px; border-top-right-radius: 18px;
+      border-top: 1px solid var(--line-2, rgba(255,255,255,.16));
+      padding: 10px 14px calc(16px + env(safe-area-inset-bottom, 0px)); }
+    .v3-panel .v3-grab { width: 38px; height: 4px; border-radius: 2px; margin: 4px auto 12px;
+      background: var(--line-2, rgba(255,255,255,.16)); }
+    .v3-panel .v3-group-label { font: 400 9px 'Space Mono', monospace; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--ink-3, #857c6b); margin: 12px 4px 6px; }
+    .v3-panel button { display: block; width: 100%; text-align: left; padding: 13px 12px; min-height: 48px;
+      border: 0; background: none; color: var(--ink, #F1E9D8);
+      font: 600 15px 'Archivo', sans-serif; border-radius: 10px; cursor: pointer; }
+    .v3-panel button.active { color: var(--accent, #D8B255); background: var(--accent-soft, rgba(216,178,85,.14)); }
+
+    /* tables: sticky first column + comfortable touch rows */
+    .table-wrap th:first-child, .table-wrap td:first-child {
+      position: sticky; left: 0; z-index: 2;
+      background: var(--card, #16120C); box-shadow: 2px 0 0 var(--line, rgba(255,255,255,.085)); }
+    .table-wrap thead th { position: sticky; top: 0; z-index: 3; }
+    .table-wrap th:first-child { z-index: 4; }
+    .table-wrap td, .table-wrap th { padding-top: 11px; padding-bottom: 11px; }
+    .table-wrap { max-height: 70vh; overscroll-behavior-x: contain; }
+
+    /* team selector flash when jumping in via the Rosters slot */
+    .v3-flash { animation: v3flash 1.2s ease 2; }
+    @keyframes v3flash { 50% { box-shadow: 0 0 0 3px var(--accent, #D8B255); } }
+  }
+</style>
+<script>
+(function () {
+  var D = window.__RANKINGS_DATA__ || {};
+  var META = D.meta || {};
+  var EX = D.extras || {};
+  var $id = function (x) { return document.getElementById(x); };
+
+  // ---- hard error state: if the embedded data is broken, say so ----
+  if (!D.teams || !D.teams.length) {
+    var err = document.createElement('div');
+    err.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;background:#0E0B07;color:#F1E9D8;font:600 16px Archivo,sans-serif;padding:24px;text-align:center;';
+    err.innerHTML = 'The dashboard data failed to load.<br/><span style="font-weight:400;font-size:13px;color:#857c6b">Try a hard refresh — if it persists, the weekly build shipped bad data and the league admin has been alerted.</span>';
+    document.body.appendChild(err);
+    return;
+  }
+
+  // ---- stale-data banner (B4): the league is the monitoring system ----
+  try {
+    var gen = new Date((META.generated_at || '').replace(/(\.\d+)?Z?$/, 'Z'));
+    var ageDays = (Date.now() - gen.getTime()) / 86400000;
+    if (isFinite(ageDays) && ageDays > 9) {
+      var b = document.createElement('div');
+      b.className = 'v3-banner';
+      b.textContent = '⚠︎ Data last refreshed ' + gen.toLocaleDateString() +
+        ' (' + Math.round(ageDays) + ' days ago) — the weekly refresh may have failed.';
+      var app = document.querySelector('.app');
+      var hdr = document.querySelector('.app > header');
+      if (app) app.insertBefore(b, hdr ? hdr.nextSibling : app.firstChild);
+    }
+  } catch (_) {}
+
+  // ---- data-vintage chips (B7): every NFL-stat view says which season feeds it ----
+  function chip(tabId, text) {
+    var sec = $id(tabId);
+    if (!sec || !text) return;
+    var c = document.createElement('span');
+    c.className = 'v3-chip';
+    c.textContent = text;
+    sec.insertBefore(c, sec.firstChild);
+  }
+  var tc = EX.team_context || {}, so = EX.snap_opportunity || {}, sos = EX.sos || {};
+  if (tc.season) chip('tab-nflteams', tc.season + ' NFL season · last completed');
+  if (so.snap_season) chip('tab-snaps', 'snaps ' + so.snap_season + (so.stat_season ? ' · stats ' + so.stat_season : ''));
+  if (sos.dvp_season) chip('tab-sos', 'DvP ' + sos.dvp_season + (sos.schedule_season ? ' · sched ' + sos.schedule_season : ''));
+  if (META.latest_nfl_season) chip('tab-trends', 'NFL stats through ' + META.latest_nfl_season);
+
+  // ---- tab activation plumbing (shared by bottom nav, sheet, and deep links) ----
+  function topBtn(tab) { return document.querySelector('#tabs button[data-tab="' + tab + '"]'); }
+  function activate(tab, fromHash) {
+    var btn = topBtn(tab);
+    if (!btn) return false;
+    btn.click(); // reuse the app's own switching logic — single code path
+    try { localStorage.setItem('hp_last_view', tab); } catch (_) {}
+    if (!fromHash) { try { history.replaceState(null, '', '#' + tab); } catch (_) {} }
+    syncActive(tab);
+    return true;
+  }
+  function currentTab() {
+    var b = document.querySelector('#tabs button.active');
+    return b ? b.dataset.tab : 'overview';
+  }
+
+  // ---- bottom nav (A2): Power · My Team · Rosters · Rankings · More ----
+  var SLOTS = [
+    { tab: 'power',    label: 'Power',    ico: '🏆' },
+    { tab: 'myteam',   label: 'My Team',  ico: '🏈' },
+    { tab: 'rosters',  label: 'Rosters',  ico: '👥' },   // myteam + team picker
+    { tab: 'rankings', label: 'Rankings', ico: '📊' },
+    { tab: 'more',     label: 'More',     ico: '⋯' }
+  ];
+  var GROUPS = [
+    ['League', ['overview', 'power', 'rankings', 'construction', 'trends']],
+    ['My Team', ['myteam', 'trade']],
+    ['Players', ['rookies', 'nflteams', 'snaps', 'injuries']],
+    ['Tools', ['picks', 'sos', 'about']]
+  ];
+  function tabLabel(tab) {
+    var b = topBtn(tab);
+    return b ? b.textContent : tab;
+  }
+
+  var nav = document.createElement('nav');
+  nav.className = 'v3-bottomnav';
+  nav.setAttribute('aria-label', 'Primary');
+  SLOTS.forEach(function (s) {
+    var b = document.createElement('button');
+    b.dataset.slot = s.tab;
+    b.innerHTML = '<span class="ico" aria-hidden="true">' + s.ico + '</span>' + s.label;
+    b.addEventListener('click', function () {
+      if (s.tab === 'more') { openSheet(); return; }
+      if (s.tab === 'rosters') {
+        activate('myteam');
+        var sel = $id('team-selector');
+        if (sel) {
+          var wrap = sel.closest('.team-selector-wrap') || sel;
+          wrap.classList.remove('v3-flash'); void wrap.offsetWidth; wrap.classList.add('v3-flash');
+          sel.focus();
+        }
+        syncActive('rosters');
+        return;
+      }
+      if (s.tab === 'myteam') {
+        // My Team always means MY team — reset the selector if it wandered
+        var meTeam = (D.teams || []).filter(function (t) { return t.is_me; })[0];
+        var sel2 = $id('team-selector');
+        if (meTeam && sel2 && String(sel2.value) !== String(meTeam.roster_id)) {
+          sel2.value = String(meTeam.roster_id);
+          sel2.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      }
+      activate(s.tab);
+    });
+    nav.appendChild(b);
+  });
+  document.body.appendChild(nav);
+
+  // ---- More sheet ----
+  var sheet = document.createElement('div');
+  sheet.className = 'v3-sheet';
+  sheet.innerHTML = '<div class="v3-scrim"></div><div class="v3-panel" role="dialog" aria-label="All views"><div class="v3-grab"></div></div>';
+  var panel = sheet.querySelector('.v3-panel');
+  GROUPS.forEach(function (g) {
+    var lab = document.createElement('div');
+    lab.className = 'v3-group-label';
+    lab.textContent = g[0];
+    panel.appendChild(lab);
+    g[1].forEach(function (tab) {
+      var b = document.createElement('button');
+      b.dataset.sheetTab = tab;
+      b.textContent = tabLabel(tab);
+      b.addEventListener('click', function () { closeSheet(); activate(tab); });
+      panel.appendChild(b);
+    });
+  });
+  sheet.querySelector('.v3-scrim').addEventListener('click', closeSheet);
+  document.body.appendChild(sheet);
+  function openSheet() {
+    sheet.classList.add('open');
+    panel.querySelectorAll('button').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.sheetTab === currentTab());
+    });
+  }
+  function closeSheet() { sheet.classList.remove('open'); }
+
+  function syncActive(slotOverride) {
+    var tab = currentTab();
+    var slotTabs = SLOTS.map(function (s) { return s.tab; });
+    var target = slotOverride && slotTabs.indexOf(slotOverride) !== -1 ? slotOverride
+               : (slotTabs.indexOf(tab) !== -1 ? tab : 'more');
+    nav.querySelectorAll('button').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.slot === target);
+    });
+  }
+
+  // keep the bar in sync when the (desktop) top tabs are used directly
+  document.querySelectorAll('#tabs button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      try { localStorage.setItem('hp_last_view', b.dataset.tab); } catch (_) {}
+      try { history.replaceState(null, '', '#' + b.dataset.tab); } catch (_) {}
+      syncActive();
+    });
+  });
+
+  // ---- deep links + landing (A5/A6) ----
+  var VALID = GROUPS.reduce(function (a, g) { return a.concat(g[1]); }, []);
+  function fromHash() {
+    var h = (location.hash || '').replace('#', '');
+    return VALID.indexOf(h) !== -1 ? h : null;
+  }
+  window.addEventListener('hashchange', function () {
+    var t = fromHash();
+    if (t && t !== currentTab()) activate(t, true);
+  });
+  var landing = fromHash();
+  if (!landing) {
+    try { landing = localStorage.getItem('hp_last_view'); } catch (_) {}
+    if (VALID.indexOf(landing) === -1) landing = null;
+  }
+  if (!landing && window.matchMedia('(max-width: 640px)').matches) landing = 'power';
+  if (landing && landing !== currentTab()) activate(landing, true);
+  else syncActive();
 })();
 </script>
 </body>

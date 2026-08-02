@@ -90,6 +90,15 @@ def main():
         })
 
     df = pd.DataFrame(rows)
+
+    # v3/B6 guard: a suspiciously small pull means FantasyCalc changed their API
+    # or returned junk — refuse to overwrite a good table with a bad one.
+    MIN_ROWS = 350
+    if len(df) < MIN_ROWS:
+        print(f"::warning::[fetch_fantasycalc] only {len(df)} rows (expected ~450+, "
+              f"floor {MIN_ROWS}) — keeping the previous fantasycalc_values table")
+        raise SystemExit(1)
+
     df.to_csv(CSV / "fantasycalc_values.csv", index=False)
 
     conn = sqlite3.connect(DB_PATH)
