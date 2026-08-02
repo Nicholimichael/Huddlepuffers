@@ -72,6 +72,14 @@ RENAMES = {
 
 def _harmonize(df, required, label, year):
     df = df.rename(columns={k: v for k, v in RENAMES.items() if k in df.columns})
+    # Downstream queries use BOTH spellings of the team column (`recent_team` is
+    # the old nfl-data-py name, `team` is nflverse's) — mirror so either works.
+    # This broke the first CI run post-migration: all-nflverse pulls had no
+    # recent_team and build_extras_v3 died on `no such column`.
+    if "team" in df.columns and "recent_team" not in df.columns:
+        df["recent_team"] = df["team"]
+    elif "recent_team" in df.columns and "team" not in df.columns:
+        df["team"] = df["recent_team"]
     missing = required - set(df.columns)
     if missing:
         raise ValueError(f"{label} {year}: nflverse asset missing columns {sorted(missing)}")
