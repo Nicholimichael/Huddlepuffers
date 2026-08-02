@@ -892,10 +892,6 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
 
   <!-- MY TEAM -->
   <section id="tab-myteam" class="tab-panel hidden">
-    <div class="card" id="myteam-news-card">
-      <h2>Team / Player News <span class="muted small" id="myteam-news-meta"></span></h2>
-      <div id="myteam-news"></div>
-    </div>
     <div class="card">
       <div class="controls">
         <div class="toggle" id="myteam-view">
@@ -909,6 +905,11 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
         <div id="myteam-bench"></div>
         <div id="myteam-taxiIR"></div>
       </div>
+    </div>
+    <!-- v3: news moved BELOW the roster per league feedback — roster first, reading second -->
+    <div class="card" id="myteam-news-card">
+      <h2>Team / Player News <span class="muted small" id="myteam-news-meta"></span></h2>
+      <div id="myteam-news"></div>
     </div>
   </section>
 
