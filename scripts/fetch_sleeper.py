@@ -179,6 +179,7 @@ def main():
     # Aggregators
     all_users, all_rosters, all_matchups, all_tx = [], [], [], []
     all_drafts, all_picks, all_traded_picks = [], [], []
+    all_brackets = []
 
     section(f"[4/8] Per-season pulls ({len(league_chain)} seasons)")
     for lid, lg in league_chain.items():
@@ -229,6 +230,18 @@ def main():
                 p["_league_id"] = lid; p["_season"] = season
             all_traded_picks.extend(tp)
             print(f"    traded_picks: {len(tp)}")
+
+            # Playoff brackets (championship + toilet bowl history for the
+            # Hall of Fame page). Empty for seasons that haven't reached the
+            # playoffs yet — that's fine, downstream is defensive.
+            wb = get(f"/league/{lid}/winners_bracket") or []
+            lb = get(f"/league/{lid}/losers_bracket") or []
+            for g in wb:
+                g["_league_id"] = lid; g["_season"] = season; g["_bracket"] = "winners"
+            for g in lb:
+                g["_league_id"] = lid; g["_season"] = season; g["_bracket"] = "losers"
+            all_brackets.extend(wb); all_brackets.extend(lb)
+            print(f"    brackets: {len(wb)} winners + {len(lb)} losers games")
         except Exception as e:
             print(f"    !! season {season} partial failure: {e}")
             traceback.print_exc()
@@ -317,6 +330,12 @@ def main():
         write_table(pd.json_normalize(all_traded_picks, sep="_"), "traded_picks", conn, pk="league_id")
     except Exception as e:
         print(f"    traded_picks write failed: {e}")
+
+    # Playoff brackets
+    try:
+        write_table(pd.json_normalize(all_brackets, sep="_"), "brackets", conn, pk="league_id")
+    except Exception as e:
+        print(f"    brackets write failed: {e}")
 
     section("[6/8] NFL player database (~5MB, one-time refresh)")
     try:

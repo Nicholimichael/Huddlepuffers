@@ -89,6 +89,12 @@ def check_rankings():
     if not data["picks"]:
         warn("picks list is empty — Picks view will be blank")
 
+    hof = (data.get("extras") or {}).get("hall_of_fame") or {}
+    if not hof.get("available") or not hof.get("seasons"):
+        warn("extras.hall_of_fame missing/empty — Hall of Fame tab will show a placeholder")
+    elif len(hof.get("franchises", [])) != 10:
+        warn(f"hall_of_fame has {len(hof.get('franchises', []))} franchises (expected 10)")
+
 
 def check_labels():
     if not LABELS.exists():

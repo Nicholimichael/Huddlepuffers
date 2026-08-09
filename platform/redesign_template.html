@@ -602,6 +602,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
       <button data-tab="rankings">Rankings</button>
       <button data-tab="construction">Construction</button>
       <button data-tab="trends">Trends</button>
+      <button data-tab="hof">Hall of Fame</button>
     </div></div>
     <div class="tab-group"><span class="tg-label">My Team</span><div class="tg-row">
       <button data-tab="myteam">My Team</button>
@@ -1113,6 +1114,55 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
         Kickers are included but are effectively replaceable — treat their scores as directional only.
         Trend chart data accumulates each refresh; with only a handful of snapshots, early curves will look flat.
         Future-pick values are estimated from round medians, not slot-specific projections.
+      </div>
+    </div>
+  </section>
+
+  <!-- HALL OF FAME -->
+  <section id="tab-hof" class="tab-panel hidden">
+    <div class="card pr-hero">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap;">
+        <div>
+          <div class="hp-kicker" id="hof-kicker">League History</div>
+          <div class="pr-title">HALL OF FAME</div>
+          <div class="pr-sub" id="hof-sub">Every banner and every toilet bowl in franchise history — plus the all-time record book.</div>
+        </div>
+        <div class="toggle" id="hof-tone-toggle">
+          <button data-tone="Friendly">Friendly</button>
+          <button data-tone="Spicy">Spicy</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:12px;">🏆 Championship Banners</h3>
+      <div id="hof-banners" class="hof-rafters"></div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:4px;" id="hof-toilet-title">🚽 Toilet Bowl</h3>
+      <div class="meta" id="hof-toilet-rule" style="margin-bottom:12px;"></div>
+      <div id="hof-toilets" class="hof-rafters"></div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:12px;">📜 All-Time Record Book</h3>
+      <div id="hof-records" class="hof-recgrid"></div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:12px;">Top 10 Single-Week Scores</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Owner</th><th>Points</th><th>Week</th><th>Season</th><th>Opponent</th></tr></thead>
+          <tbody id="hof-topweeks"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:4px;">Franchise Ledger</h3>
+      <div class="meta" style="margin-bottom:12px;">All-time regular season, every era of the dynasty chain.</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Franchise</th><th>Seasons</th><th>W-L-T</th><th>Win%</th><th>PF</th><th>PA</th><th>🏆</th><th>🥈</th><th>🚽</th><th>Playoffs</th></tr></thead>
+          <tbody id="hof-franchise"></tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -3039,7 +3089,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     { tab: 'more',     label: 'More',     ico: '⋯' }
   ];
   var GROUPS = [
-    ['League', ['overview', 'power', 'rankings', 'construction', 'trends']],
+    ['League', ['overview', 'power', 'rankings', 'construction', 'trends', 'hof']],
     ['My Team', ['myteam', 'trade']],
     ['Players', ['rookies', 'nflteams', 'snaps', 'injuries']],
     ['Tools', ['picks', 'sos', 'about']]
@@ -3149,6 +3199,176 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
   if (!landing && window.matchMedia('(max-width: 640px)').matches) landing = 'power';
   if (landing && landing !== currentTab()) activate(landing, true);
   else syncActive();
+})();
+</script>
+
+<!-- ═══════════ HALL OF FAME (banners · toilet bowl · record book) ═══════════
+     Self-contained like the v3 addendum: reads window.__RANKINGS_DATA__ and
+     renders extras.hall_of_fame. Tone rides the same localStorage key as the
+     Power Rankings toggle (hp_pr_tone) and the two toggles stay in sync. -->
+<style>
+  .hof-rafters { display:flex; flex-wrap:wrap; gap:14px; align-items:flex-start; }
+  .hof-banner { width:126px; min-height:120px; padding:14px 8px 26px; text-align:center;
+    clip-path: polygon(0 0, 100% 0, 100% 78%, 50% 100%, 0 78%);
+    background: linear-gradient(180deg, #9a7a22 0%, #D8B255 60%, #b8933c 100%);
+    color:#16120C; box-shadow: inset 0 0 0 3px rgba(22,18,12,.25); }
+  .hof-banner.toilet { background: linear-gradient(180deg, #4d4438 0%, #6b5d4a 60%, #57493a 100%);
+    color:#F1E9D8; box-shadow: inset 0 0 0 3px rgba(241,233,216,.12); }
+  .hof-banner .yr { font: 700 22px 'Space Mono', monospace; letter-spacing:.02em; }
+  .hof-banner .who { font: 700 13px 'Archivo', sans-serif; margin-top:4px; overflow-wrap:anywhere; }
+  .hof-banner .sub { font: 400 10px 'Space Mono', monospace; margin-top:5px; opacity:.85; }
+  .hof-banner .era { font: 400 8px 'Space Mono', monospace; margin-top:6px; opacity:.65;
+    text-transform:uppercase; letter-spacing:.08em; }
+  .hof-blurb { flex-basis:100%; font: 400 11px 'Space Mono', monospace;
+    color: var(--ink-3, #857c6b); margin:-4px 0 6px; }
+  .hof-recgrid { display:grid; grid-template-columns:repeat(auto-fill, minmax(215px, 1fr)); gap:12px; }
+  .hof-rec { border:1px solid var(--line-2, rgba(255,255,255,.16)); border-radius:12px; padding:12px 14px; }
+  .hof-rec .lbl { font: 400 9px 'Space Mono', monospace; letter-spacing:.14em;
+    text-transform:uppercase; color: var(--ink-3, #857c6b); }
+  .hof-rec .val { font: 700 24px 'Space Mono', monospace; color: var(--accent, #D8B255); margin:4px 0 2px; }
+  .hof-rec .who { font: 600 13px 'Archivo', sans-serif; }
+  .hof-rec .det { font: 400 11px 'Space Mono', monospace; color: var(--ink-3, #857c6b); margin-top:3px; }
+  .hof-me td { color: var(--accent, #D8B255); font-weight:700; }
+</style>
+<script>
+(function () {
+  var D = window.__RANKINGS_DATA__ || {};
+  var HOF = (D.extras || {}).hall_of_fame || {};
+  var sec = document.getElementById('tab-hof');
+  if (!sec) return;
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function wk(g) { return (g.playoff ? 'Playoffs ' : '') + 'Wk ' + g.week + ', ' + g.season; }
+
+  if (!HOF.available || !(HOF.seasons || []).length) {
+    $('hof-banners').innerHTML = '<div class="meta">History unlocks after the first completed season in the data — check back after the playoffs.</div>';
+    $('hof-toilets').innerHTML = '';
+    return;
+  }
+
+  var TONE_KEY = 'hp_pr_tone';
+  function tone() { try { return localStorage.getItem(TONE_KEY) || 'Friendly'; } catch (_) { return 'Friendly'; } }
+  function setTone(t) { try { localStorage.setItem(TONE_KEY, t); } catch (_) {} }
+
+  // Deterministic toilet-bowl copy — indexed by season so it's stable per year.
+  var TOILET_FRIENDLY = [
+    'Somebody has to hold the plunger — the 1.01 is a decent consolation prize.',
+    'Rough year, but rebuilds start at the bottom. Literally.',
+    'The basement has great draft position.',
+    'Last in points, first on the clock.'
+  ];
+  var TOILET_SPICY = [
+    'Fewest points among the four worst teams. That is not bad luck — that is a body of work.',
+    'Outscored by everyone who mattered, and then by everyone who did not.',
+    'The toilet flushed and only one team stayed down. Take a bow. Then take the 1.01.',
+    'A season so bad the reward is being forced to pick first.'
+  ];
+
+  function bannerHTML(s, isToilet) {
+    var e = isToilet ? s.toilet : s.champion;
+    if (!e) return '';
+    var sub = e.wins + '-' + e.losses + (e.ties ? '-' + e.ties : '') + ' · ' + Math.round(e.fpts) + ' pts';
+    if (isToilet) sub += ' → ' + (e.pick || '1.01');
+    return '<div class="hof-banner' + (isToilet ? ' toilet' : '') + '">' +
+      '<div class="yr">' + s.season + '</div>' +
+      '<div class="who">' + esc(e.owner_name) + '</div>' +
+      '<div class="sub">' + esc(sub) + '</div>' +
+      '<div class="era">' + esc(s.league_name || '') + '</div>' +
+    '</div>';
+  }
+
+  function render() {
+    var t = tone();
+    var seasons = HOF.seasons || [];
+
+    // toggles active state (both this one and the Power Rankings one)
+    ['hof-tone-toggle', 'pr-tone-toggle'].forEach(function (id) {
+      var el = $(id); if (!el) return;
+      el.querySelectorAll('button').forEach(function (b) {
+        b.classList.toggle('active', b.dataset.tone === t);
+      });
+    });
+
+    $('hof-toilet-title').textContent = t === 'Spicy' ? '🚽 The Wall of Shame' : '🚽 Toilet Bowl';
+    $('hof-toilet-rule').textContent = HOF.rule_note || '';
+
+    $('hof-banners').innerHTML = seasons.map(function (s) { return bannerHTML(s, false); }).join('') ||
+      '<div class="meta">No championships on record yet.</div>';
+
+    var lines = t === 'Spicy' ? TOILET_SPICY : TOILET_FRIENDLY;
+    var latest = seasons[0];
+    var blurb = latest && latest.toilet
+      ? '<div class="hof-blurb">' + esc(latest.season + ': ' + latest.toilet.owner_name + ' — ' + lines[latest.season % lines.length]) + '</div>'
+      : '';
+    $('hof-toilets').innerHTML = blurb +
+      seasons.map(function (s) { return bannerHTML(s, true); }).join('');
+
+    // record book
+    var R = HOF.records || {};
+    function rec(lbl, val, who, det) {
+      return '<div class="hof-rec"><div class="lbl">' + esc(lbl) + '</div>' +
+        '<div class="val">' + esc(val) + '</div>' +
+        '<div class="who">' + esc(who) + '</div>' +
+        '<div class="det">' + esc(det) + '</div></div>';
+    }
+    var cards = [];
+    if (R.high_week) cards.push(rec('Most points · single week', R.high_week.points, R.high_week.owner_name,
+      wk(R.high_week) + ' vs ' + R.high_week.opp_name + ' (' + R.high_week.opp_points + ')'));
+    if (R.high_season) cards.push(rec('Most points · season', R.high_season.fpts, R.high_season.owner_name,
+      R.high_season.season + ' · ' + R.high_season.wins + '-' + R.high_season.losses));
+    if (R.low_week) cards.push(rec(t === 'Spicy' ? 'Feeblest week ever posted' : 'Fewest points · single week',
+      R.low_week.points, R.low_week.owner_name, wk(R.low_week) + ' vs ' + R.low_week.opp_name));
+    if (R.low_season) cards.push(rec('Fewest points · season', R.low_season.fpts, R.low_season.owner_name,
+      R.low_season.season + ' · ' + R.low_season.wins + '-' + R.low_season.losses));
+    if (R.blowout) cards.push(rec('Biggest blowout', '+' + R.blowout.margin, R.blowout.owner_name,
+      R.blowout.points + '–' + R.blowout.opp_points + ' over ' + R.blowout.opp_name + ' · ' + wk(R.blowout)));
+    if (R.closest) cards.push(rec('Closest game', '+' + R.closest.margin, R.closest.owner_name,
+      R.closest.points + '–' + R.closest.opp_points + ' over ' + R.closest.opp_name + ' · ' + wk(R.closest)));
+    if (R.most_pts_loss) cards.push(rec(t === 'Spicy' ? 'Best loser performance' : 'Most points in a loss',
+      R.most_pts_loss.points, R.most_pts_loss.owner_name,
+      'fell to ' + R.most_pts_loss.opp_name + ' (' + R.most_pts_loss.opp_points + ') · ' + wk(R.most_pts_loss)));
+    if (R.fewest_pts_win) cards.push(rec(t === 'Spicy' ? 'Most undeserved win' : 'Fewest points in a win',
+      R.fewest_pts_win.points, R.fewest_pts_win.owner_name,
+      'beat ' + R.fewest_pts_win.opp_name + ' (' + R.fewest_pts_win.opp_points + ') · ' + wk(R.fewest_pts_win)));
+    if (R.win_streak) cards.push(rec('Longest win streak', R.win_streak.length + ' games', R.win_streak.owner_name,
+      'Wk ' + R.win_streak.from.week + ' ' + R.win_streak.from.season + ' → Wk ' + R.win_streak.to.week + ' ' + R.win_streak.to.season));
+    if (R.loss_streak) cards.push(rec(t === 'Spicy' ? 'The Dark Ages' : 'Longest losing streak',
+      R.loss_streak.length + ' games', R.loss_streak.owner_name,
+      'Wk ' + R.loss_streak.from.week + ' ' + R.loss_streak.from.season + ' → Wk ' + R.loss_streak.to.week + ' ' + R.loss_streak.to.season));
+    $('hof-records').innerHTML = cards.join('');
+
+    // top-10 weeks
+    $('hof-topweeks').innerHTML = (HOF.top_weeks || []).map(function (g, i) {
+      return '<tr><td>' + (i + 1) + '</td><td>' + esc(g.owner_name) + '</td>' +
+        '<td>' + g.points + '</td><td>' + (g.playoff ? 'P· ' : '') + 'Wk ' + g.week + '</td>' +
+        '<td>' + g.season + '</td><td>' + esc(g.opp_name) + ' (' + g.opp_points + ')</td></tr>';
+    }).join('');
+
+    // franchise ledger — highlight the logged-in team
+    var myId = 5;
+    try { var raw = localStorage.getItem('huddlepuffers_roster_id'); if (raw != null) myId = parseInt(raw, 10); } catch (_) {}
+    $('hof-franchise').innerHTML = (HOF.franchises || []).map(function (f) {
+      return '<tr' + (f.roster_id === myId ? ' class="hof-me"' : '') + '>' +
+        '<td>' + esc(f.owner_name) + '</td><td>' + f.seasons + '</td>' +
+        '<td>' + f.wins + '-' + f.losses + '-' + f.ties + '</td><td>' + f.win_pct + '%</td>' +
+        '<td>' + Math.round(f.pf).toLocaleString() + '</td><td>' + Math.round(f.pa).toLocaleString() + '</td>' +
+        '<td>' + (f.titles || '—') + '</td><td>' + (f.runner_ups || '—') + '</td>' +
+        '<td>' + (f.toilets || '—') + '</td><td>' + f.playoff_apps + '</td></tr>';
+    }).join('');
+  }
+
+  // HOF toggle writes the shared key; PR toggle clicks re-render us too.
+  var hofToggle = $('hof-tone-toggle');
+  if (hofToggle) hofToggle.querySelectorAll('button').forEach(function (b) {
+    b.addEventListener('click', function () { setTone(b.dataset.tone); render(); });
+  });
+  var prToggle = $('pr-tone-toggle');
+  if (prToggle) prToggle.querySelectorAll('button').forEach(function (b) {
+    b.addEventListener('click', function () { setTimeout(render, 0); });
+  });
+
+  render();
 })();
 </script>
 </body>

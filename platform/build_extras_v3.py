@@ -76,6 +76,303 @@ def linear_slope(xs, ys):
     return num / den if den else 0.0
 
 
+def build_hall_of_fame():
+    """League history: banners, toilet bowls, and the all-time record book.
+
+    Reads leagues/rosters/users/matchups/brackets from SQLite. Defensive
+    throughout — a season with no bracket data simply gets no banner, and a
+    missing brackets table (stale DB) degrades to {"available": False}.
+    """
+    con = sqlite3.connect(str(DB))
+
+    def q(sql, params=()):
+        try:
+            cur = con.execute(sql, params)
+            cols = [d[0] for d in cur.description]
+            return [dict(zip(cols, r)) for r in cur.fetchall()]
+        except sqlite3.OperationalError as e:
+            print(f"      hall_of_fame query skipped: {e}")
+            return []
+
+    leagues = q("SELECT league_id, name, season, settings_json, total_rosters FROM leagues")
+    if not leagues:
+        con.close()
+        return {"available": False}
+    for lg in leagues:
+        try:
+            lg["settings"] = json.loads(lg.get("settings_json") or "{}")
+        except Exception:
+            lg["settings"] = {}
+        lg["season"] = int(lg["season"])
+    leagues.sort(key=lambda x: x["season"])
+
+    rosters = q("""SELECT _league_id, _season, roster_id, owner_id,
+                          wins, losses, ties, fpts, fpts_against FROM rosters""")
+    users = q("SELECT * FROM users")
+    matchups = q("""SELECT _league_id, _season, _week AS week, roster_id,
+                           matchup_id, points FROM matchups""")
+    brackets = q("""SELECT _league_id, _season, _bracket, r, t1, t2, w, l, p
+                    FROM brackets""")
+    con.close()
+
+    # owner display name per (league_id, user_id); team_name column name varies
+    # with json_normalize ("metadata.team_name").
+    tn_key = next((k for k in (users[0].keys() if users else [])
+                   if k.endswith("team_name")), None)
+    uname = {}
+    for u in users:
+        uname[(u.get("_league_id"), str(u.get("user_id")))] = {
+            "display_name": u.get("display_name") or "?",
+            "team_name": (u.get(tn_key) if tn_key else None) or None,
+        }
+
+    # per-league roster lookup
+    ros_by_league = defaultdict(dict)
+    for r in rosters:
+        ros_by_league[r["_league_id"]][int(r["roster_id"])] = r
+
+    def entry(lid, roster_id):
+        """Season-scoped identity + regular-season line for one roster."""
+        if roster_id is None:
+            return None
+        r = ros_by_league.get(lid, {}).get(int(roster_id))
+        if not r:
+            return None
+        u = uname.get((lid, str(r.get("owner_id"))), {})
+        return {
+            "roster_id":  int(roster_id),
+            "owner_id":   r.get("owner_id"),
+            "owner_name": u.get("display_name") or "?",
+            "team_name":  u.get("team_name"),
+            "wins":   int(r.get("wins") or 0),
+            "losses": int(r.get("losses") or 0),
+            "ties":   int(r.get("ties") or 0),
+            "fpts":   round(float(r.get("fpts") or 0), 1),
+        }
+
+    # matchup pairs per (league, week): [{roster_id, points}, ...] by matchup_id
+    games = defaultdict(list)   # (lid, week, matchup_id) -> rows
+    for m in matchups:
+        if m.get("matchup_id") is None:
+            continue
+        games[(m["_league_id"], int(m["week"]), int(m["matchup_id"]))].append(m)
+
+    def playoff_week_start(lg):
+        try:
+            return int(lg["settings"].get("playoff_week_start") or 15)
+        except Exception:
+            return 15
+
+    lg_by_id = {lg["league_id"]: lg for lg in leagues}
+
+    # ---- season summaries (banners) ----
+    seasons_out = []
+    titles = defaultdict(int); runner_ups = defaultdict(int)
+    toilets = defaultdict(int); playoff_apps = defaultdict(set)
+    for lg in leagues:
+        lid = lg["league_id"]; season = lg["season"]
+        wb = [b for b in brackets if b["_league_id"] == lid and b["_bracket"] == "winners"]
+        lb = [b for b in brackets if b["_league_id"] == lid and b["_bracket"] == "losers"]
+        final = next((b for b in wb if b.get("p") == 1 and b.get("w") is not None), None)
+        if not final:
+            continue  # season not finished (or bracket missing) — no banner
+        third_g = next((b for b in wb if b.get("p") == 3 and b.get("w") is not None), None)
+
+        def _rid(x):
+            """Bracket roster refs come out of SQLite as floats (1.0) — normalize."""
+            try:
+                return int(float(x))
+            except (TypeError, ValueError):
+                return None
+
+        # playoff field = everyone who appears in the winners bracket
+        wb_teams = {_rid(x) for b in wb
+                    for x in (b.get("t1"), b.get("t2"), b.get("w"), b.get("l"))} - {None}
+        for rid in wb_teams:
+            playoff_apps[rid].add(season)
+
+        # non-playoff field: losers-bracket participants; fallback = standings bottom
+        lb_teams = {_rid(x) for b in lb for x in (b.get("t1"), b.get("t2"))} - {None}
+        if not lb_teams:
+            n_playoff = int(lg["settings"].get("playoff_teams") or 6)
+            standings = sorted(ros_by_league.get(lid, {}).values(),
+                               key=lambda r: (int(r.get("wins") or 0),
+                                              float(r.get("fpts") or 0)))
+            lb_teams = {int(r["roster_id"])
+                        for r in standings[:max(0, (lg.get("total_rosters") or 10) - n_playoff)]}
+
+        # league rule: rank the bottom group by regular-season points, fewest first
+        bottom = [entry(lid, rid) for rid in lb_teams]
+        bottom = sorted([b for b in bottom if b], key=lambda e: e["fpts"])
+        for i, b in enumerate(bottom):
+            b["pick"] = f"1.{i + 1:02d}"
+        toilet = bottom[0] if bottom else None
+        if toilet:
+            toilets[toilet["roster_id"]] += 1
+
+        champ = entry(lid, final.get("w"))
+        runner = entry(lid, final.get("l"))
+        if champ:
+            titles[champ["roster_id"]] += 1
+        if runner:
+            runner_ups[runner["roster_id"]] += 1
+
+        best_rec = None
+        rows = list(ros_by_league.get(lid, {}).values())
+        if rows:
+            top = max(rows, key=lambda r: (int(r.get("wins") or 0), float(r.get("fpts") or 0)))
+            best_rec = entry(lid, top["roster_id"])
+
+        seasons_out.append({
+            "season":      season,
+            "league_name": lg.get("name"),
+            "champion":    champ,
+            "runner_up":   runner,
+            "third":       entry(lid, third_g.get("w")) if third_g else None,
+            "toilet":      toilet,
+            "bottom4":     bottom,
+            "best_record": best_rec,
+        })
+    seasons_out.sort(key=lambda s: -s["season"])
+
+    # ---- game-level record book ----
+    played = []  # {season, week, lid, roster_id, points, opp_id, opp_points, playoff}
+    for (lid, week, _mid), rows in games.items():
+        if len(rows) != 2:
+            continue
+        p1, p2 = rows
+        pts1 = float(p1.get("points") or 0); pts2 = float(p2.get("points") or 0)
+        if pts1 + pts2 <= 0:
+            continue  # unplayed / future week
+        lg = lg_by_id.get(lid)
+        if not lg:
+            continue
+        po = week >= playoff_week_start(lg)
+        season = lg["season"]
+        played.append({"lid": lid, "season": season, "week": week, "playoff": po,
+                       "roster_id": int(p1["roster_id"]), "points": pts1,
+                       "opp_id": int(p2["roster_id"]), "opp_points": pts2})
+        played.append({"lid": lid, "season": season, "week": week, "playoff": po,
+                       "roster_id": int(p2["roster_id"]), "points": pts2,
+                       "opp_id": int(p1["roster_id"]), "opp_points": pts1})
+
+    def _fmt(v):
+        """2-dp string, trailing zeros stripped. Strings survive the payload
+        diet in build_redesign.py, which rounds every FLOAT to 1 decimal —
+        that would turn a 0.02-point closest game into '+0'."""
+        return ("%.2f" % v).rstrip("0").rstrip(".")
+
+    def gref(g):
+        e = entry(g["lid"], g["roster_id"]) or {}
+        o = entry(g["lid"], g["opp_id"]) or {}
+        return {"owner_name": e.get("owner_name", "?"), "roster_id": g["roster_id"],
+                "season": g["season"], "week": g["week"], "playoff": g["playoff"],
+                "points": _fmt(g["points"]), "opp_name": o.get("owner_name", "?"),
+                "opp_points": _fmt(g["opp_points"]),
+                "margin": _fmt(g["points"] - g["opp_points"])}
+
+    records = {}
+    if played:
+        records["high_week"] = gref(max(played, key=lambda g: g["points"]))
+        records["low_week"] = gref(min(played, key=lambda g: g["points"]))
+        wins_only = [g for g in played if g["points"] > g["opp_points"]]
+        losses_only = [g for g in played if g["points"] < g["opp_points"]]
+        if wins_only:
+            records["blowout"] = gref(max(wins_only, key=lambda g: g["points"] - g["opp_points"]))
+            records["closest"] = gref(min(wins_only, key=lambda g: g["points"] - g["opp_points"]))
+            records["fewest_pts_win"] = gref(min(wins_only, key=lambda g: g["points"]))
+        if losses_only:
+            records["most_pts_loss"] = gref(max(losses_only, key=lambda g: g["points"]))
+    top_weeks = [gref(g) for g in sorted(played, key=lambda g: -g["points"])[:10]]
+
+    # season-total records (regular season, finished seasons only)
+    fin_lids = {s["season"]: True for s in seasons_out}
+    season_totals = []
+    for lg in leagues:
+        if not fin_lids.get(lg["season"]):
+            continue
+        for r in ros_by_league.get(lg["league_id"], {}).values():
+            e = entry(lg["league_id"], r["roster_id"])
+            if e and e["fpts"] > 0:
+                season_totals.append({**e, "season": lg["season"]})
+    if season_totals:
+        records["high_season"] = max(season_totals, key=lambda e: e["fpts"])
+        records["low_season"] = min(season_totals, key=lambda e: e["fpts"])
+
+    # ---- streaks (regular season, may span seasons; franchise = roster_id) ----
+    reg = sorted((g for g in played if not g["playoff"]),
+                 key=lambda g: (g["season"], g["week"]))
+    by_franchise = defaultdict(list)
+    for g in reg:
+        res = "W" if g["points"] > g["opp_points"] else ("L" if g["points"] < g["opp_points"] else "T")
+        by_franchise[g["roster_id"]].append({**g, "res": res})
+    best_w = best_l = None
+    for rid, gs in by_franchise.items():
+        run = 0; kind = None; start = None
+        for g in gs + [{"res": "END"}]:
+            if g["res"] == kind and kind in ("W", "L"):
+                run += 1
+            else:
+                if kind in ("W", "L") and run >= 2:
+                    rec = {"roster_id": rid, "length": run, "kind": kind,
+                           "from": {"season": start["season"], "week": start["week"]},
+                           "to": {"season": prev["season"], "week": prev["week"]},
+                           "owner_name": (entry(prev["lid"], rid) or {}).get("owner_name", "?")}
+                    if kind == "W" and (not best_w or run > best_w["length"]):
+                        best_w = rec
+                    if kind == "L" and (not best_l or run > best_l["length"]):
+                        best_l = rec
+                kind = g["res"] if g["res"] in ("W", "L") else None
+                run = 1; start = g if kind else None
+            prev = g
+    if best_w:
+        records["win_streak"] = best_w
+    if best_l:
+        records["loss_streak"] = best_l
+
+    # ---- franchise all-time table (franchise = roster_id, name = latest owner) ----
+    latest_owner = {}
+    for lg in leagues:  # ascending season order → last write wins
+        for rid in ros_by_league.get(lg["league_id"], {}):
+            e = entry(lg["league_id"], rid)
+            if e:
+                latest_owner[rid] = e
+    franchises = []
+    for rid, cur_e in latest_owner.items():
+        W = L = T = 0; pf = pa = 0.0; n_seasons = 0
+        for lg in leagues:
+            r = ros_by_league.get(lg["league_id"], {}).get(rid)
+            if not r:
+                continue
+            gp = int(r.get("wins") or 0) + int(r.get("losses") or 0) + int(r.get("ties") or 0)
+            if gp == 0:
+                continue
+            n_seasons += 1
+            W += int(r.get("wins") or 0); L += int(r.get("losses") or 0)
+            T += int(r.get("ties") or 0)
+            pf += float(r.get("fpts") or 0); pa += float(r.get("fpts_against") or 0)
+        franchises.append({
+            "roster_id": rid, "owner_name": cur_e["owner_name"],
+            "team_name": cur_e.get("team_name"), "seasons": n_seasons,
+            "wins": W, "losses": L, "ties": T,
+            "win_pct": round(100.0 * W / max(W + L + T, 1), 1),
+            "pf": round(pf, 1), "pa": round(pa, 1),
+            "titles": titles.get(rid, 0), "runner_ups": runner_ups.get(rid, 0),
+            "toilets": toilets.get(rid, 0),
+            "playoff_apps": len(playoff_apps.get(rid, ())),
+        })
+    franchises.sort(key=lambda f: (-f["titles"], -f["win_pct"]))
+
+    return {
+        "available": bool(seasons_out),
+        "seasons": seasons_out,
+        "franchises": franchises,
+        "records": records,
+        "top_weeks": top_weeks,
+        "rule_note": "Toilet bowl / 1.01 order: fewest regular-season points among the non-playoff teams.",
+    }
+
+
 def main():
     print(f"[extras_v3] Loading {RANKINGS_JSON}")
     with open(RANKINGS_JSON) as f:
@@ -659,7 +956,27 @@ def main():
         print(f"      {len(team_sos)} teams scored · {len(roster_sos)} {config.LEAGUE_NAME_FILTER} rosters aggregated")
 
     # ──────────────────────────────────────────────────────────
-    # 6) Persist
+    # 6) Hall of Fame — championship banners, toilet bowl, all-time records.
+    #    Built entirely from the dynasty chain already in SQLite
+    #    (leagues / rosters / users / matchups / brackets).
+    #
+    #    League rules encoded here (confirmed by Nick 2026-08-09):
+    #    - Champion = winner of the winners_bracket p==1 game.
+    #    - Toilet bowl = the 4 non-playoff teams, RANKED BY regular-season
+    #      points (fewest = toilet bowl loser = next year's 1.01).
+    # ──────────────────────────────────────────────────────────
+    print("[extras_v3] Building hall of fame")
+    if not DB.exists():
+        extras["hall_of_fame"] = {"available": False}
+    else:
+        extras["hall_of_fame"] = build_hall_of_fame()
+        hof = extras["hall_of_fame"]
+        print(f"      seasons with banners: {len(hof.get('seasons', []))} · "
+              f"franchises: {len(hof.get('franchises', []))} · "
+              f"records: {len(hof.get('records', {}))}")
+
+    # ──────────────────────────────────────────────────────────
+    # 7) Persist
     # ──────────────────────────────────────────────────────────
     extras["v3_generated_at"] = datetime.utcnow().isoformat() + "Z"
 
