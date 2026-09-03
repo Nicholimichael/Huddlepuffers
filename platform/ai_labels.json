@@ -1,86 +1,86 @@
 {
-  "generated_for_snapshot": "2026-09-06",
-  "state_of_league": "Regular-season Week 1 is finally live, everyone's 0-0, and the value sheet is the only scoreboard until real points land. Nmhochstedler owns the fattest wallet at 1,711.6 dynasty and a league-best 1,466.0 winnow, but chochstedler (1,631.9) and aigo100 (1,559.2) are right there, and starter-dynasty tells a different story with isaacimel (776.8), colsheske (828.6), and thedukestill (761.3) fielding scarier lineups. mmmatlock props up the basement at 1,145.3 dynasty and a league-worst 463.2 in starters, over 560 behind the throne.",
+  "generated_for_snapshot": "2026-09-13",
+  "state_of_league": "Real Week 1 kicks off with everyone still 0-0, so the value board is the only judge in town. Nmhochstedler holds the fattest wallet at 1,715.6 dynasty and a league-best 1,463.7 winnow, with chochstedler (1,632.6) and aigo100 (1,557.5) trailing close behind, but starter-dynasty flips the script — colsheske (828.9), isaacimel (778.6), and thedukestill (761.1) field the scariest actual lineups. mmmatlock is stuck in the cellar at 1,143.5 dynasty and a league-worst 463.9 in starters, more than 570 behind the throne.",
   "teams": {
     "colsheske": {
-      "nickname_friendly": "STARTER MENACE",
-      "blurb_friendly": "League-best 828.6 starter-dynasty on 31 bodies — your ones are the meanest gameday lineup in the Huddlepuffers going into Week 1.",
+      "nickname_friendly": "STARTER KING",
+      "blurb_friendly": "League-best 828.9 starter-dynasty on 31 bodies — nobody trots out a meaner opening-day lineup than you.",
       "nickname_spicy": "TOP-HEAVY TRAP",
-      "blurb_spicy": "828.6 starters is elite, but 1,525.7 total sits fifth and the smallest roster tie at 31 means one injury and the canyon opens.",
+      "blurb_spicy": "828.9 starters is elite, but 1,524.2 total sits sixth and 31 bodies means one hamstring and the floor drops out.",
       "nickname": "TOP-HEAVY TRAP",
-      "blurb": "828.6 starters is elite, but 1,525.7 total sits fifth and the smallest roster tie at 31 means one injury and the canyon opens."
+      "blurb": "828.9 starters is elite, but 1,524.2 total sits sixth and 31 bodies means one hamstring and the floor drops out."
     },
     "mmmatlock": {
-      "nickname_friendly": "RAW POTENTIAL",
-      "blurb_friendly": "32 bodies at 1,145.3 dynasty — plenty of clay waiting on a breakout to drag you off the floor.",
+      "nickname_friendly": "BLANK CANVAS",
+      "blurb_friendly": "32 bodies at 1,143.5 dynasty — a whole roster of clay just waiting on one breakout to lift you off the floor.",
       "nickname_spicy": "BASEMENT DWELLER",
-      "blurb_spicy": "Dead last at 1,145.3 dynasty and a league-worst 463.2 in starters — nobody's circling your matchup in fear.",
+      "blurb_spicy": "Dead last at 1,143.5 dynasty and a league-worst 463.9 in starters — nobody's losing sleep over your Week 1.",
       "nickname": "BASEMENT DWELLER",
-      "blurb": "Dead last at 1,145.3 dynasty and a league-worst 463.2 in starters — nobody's circling your matchup in fear."
+      "blurb": "Dead last at 1,143.5 dynasty and a league-worst 463.9 in starters — nobody's losing sleep over your Week 1."
     },
     "thedukestill": {
       "nickname_friendly": "SHARP CORE",
-      "blurb_friendly": "761.3 starter-dynasty on 33 players — a genuinely dangerous top end ready to punch on opening Sunday.",
+      "blurb_friendly": "761.1 starter-dynasty on 33 players — a genuinely dangerous top end ready to swing on opening Sunday.",
       "nickname_spicy": "TOP-ONLY AGAIN",
-      "blurb_spicy": "1,468.5 total is sixth with 761.3 crammed into the ones — the bench is thin and the standings will notice.",
+      "blurb_spicy": "1,468.8 total is fifth with 761.1 jammed into the ones — the bench is thin and every column knows it.",
       "nickname": "TOP-ONLY AGAIN",
-      "blurb": "1,468.5 total is sixth with 761.3 crammed into the ones — the bench is thin and the standings will notice."
+      "blurb": "1,468.8 total is fifth with 761.1 jammed into the ones — the bench is thin and every column knows it."
     },
     "chochstedler": {
       "nickname_friendly": "LOADED CONTENDER",
-      "blurb_friendly": "1,631.9 dynasty with 793.2 in starters — second-richest overall and built to win right now.",
+      "blurb_friendly": "1,632.6 dynasty with 794.7 in starters — second-richest overall and built to win the moment points count.",
       "nickname_spicy": "PAPER BRIDESMAID",
-      "blurb_spicy": "1,631.9 total is second-best and still 79.7 shy of Nmhochstedler — perpetual runner-up on the value board.",
+      "blurb_spicy": "1,632.6 total is second-best and still 83 shy of Nmhochstedler — forever the runner-up on the value board.",
       "nickname": "PAPER BRIDESMAID",
-      "blurb": "1,631.9 total is second-best and still 79.7 shy of Nmhochstedler — perpetual runner-up on the value board."
+      "blurb": "1,632.6 total is second-best and still 83 shy of Nmhochstedler — forever the runner-up on the value board."
     },
     "Nmhochstedler": {
       "nickname_friendly": "CHEST CHAMPION",
-      "blurb_friendly": "League-best 1,711.6 dynasty and 1,466.0 winnow — the richest, deepest roster in the Huddlepuffers, no debate.",
+      "blurb_friendly": "League-best 1,715.6 dynasty and 1,463.7 winnow — the richest, deepest roster in the Huddlepuffers, no argument.",
       "nickname_spicy": "PAPER CHAMP",
-      "blurb_spicy": "1,711.6 total leads everyone, yet 693.3 in starters ranks sixth — fattest wallet in the room, and five owners start a better team.",
+      "blurb_spicy": "1,715.6 total leads everyone, yet 695.7 in starters ranks sixth — fattest wallet in the room, and five owners start a better team.",
       "nickname": "PAPER CHAMP",
-      "blurb": "1,711.6 total leads everyone, yet 693.3 in starters ranks sixth — fattest wallet in the room, and five owners start a better team."
+      "blurb": "1,715.6 total leads everyone, yet 695.7 in starters ranks sixth — fattest wallet in the room, and five owners start a better team."
     },
     "Swerve33": {
       "nickname_friendly": "YOUNG UPSTART",
-      "blurb_friendly": "586.6 in starters on a lean 1,169.6 build — the young core's got just enough teeth to spring an early upset.",
+      "blurb_friendly": "581.0 in starters on a lean 1,184.1 build — the young core has just enough bite to spring an early upset.",
       "nickname_spicy": "NINTH-PLACE PAPER",
-      "blurb_spicy": "1,169.6 dynasty is ninth and 542 behind the throne, with 586.6 starters near the bottom — thin now, thin at kickoff.",
+      "blurb_spicy": "1,184.1 dynasty is ninth and 531 behind the throne, with 581.0 starters near the bottom — thin now, thin at kickoff.",
       "nickname": "NINTH-PLACE PAPER",
-      "blurb": "1,169.6 dynasty is ninth and 542 behind the throne, with 586.6 starters near the bottom — thin now, thin at kickoff."
+      "blurb": "1,184.1 dynasty is ninth and 531 behind the throne, with 581.0 starters near the bottom — thin now, thin at kickoff."
     },
     "SpeedwayJesus": {
       "nickname_friendly": "MIDDLE MOVER",
-      "blurb_friendly": "1,329.3 dynasty with 653.3 in starters — a solid mid-pack lineup that two breakouts could shove up the ladder.",
+      "blurb_friendly": "1,331.1 dynasty with 654.3 in starters — a solid mid-pack lineup two breakouts could shove up the ladder.",
       "nickname_spicy": "STUCK IN MIDDLE",
-      "blurb_spicy": "1,329.3 total is seventh and 653.3 starters is nothing special — flimsy enough to lose openers you should win.",
+      "blurb_spicy": "1,331.1 total is seventh and 654.3 starters is aggressively average — flimsy enough to blow openers you should win.",
       "nickname": "STUCK IN MIDDLE",
-      "blurb": "1,329.3 total is seventh and 653.3 starters is nothing special — flimsy enough to lose openers you should win."
+      "blurb": "1,331.1 total is seventh and 654.3 starters is aggressively average — flimsy enough to blow openers you should win."
     },
     "Forshey11": {
       "nickname_friendly": "QUIET CLIMBER",
-      "blurb_friendly": "1,268.6 dynasty on 32 tidy players — a lean, no-drama build ready to sneak up on a distracted contender.",
+      "blurb_friendly": "1,268.1 dynasty on 32 tidy players — a lean, no-drama build ready to ambush a distracted contender.",
       "nickname_spicy": "STUCK IN TRAFFIC",
-      "blurb_spicy": "1,268.6 total and 604.8 starters — clear of the basement, but bottom-four in every column that counts.",
+      "blurb_spicy": "1,268.1 total and 605.2 starters — clear of the basement, but bottom-four in every column that matters.",
       "nickname": "STUCK IN TRAFFIC",
-      "blurb": "1,268.6 total and 604.8 starters — clear of the basement, but bottom-four in every column that counts."
+      "blurb": "1,268.1 total and 605.2 starters — clear of the basement, but bottom-four in every column that matters."
     },
     "aigo100": {
       "nickname_friendly": "DEEP STASH",
-      "blurb_friendly": "League-high 34 bodies at 1,559.2 dynasty and a strong 1,437.4 winnow — the deepest talent pool in the league heading into Week 1.",
+      "blurb_friendly": "League-high 34 bodies at 1,557.5 dynasty and a strong 1,436.1 winnow — the deepest talent pool in the league.",
       "nickname_spicy": "BENCH HOARDER",
-      "blurb_spicy": "Most players in the league at 34 and third overall, but 728.9 starters means half your value is watching from the couch.",
+      "blurb_spicy": "Most players in the league at 34 and third overall, but 728.3 starters means a pile of your value is glued to the couch.",
       "nickname": "BENCH HOARDER",
-      "blurb": "Most players in the league at 34 and third overall, but 728.9 starters means half your value is watching from the couch."
+      "blurb": "Most players in the league at 34 and third overall, but 728.3 starters means a pile of your value is glued to the couch."
     },
     "isaacimel": {
       "nickname_friendly": "COMPLETE PACKAGE",
-      "blurb_friendly": "1,505.2 dynasty with a top-tier 776.8 in starters — deep and dangerous, primed to punch out of the gate.",
+      "blurb_friendly": "1,505.6 dynasty with a top-tier 778.6 in starters — deep and dangerous, primed to punch out of the gate.",
       "nickname_spicy": "NO EXCUSES",
-      "blurb_spicy": "776.8 starters is second-best in the league on just 31 bodies — any faceplant this season is on you, not the talent.",
+      "blurb_spicy": "778.6 starters is second-best in the league on just 31 bodies — any faceplant this year is on you, not the talent.",
       "nickname": "NO EXCUSES",
-      "blurb": "776.8 starters is second-best in the league on just 31 bodies — any faceplant this season is on you, not the talent."
+      "blurb": "778.6 starters is second-best in the league on just 31 bodies — any faceplant this year is on you, not the talent."
     }
   },
   "_comment": "AI personality copy for the Huddlepuffers redesign, auto-generated weekly by scripts/generate_labels.py from that week's numbers. Hand-edit freely; the next run will overwrite."
