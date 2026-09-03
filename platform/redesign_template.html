@@ -454,8 +454,40 @@ a{ color:var(--accent); }
 /* ---- Header / brand ---- */
 header{ align-items:center; padding:14px 20px; background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012)); border:1px solid var(--line); border-radius:16px; margin-bottom:18px; }
 .hp-brand{ display:flex; align-items:center; gap:14px; }
-.hp-crest{ width:50px; height:50px; flex:none; border-radius:50%; border:2px solid var(--accent); overflow:hidden; box-shadow:inset 0 0 0 2px var(--bg); }
-.hp-crest img{ width:100%; height:100%; object-fit:cover; object-position:center 26%; display:block; }
+.hp-crest{ width:50px; height:50px; flex:none; border-radius:50%; border:2px solid var(--accent); overflow:hidden; box-shadow:inset 0 0 0 2px var(--bg);
+  /* easter egg: hold me. Kill iOS's Save Image callout and the double-tap zoom. */
+  -webkit-touch-callout:none; -webkit-user-select:none; user-select:none;
+  touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
+.hp-crest img{ width:100%; height:100%; object-fit:cover; object-position:center 26%; display:block;
+  -webkit-touch-callout:none; -webkit-user-select:none; user-select:none; -webkit-user-drag:none;
+  /* the hold must hit-test the <div>, never the <img> — no image target, no Safari callout */
+  pointer-events:none; }
+
+/* ---- Easter egg: press-and-hold the crest (script sits just before </body>) ---- */
+.hp-egg{ display:none; position:fixed; inset:0; z-index:980; }
+.hp-egg.open{ display:block; }
+.hp-egg .hp-egg-scrim{ position:absolute; inset:0; background:rgba(6,4,2,.86);
+  -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); }
+.hp-egg .hp-egg-stage{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  pointer-events:none;
+  padding:calc(58px + env(safe-area-inset-top,0px)) calc(16px + env(safe-area-inset-right,0px))
+          calc(16px + env(safe-area-inset-bottom,0px)) calc(16px + env(safe-area-inset-left,0px)); }
+.hp-egg figure{ margin:0; pointer-events:auto; min-height:0; max-width:100%; max-height:100%;
+  display:flex; flex-direction:column; align-items:center; gap:10px; }
+.hp-egg img{ display:block; flex:0 1 auto; min-height:0; width:auto; height:auto;
+  max-width:min(100%, 520px); max-height:100%; object-fit:contain;
+  border-radius:16px; border:2px solid var(--accent); background:var(--card);
+  box-shadow:0 24px 70px rgba(0,0,0,.7); }
+.hp-egg figcaption{ flex:none; font-family:'Space Mono',monospace; font-size:10px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--accent); text-align:center; }
+.hp-egg .hp-egg-x{ position:absolute; z-index:2; width:44px; height:44px;
+  top:calc(10px + env(safe-area-inset-top,0px)); right:calc(10px + env(safe-area-inset-right,0px));
+  border-radius:50%; border:1px solid var(--line-2); background:var(--card); color:var(--ink);
+  font:400 22px/1 'Archivo',sans-serif; cursor:pointer; -webkit-tap-highlight-color:transparent;
+  display:flex; align-items:center; justify-content:center; }
+.hp-egg .hp-egg-x:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.hp-egg.open .hp-egg-scrim, .hp-egg.open figure{ animation:hpEggIn .18s ease-out both; }
+@keyframes hpEggIn{ from{ opacity:0; transform:scale(.97); } to{ opacity:1; transform:none; } }
 .hp-kicker{ font-family:'Space Mono',monospace; font-size:10px; letter-spacing:0.18em; color:var(--accent); text-transform:uppercase; }
 header h1#title{ font-family:'Newsreader',serif; font-weight:600; font-size:24px; letter-spacing:-0.01em; color:var(--ink); margin:1px 0 2px; }
 header .meta{ font-family:'Space Mono',monospace; color:var(--ink-3); font-size:11px; letter-spacing:0.03em; }
@@ -647,7 +679,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
         <div class="meta" id="subtitle"></div>
       </div>
     </div>
-    <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+    <div class="hp-actions" style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
       <div class="team-selector-wrap" title="Switch which team's view you're seeing">
         <label for="team-selector">Viewing as</label>
         <select id="team-selector"></select>
@@ -1270,6 +1302,26 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
   const FMT = new Intl.NumberFormat('en-US');
 
   // ============================================================
+  //   CLOWN_MODE — the commissioner easter egg
+  // ============================================================
+  // Gates one thing: press-and-hold the league crest to open the commissioner's
+  // portrait. Nothing about it appears in the normal UI — no badge, no card, no
+  // legend — it is only found by holding the crest.
+  //
+  // TO TURN IT OFF: set CLOWN_MODE = false below and rebuild. For a look without
+  // a deploy, load with ?clown=0 (or ?clown=1 to force it on).
+  const CLOWN_MODE = true;
+  window.HP_CLOWN = (function () {
+    var on = CLOWN_MODE;
+    try {
+      var q = new URLSearchParams(location.search).get('clown');
+      if (q === '0' || q === 'off') on = false;
+      if (q === '1' || q === 'on')  on = true;
+    } catch (_) { /* no URLSearchParams — keep the compiled default */ }
+    return { on: on };
+  })();
+
+  // ============================================================
   //   "Logged-in" team identity — runtime, not baked
   // ============================================================
   const STORAGE_KEY = 'huddlepuffers_roster_id';
@@ -1292,8 +1344,22 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
   function isMe(rosterId) { return rosterId === MY_ROSTER_ID; }
 
   // Render functions register here so the team-switcher can re-run them all.
+  // Each renderer declares the tab it paints. On a team switch only the visible
+  // tab's renderers run; the rest are marked dirty and flushed on first view.
+  // A null/unknown tab means "always eager" — the safe default for anything new.
   const RENDERERS = [];
-  function registerRenderer(fn) { RENDERERS.push(fn); }
+  const DIRTY_TABS = new Set();
+  function registerRenderer(fn, tab) { RENDERERS.push({ fn: fn, tab: tab || null }); }
+  function runRenderer(r) { try { r.fn(); } catch (err) { console.error(err); } }
+  function activeTabId() {
+    const b = document.querySelector('#tabs button.active');
+    return b ? b.dataset.tab : 'overview';
+  }
+  function flushTab(tab) {
+    if (!DIRTY_TABS.has(tab)) return;
+    DIRTY_TABS.delete(tab);
+    RENDERERS.forEach(r => { if (r.tab === tab) runRenderer(r); });
+  }
 
   // --- Header meta ---
   document.getElementById('title').textContent = DATA.meta.league_name;
@@ -1327,7 +1393,11 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
       ME = me ? me.owner_id : ME;
       try { localStorage.setItem(STORAGE_KEY, String(MY_ROSTER_ID)); } catch (_) {}
       renderHeaderSubtitle();
-      RENDERERS.forEach(fn => { try { fn(); } catch (err) { console.error(err); } });
+      const visibleTab = activeTabId();
+      RENDERERS.forEach(r => {
+        if (r.tab === null || r.tab === visibleTab) runRenderer(r);
+        else DIRTY_TABS.add(r.tab);
+      });
     });
   })();
 
@@ -1337,6 +1407,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     tabButtons.forEach(x => x.classList.remove('active'));
     b.classList.add('active');
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+    flushTab(b.dataset.tab);   // paint deferred team-switch updates while still hidden
     document.getElementById('tab-' + b.dataset.tab).classList.remove('hidden');
     // Chart.js sometimes needs a resize when its container becomes visible
     if (b.dataset.tab === 'trends' && window._trendChart) window._trendChart.resize();
@@ -1387,7 +1458,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     });
   }
   renderOverview();
-  registerRenderer(renderOverview);
+  registerRenderer(renderOverview, 'overview');
 
   // --- Power Rankings (auto-ranked from league data; Claude-written commentary; movement memory) ---
   (function initPower(){
@@ -1570,7 +1641,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     }); }
 
     drawAll();
-    registerRenderer(drawAll);
+    registerRenderer(drawAll, 'power');
   })();
 
   // --- Overview command center: power badge, superlatives, Claude State-of-the-League ---
@@ -1627,7 +1698,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
       renderRecap(board, seed);
     }
     renderHero();
-    registerRenderer(renderHero);
+    registerRenderer(renderHero, 'overview');
   })();
 
   // --- Rankings table ---
@@ -1662,8 +1733,42 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     sortCol: 'dynasty_score', sortDir: 'desc'
   };
 
+  // --- Tie-aware rank display ---
+  // build_rankings.py ranks with pandas rank(method="min"), so genuine ties render as
+  // 1,1,1,4. dynasty_score really does saturate (norm() clips at the 98th percentile of
+  // the position, then the age term clips at 100 again), so the top of the board IS
+  // tied — Jeanty, Bowers and Maye all sit at exactly 95.5. Showing shared ranks as
+  // "T-1" is the truthful fix; forcing strict 1..N would hide a real scoring problem.
+  const TIE_COUNTS = (() => {
+    const overall = { dynasty_overall_rank: new Map(), winnow_overall_rank: new Map() };
+    const pos     = { dynasty_pos_rank: new Map(), winnow_pos_rank: new Map() };
+    for (const p of PLAYERS) {
+      for (const k in overall) {
+        const v = p[k]; if (v == null) continue;
+        overall[k].set(v, (overall[k].get(v) || 0) + 1);
+      }
+      for (const k in pos) {
+        const v = p[k]; if (v == null) continue;
+        const key = (p.position || '?') + '|' + v;
+        pos[k].set(key, (pos[k].get(key) || 0) + 1);
+      }
+    }
+    return { overall, pos };
+  })();
+  function isTiedRank(k, v, row) {
+    if (v == null) return false;
+    if (TIE_COUNTS.overall[k]) return (TIE_COUNTS.overall[k].get(v) || 1) > 1;
+    if (TIE_COUNTS.pos[k]) return (TIE_COUNTS.pos[k].get(((row && row.position) || '?') + '|' + v) || 1) > 1;
+    return false;
+  }
+  function rankBadge(v, k, row) {
+    if (!v) return '';
+    const t = isTiedRank(k, v, row);
+    return `<span class="rank-badge"${t ? ' title="tied — identical score"' : ''}>${t ? 'T-' : ''}${v}</span>`;
+  }
+
   const COLS_DYN = [
-    {k:'dynasty_overall_rank', t:'Rk', w:40, fmt:(v)=>v?`<span class="rank-badge">${v}</span>`:''},
+    {k:'dynasty_overall_rank', t:'Rk', w:52, fmt:(v,r)=>rankBadge(v,'dynasty_overall_rank',r)},
     {k:'full_name', t:'Player', w:160, fmt:(v,r)=>playerCell(r)},
     {k:'position', t:'Pos', w:50, fmt:(v,r)=>`<span class="pos pos-${v}">${v}</span>${posRankTag(r,'dyn')}`},
     {k:'team', t:'Tm', w:40, fmt:(v)=>v||'<span class="muted">—</span>'},
@@ -1676,7 +1781,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     {k:'owner_name', t:'Owner', w:110, fmt:(v,r)=>ownerFmt(r)},
   ];
   const COLS_WIN = [
-    {k:'winnow_overall_rank', t:'Rk', w:40, fmt:(v)=>v?`<span class="rank-badge">${v}</span>`:''},
+    {k:'winnow_overall_rank', t:'Rk', w:52, fmt:(v,r)=>rankBadge(v,'winnow_overall_rank',r)},
     {k:'full_name', t:'Player', w:160, fmt:(v,r)=>playerCell(r)},
     {k:'position', t:'Pos', w:50, fmt:(v,r)=>`<span class="pos pos-${v}">${v}</span>${posRankTag(r,'win')}`},
     {k:'team', t:'Tm', w:40, fmt:(v)=>v||'<span class="muted">—</span>'},
@@ -1695,9 +1800,9 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     {k:'team', t:'Tm', w:40, fmt:(v)=>v||'<span class="muted">—</span>'},
     {k:'age', t:'Age', w:40, fmt:(v)=>v!=null?v:''},
     {k:'dynasty_score', t:'Dynasty', w:120, fmt:(v)=>scoreBar(v,'warm')},
-    {k:'dynasty_pos_rank', t:'Dyn #', w:55, fmt:(v)=>v?`<span class="rank-badge">${v}</span>`:''},
+    {k:'dynasty_pos_rank', t:'Dyn #', w:60, fmt:(v,r)=>rankBadge(v,'dynasty_pos_rank',r)},
     {k:'winnow_score', t:'Win Now', w:120, fmt:(v)=>scoreBar(v,'')},
-    {k:'winnow_pos_rank', t:'Win #', w:55, fmt:(v)=>v?`<span class="rank-badge">${v}</span>`:''},
+    {k:'winnow_pos_rank', t:'Win #', w:60, fmt:(v,r)=>rankBadge(v,'winnow_pos_rank',r)},
     {k:'delta', t:'Δ', w:50, fmt:(v)=>deltaFmt(v)},
     {k:'owner_name', t:'Owner', w:110, fmt:(v,r)=>ownerFmt(r)},
   ];
@@ -1732,7 +1837,9 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
   }
   function posRankTag(r, kind) {
     const k = kind === 'dyn' ? 'dynasty_pos_rank' : 'winnow_pos_rank';
-    return r[k] ? `<span class="muted small" style="margin-left:4px">#${r[k]}</span>` : '';
+    if (!r[k]) return '';
+    const tied = isTiedRank(k, r[k], r);
+    return `<span class="muted small" style="margin-left:4px">#${tied?'T-':''}${r[k]}</span>`;
   }
 
   function cols() {
@@ -1819,7 +1926,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
   document.getElementById('rank-mine-only').addEventListener('change', e => { state.mineOnly = e.target.checked; renderRankings(); });
   document.getElementById('rank-fa-only').addEventListener('change', e => { state.faOnly = e.target.checked; renderRankings(); });
   renderRankings();
-  registerRenderer(renderRankings);
+  registerRenderer(renderRankings, 'rankings');
 
   // ============================================================
   //   TRENDS TAB
@@ -1907,6 +2014,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
   // until the viewer curates the chart themselves (add / remove / clear).
   let trendAutoSeeded = false;
   function seedTrendChart() {
+    if (!trendChart) initTrendChart();   // one Chart instance, ever — never construct a second
     if (trendSeries.length && !trendAutoSeeded) return;
     trendSeries = [];
     PLAYERS.filter(p => p.owner_id === ME && histPoints(p.player_id).length > 1)
@@ -2014,7 +2122,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
 
   initTrendChart();
   seedTrendChart();
-  registerRenderer(seedTrendChart);
+  registerRenderer(seedTrendChart, 'trends');
   renderRfList(document.getElementById('risers-list'), RF.risers, 'up');
   renderRfList(document.getElementById('fallers-list'), RF.fallers, 'dn');
 
@@ -2028,7 +2136,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     renderRfList(document.getElementById('my-fallers'), myFall, 'dn');
   }
   renderMyMovers();
-  registerRenderer(renderMyMovers);
+  registerRenderer(renderMyMovers, 'trends');
   renderTrendMeta();
 
   // ============================================================
@@ -2090,7 +2198,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     });
   }
   renderConstruction();
-  registerRenderer(renderConstruction);
+  registerRenderer(renderConstruction, 'construction');
 
   // Positional strength matrix
   function renderPosMatrix() {
@@ -2141,7 +2249,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     });
   }
   renderPosMatrix();
-  registerRenderer(renderPosMatrix);
+  registerRenderer(renderPosMatrix, 'construction');
 
   // ============================================================
   //   DRAFT PICKS TAB
@@ -2261,7 +2369,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     });
   }
   renderPicksMatrix();
-  registerRenderer(renderPicksMatrix);
+  registerRenderer(renderPicksMatrix, 'picks');
 
   // Pick stock leaderboard
   function renderPickStock() {
@@ -2286,7 +2394,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     });
   }
   renderPickStock();
-  registerRenderer(renderPickStock);
+  registerRenderer(renderPickStock, 'picks');
 
   // ============================================================
   //   TRADE CALC
@@ -2467,7 +2575,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     });
   });
   renderMyTeam();
-  registerRenderer(renderMyTeam);
+  registerRenderer(renderMyTeam, 'myteam');
 
   // ── Team / Player News (ESPN) ───────────────────────────────────────────
   const NEWS = EXTRAS.news || {available:false, items:[]};
@@ -2517,13 +2625,14 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     }).join('');
   }
   renderTeamNews();
-  registerRenderer(renderTeamNews);
+  registerRenderer(renderTeamNews, 'myteam');
 
   // --- Methodology ---
   document.getElementById('methodology').innerHTML =
     `<p><strong>Dynasty Score</strong> — ${DATA.meta.ranking_methodology.dynasty}</p>` +
     `<p><strong>Win-Now Score</strong> — ${DATA.meta.ranking_methodology.winnow}</p>`;
   document.getElementById('sources').innerHTML =
+    `<strong>Refreshed ${new Date(DATA.meta.generated_at).toLocaleString()}</strong> — ${PLAYERS.length} players · ${PICKS.length} picks.<br>` +
     `NFL stats through the <strong>${DATA.meta.latest_nfl_season} season, Week ${DATA.meta.latest_nfl_week}</strong>.
      Sleeper league + roster data from <code>${DATA.meta.league_name}</code> (id <code>${DATA.meta.league_id}</code>).
      Trade values from <strong>FantasyCalc</strong>.
@@ -2626,10 +2735,10 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
       }).join("");
     }
     renderRookieCapital();
-    registerRenderer(renderRookieCapital);
+    registerRenderer(renderRookieCapital, 'rookies');
 
     renderRookies();
-    registerRenderer(renderRookies);
+    registerRenderer(renderRookies, 'rookies');
   })();
 
   // ────────────────────────────────────────────────────────────────────
@@ -2790,7 +2899,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
       }).join("");
     }
     render();
-    registerRenderer(render);
+    registerRenderer(render, 'snaps');
   })();
 
   // ────────────────────────────────────────────────────────────────────
@@ -2822,7 +2931,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
       }
     }
     renderInjuryBanner();
-    registerRenderer(renderInjuryBanner);
+    registerRenderer(renderInjuryBanner, 'overview');
 
     document.querySelectorAll('[data-jump]').forEach(b => b.addEventListener('click', () => {
       const t = b.dataset.jump;
@@ -2906,7 +3015,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
       }
     }
     renderInjuries();
-    registerRenderer(renderInjuries);
+    registerRenderer(renderInjuries, 'injuries');
   })();
 
   // ────────────────────────────────────────────────────────────────────
@@ -3019,7 +3128,7 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
       }).join("");
     }
     render();
-    registerRenderer(render);
+    registerRenderer(render, 'sos');
   })();
 })();
 </script>
@@ -3095,6 +3204,37 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
     .table-wrap th:first-child { z-index: 4; }
     .table-wrap td, .table-wrap th { padding-top: 11px; padding-bottom: 11px; }
     .table-wrap { max-height: 70vh; overscroll-behavior-x: contain; }
+
+    /* ---- Compact single-row header: crest · title · team selector ----
+       The full brand card ate ~27% of the first screen on EVERY tab. This is the
+       last stylesheet in the document, so these win the cascade at equal specificity. */
+    header{ flex-direction:row; flex-wrap:nowrap; align-items:center;
+      justify-content:space-between; gap:10px;
+      padding:8px 12px; border-radius:13px; margin-bottom:12px; }
+    .hp-brand{ flex:1 1 auto; min-width:0; gap:9px; }
+    .hp-brand > div:not(.hp-crest){ min-width:0; }
+    .hp-crest{ width:34px; height:34px; border-width:1px;
+      box-shadow:inset 0 0 0 1px var(--bg); }
+    .hp-brand .hp-kicker{ display:none; }              /* DYNASTY LEAGUE · EST. 2019 */
+    header h1#title{ font-size:16px; line-height:1.15; margin:0;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    header .meta#subtitle{ font-size:10px; line-height:1.25; margin-top:1px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .hp-actions{ flex:0 0 auto; min-width:0; }
+    #refresh-meta{ display:none; }                      /* relocated to the More sheet */
+    /* the pill chrome drops; the <select> itself carries the accent border */
+    .team-selector-wrap{ width:auto; padding:0; background:none; border:0; }
+    .team-selector-wrap label{ position:absolute; width:1px; height:1px; padding:0;
+      margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+    .team-selector-wrap select{ flex:0 1 auto; max-width:36vw; min-height:36px;
+      font-size:14px; padding:5px 24px 5px 11px;
+      background-position:right 9px center; text-overflow:ellipsis; }
+
+    /* "Refreshed …" line in its new home: footer of the More sheet */
+    .v3-sheet-meta{ margin:16px 4px 2px; padding-top:12px;
+      border-top:1px solid var(--line, rgba(255,255,255,.085));
+      font:400 10px 'Space Mono', monospace; letter-spacing:.04em;
+      color:var(--ink-3, #857c6b); line-height:1.5; }
 
     /* team selector flash when jumping in via the Rosters slot */
     .v3-flash { animation: v3flash 1.2s ease 2; }
@@ -3235,6 +3375,18 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
       panel.appendChild(b);
     });
   });
+  // The compact phone header drops the refresh line — it lives here instead.
+  // #refresh-meta is filled by the main IIFE, which runs before this one.
+  (function sheetMeta(){
+    var src = $id('refresh-meta');
+    var txt = src ? (src.textContent || '').trim() : '';
+    if (!txt) return;
+    var f = document.createElement('div');
+    f.className = 'v3-sheet-meta';
+    f.textContent = txt;
+    panel.appendChild(f);
+  })();
+
   sheet.querySelector('.v3-scrim').addEventListener('click', closeSheet);
   document.body.appendChild(sheet);
   function openSheet() {
@@ -3452,6 +3604,87 @@ tr.me-row:hover{ background:rgba(216,178,85,.18); }
   });
 
   render();
+})();
+</script>
+
+<!-- Easter egg: press-and-hold the league crest. Body-level on purpose — NOT inside a
+     .tab-panel, which the tab switcher hides. The <img> ships with NO src: the poster is
+     fetched only on first open, so a normal page load never pays for it. Gated on
+     CLOWN_MODE (see the flag block in the main script). -->
+<div id="hp-egg" class="hp-egg" role="dialog" aria-modal="true" aria-label="Commissioner portrait" aria-hidden="true">
+  <div class="hp-egg-scrim"></div>
+  <div class="hp-egg-stage">
+    <figure>
+      <img id="hp-egg-img" width="1200" height="1600" alt="Poster of the league commissioner wearing a clown nose" decoding="async" draggable="false"/>
+      <figcaption>Commissioner &middot; Official Portrait</figcaption>
+    </figure>
+  </div>
+  <button type="button" class="hp-egg-x" id="hp-egg-close" aria-label="Close">&times;</button>
+</div>
+<script>
+// Hold the crest ~650ms for the commissioner's official portrait. A normal tap does
+// nothing — the crest has no other handler — and the hold cancels on movement, scroll,
+// or pointercancel. Hold beats a tap-counter here: the crest is a 50px target sitting
+// next to the team selector, and double-tap-to-zoom is live, which eats taps.
+(function () {
+  if (!(window.HP_CLOWN && window.HP_CLOWN.on)) return;   // CLOWN_MODE off — no egg, no listeners
+  var crest = document.querySelector('.hp-crest');
+  var egg   = document.getElementById('hp-egg');
+  if (!crest || !egg) return;
+  var img  = document.getElementById('hp-egg-img');
+  var xBtn = document.getElementById('hp-egg-close');
+  var HOLD_MS = 650, SLOP = 12;
+  var timer = null, sx = 0, sy = 0, prevOverflow = '', openedAt = 0;
+
+  function cancel() { if (timer) { clearTimeout(timer); timer = null; } }
+
+  function open() {
+    cancel();
+    if (!img.getAttribute('src')) {                     // lazy: first open only
+      img.onerror = function () { img.onerror = null; img.src = 'assets/commish-clown.jpg'; };
+      img.src = 'assets/commish-clown.webp';
+    }
+    prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    egg.classList.add('open');
+    egg.setAttribute('aria-hidden', 'false');
+    openedAt = new Date().getTime();
+    try { xBtn.focus({ preventScroll: true }); } catch (_) {}
+    if (navigator.vibrate) { try { navigator.vibrate(18); } catch (_) {} }
+  }
+
+  function close() {
+    egg.classList.remove('open');
+    egg.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = prevOverflow;
+  }
+
+  crest.addEventListener('pointerdown', function (e) {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    sx = e.clientX; sy = e.clientY;
+    cancel();
+    timer = setTimeout(open, HOLD_MS);
+  });
+  crest.addEventListener('pointermove', function (e) {
+    if (timer && (Math.abs(e.clientX - sx) > SLOP || Math.abs(e.clientY - sy) > SLOP)) cancel();
+  });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (t) {
+    crest.addEventListener(t, cancel);
+  });
+  crest.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  window.addEventListener('scroll', cancel, { passive: true });
+
+  // The modal opens mid-gesture with the finger still down, so the scrim arrives
+  // underneath it. Without this guard the synthesized tap on finger-lift closes the
+  // modal instantly.
+  egg.querySelector('.hp-egg-scrim').addEventListener('click', function () {
+    if (new Date().getTime() - openedAt < 400) return;
+    close();
+  });
+  xBtn.addEventListener('click', close);
+  document.addEventListener('keydown', function (e) {
+    if ((e.key === 'Escape' || e.key === 'Esc') && egg.classList.contains('open')) close();
+  });
 })();
 </script>
 
