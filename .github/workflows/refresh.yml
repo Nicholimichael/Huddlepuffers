@@ -149,13 +149,17 @@ jobs:
       - name: Stage clean deploy directory
         # Publish ONLY the self-contained dashboard + its asset — never the build
         # source (platform/*.py) or other junk in platform/, which would otherwise
-        # ship to the public CDN. The redesign is self-contained: index.html + assets/.
+        # ship to the public CDN. The redesign is self-contained: index.html + assets/
+        # (icons, mascot, iOS splash screens) + manifest.json + sw.js (the service
+        # worker behind the home-screen app's offline/instant launch).
         run: |
           rm -rf _site && mkdir -p _site
           cp platform/index.html _site/index.html
           cp -R platform/assets _site/assets
           cp platform/manifest.json _site/manifest.json
+          cp platform/sw.js _site/sw.js
           test -f _site/index.html && test -d _site/assets && test -f _site/manifest.json \
+            && test -f _site/sw.js && test -d _site/assets/splash \
             || { echo "::error::deploy staging incomplete — refusing to publish"; exit 1; }
 
       - name: Upload deploy artifact (v3/B10 rollback safety)

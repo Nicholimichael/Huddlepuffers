@@ -7,6 +7,7 @@ Runs after the Netlify deploy step. Fetches the production URL and asserts:
   2. meta.league_id matches config (we deployed the right league)
   3. meta.generated_at is fresh (this deploy, not a stale CDN copy)
   4. every team carries both tone sets (the toggle is alive)
+  5. /sw.js (the home-screen app's service worker) is published
 
 The deploy has already happened when this runs — a failure here trips the
 workflow's failure-alert issue so a bad publish is loud, not silent.
@@ -75,6 +76,20 @@ def main():
     if toneless:
         print(f"::error::[smoke_test] teams missing tone fields on LIVE site "
               f"(toggle broken): {toneless}")
+        ok = False
+
+    # 5. the service worker is published next to index.html — without it the
+    #    home-screen app silently loses offline + instant launch (it is staged
+    #    separately from index.html in the workflow, so guard it here).
+    try:
+        sw_req = urllib.request.Request(URL + "sw.js", headers={"User-Agent": "huddlepuffers-smoke"})
+        with urllib.request.urlopen(sw_req, timeout=30) as sw:
+            sw_body = sw.read().decode()
+        if "huddlepuffers-" not in sw_body:
+            print("::error::[smoke_test] live /sw.js is not the dashboard service worker")
+            ok = False
+    except Exception as e:  # noqa: BLE001 — any failure here is a bad publish
+        print(f"::error::[smoke_test] live /sw.js not served: {e}")
         ok = False
 
     if ok:
