@@ -1,86 +1,86 @@
 {
-  "generated_for_snapshot": "2026-09-20",
-  "state_of_league": "Week 1 is in the books and the top five all cashed 1-0, led by isaacimel's league-high 226.56 points. Nmhochstedler notched the beatdown of the week, hanging 214.62 while allowing a laughable 111.14 — a 103-point smoke show. The bottom of the standings is a body count: mmmatlock got vaporized 214.62-111.14 and posted a league-worst 111.14 with a pitiful 127.74 ppts, while chochstedler quietly leads the value board at 1,412.4 dynasty.",
+  "generated_for_snapshot": "2026-09-27",
+  "state_of_league": "Through two weeks, four teams sit unbeaten and it's a value-vs-luck standoff up top: chochstedler leads all scorers at 466.78 while dashboard king Nmhochstedler owns the richest 1,390.3 dynasty AND the league-best 279.76 points against. The 0-2 basement is real estate nobody wants — mmmatlock has been outscored 218.02 to a horrifying 464.04 against, the worst points-against in the league by 57. colsheske's 530.88 ppts and league-best 775.8 starters scream 1-1 is a lie.",
   "teams": {
-    "isaacimel": {
-      "nickname_friendly": "POINTS LEADER",
-      "blurb_friendly": "League-high 226.56 in Week 1 to open 1-0 — nobody scored more, and the 713.5 starters back it up.",
-      "nickname_spicy": "LUCKY SURVIVOR",
-      "blurb_spicy": "226.56 was tops in the league but 200.16 against was the most any winner allowed — you outscored a shootout, not proof of a wall.",
-      "nickname": "POINTS LEADER",
-      "blurb": "League-high 226.56 in Week 1 to open 1-0 — nobody scored more, and the 713.5 starters back it up."
-    },
     "chochstedler": {
-      "nickname_friendly": "COMPLETE OPENER",
-      "blurb_friendly": "1-0 with 216.86 for and just 163.14 against, and the league's richest 1,412.4 dynasty — full package on and off the field.",
-      "nickname_spicy": "LEFT POINTS OUT",
-      "blurb_spicy": "Won 216.86-163.14 but your 274.16 ppts says you left 57 points rotting on the bench — richest roster in the league shouldn't misfire lineups.",
-      "nickname": "COMPLETE OPENER",
-      "blurb": "1-0 with 216.86 for and just 163.14 against, and the league's richest 1,412.4 dynasty — full package on and off the field."
+      "nickname_friendly": "SCOREBOARD BULLY",
+      "blurb_friendly": "2-0 with a league-high 466.78 for and just 270.02 against — the only team dominating on both ends of the field.",
+      "nickname_spicy": "BENCH HOARDER",
+      "blurb_spicy": "466.78 scored but a 549.08 ppts means 82 points still rotted on your bench — richest scorer, sloppiest lineup.",
+      "nickname": "BENCH HOARDER",
+      "blurb": "466.78 scored but a 549.08 ppts means 82 points still rotted on your bench — richest scorer, sloppiest lineup."
+    },
+    "isaacimel": {
+      "nickname_friendly": "STAYING PERFECT",
+      "blurb_friendly": "2-0 and second in scoring at 422.98 — the opening-week points leader kept the foot down.",
+      "nickname_spicy": "PAPER TIGER",
+      "blurb_spicy": "2-0 but you've allowed 373.94 — the most of any unbeaten by 94 — so this record is duct tape, not defense.",
+      "nickname": "PAPER TIGER",
+      "blurb": "2-0 but you've allowed 373.94 — the most of any unbeaten by 94 — so this record is duct tape, not defense."
     },
     "Nmhochstedler": {
-      "nickname_friendly": "CHEST SMASHER",
-      "blurb_friendly": "1-0 off a 214.62-111.14 demolition — league-best 111.14 points against means nobody defended better on opening day.",
-      "nickname_spicy": "SCHEDULE BABY",
-      "blurb_spicy": "214.62 is nice, but you drew mmmatlock's 111.14 pillow fight — and 654.8 starters is still fifth, so save the crown talk.",
-      "nickname": "CHEST SMASHER",
-      "blurb": "1-0 off a 214.62-111.14 demolition — league-best 111.14 points against means nobody defended better on opening day."
-    },
-    "colsheske": {
-      "nickname_friendly": "STARTER KING",
-      "blurb_friendly": "1-0 and rocking the league's top 723.5 starter-dynasty — that lineup's built to keep winning weeks like this 180.27-128.56.",
-      "nickname_spicy": "TALENT COASTER",
-      "blurb_spicy": "Best 723.5 starters in the league and you only mustered 180.27 with a 274.65 ceiling — you left 94 points home and still call it a win.",
-      "nickname": "STARTER KING",
-      "blurb": "1-0 and rocking the league's top 723.5 starter-dynasty — that lineup's built to keep winning weeks like this 180.27-128.56."
+      "nickname_friendly": "VALUE THRONE",
+      "blurb_friendly": "2-0, league-best 1,390.3 dynasty, and a stingy 279.76 against — nobody defends better AND the roster's the richest in the house.",
+      "nickname_spicy": "SOFT SCHEDULE",
+      "blurb_spicy": "404.08 for is fifth-best among the unbeaten and your 652.3 starters ranks below aigo and colsheske — the 2-0 is more matchup luck than muscle.",
+      "nickname": "SOFT SCHEDULE",
+      "blurb": "404.08 for is fifth-best among the unbeaten and your 652.3 starters ranks below aigo and colsheske — the 2-0 is more matchup luck than muscle."
     },
     "aigo100": {
-      "nickname_friendly": "DEEP STASH",
-      "blurb_friendly": "1-0 with the league's deepest 34-body roster at 1,335.7 dynasty and a healthy 662.8 in starters — depth AND a win.",
-      "nickname_spicy": "GRIND-IT-OUT WIN",
-      "blurb_spicy": "175.74 was the lowest total of any winner and your 211.26 ppts is the worst ceiling of the 1-0 crowd — 34 bodies and that's the best you've got?",
-      "nickname": "DEEP STASH",
-      "blurb": "1-0 with the league's deepest 34-body roster at 1,335.7 dynasty and a healthy 662.8 in starters — depth AND a win."
+      "nickname_friendly": "DEEP AND UNBEATEN",
+      "blurb_friendly": "2-0 with the league's deepest 34-man roster and a strong 681.7 starters — depth translating straight to wins.",
+      "nickname_spicy": "SQUEAKING BY",
+      "blurb_spicy": "402.78 for and 351.82 against is the tightest margin of any 2-0 team — you're winning coin flips, not beatdowns.",
+      "nickname": "SQUEAKING BY",
+      "blurb": "402.78 for and 351.82 against is the tightest margin of any 2-0 team — you're winning coin flips, not beatdowns."
     },
-    "Forshey11": {
-      "nickname_friendly": "UNLUCKY LOSER",
-      "blurb_friendly": "Dropped to 0-1 despite 200.16 — you'd have beaten every other loser in the league, just ran into isaacimel's 226.56 buzzsaw.",
-      "nickname_spicy": "WRONG-WEEK HERO",
-      "blurb_spicy": "200.16 and still 0-1 because you drew the league high — but 1,072.6 dynasty and 534.6 starters say the schedule isn't your real problem.",
-      "nickname": "UNLUCKY LOSER",
-      "blurb": "Dropped to 0-1 despite 200.16 — you'd have beaten every other loser in the league, just ran into isaacimel's 226.56 buzzsaw."
-    },
-    "SpeedwayJesus": {
-      "nickname_friendly": "BAD-BEAT SQUAD",
-      "blurb_friendly": "0-1 but a 250.98 ppts ceiling — the 163.14 you actually scored is fixable, the talent to bounce back is clearly there.",
-      "nickname_spicy": "BENCH POINTS",
-      "blurb_spicy": "Lost 216.86-163.14 while your ppts screamed 250.98 — you benched 88 points and handed chochstedler an easy one.",
-      "nickname": "BENCH POINTS",
-      "blurb": "Lost 216.86-163.14 while your ppts screamed 250.98 — you benched 88 points and handed chochstedler an easy one."
-    },
-    "Swerve33": {
-      "nickname_friendly": "YOUNG UPSTART",
-      "blurb_friendly": "0-1 at 146.6, but a 228.74 ppts says the ceiling's way higher than the scoreboard showed — lineup tweaks turn this around.",
-      "nickname_spicy": "THIN AND OUT",
-      "blurb_spicy": "146.6 scored, 0-1, and a league-low 1,003.1 dynasty on 496.0 starters — this wasn't a fluke, it's the roster.",
-      "nickname": "THIN AND OUT",
-      "blurb": "146.6 scored, 0-1, and a league-low 1,003.1 dynasty on 496.0 starters — this wasn't a fluke, it's the roster."
+    "colsheske": {
+      "nickname_friendly": "LOADED LINEUP",
+      "blurb_friendly": "1-1 but a league-best 775.8 starters and a monster 530.88 ppts — this roster is a run waiting to happen.",
+      "nickname_spicy": "CEILING COWARD",
+      "blurb_spicy": "Best starters in the league at 775.8, a 530.88 ppts, and still only 385.49 actual points — you've left 145 on the bench and it cost you a game.",
+      "nickname": "CEILING COWARD",
+      "blurb": "Best starters in the league at 775.8, a 530.88 ppts, and still only 385.49 actual points — you've left 145 on the bench and it cost you a game."
     },
     "thedukestill": {
-      "nickname_friendly": "SLEEPING GIANT",
-      "blurb_friendly": "0-1 stings, but 1,218.8 dynasty and 634.1 starters are top-half talent — this 128.56 was a bad day, not a bad roster.",
-      "nickname_spicy": "TALENT NO-SHOW",
-      "blurb_spicy": "634.1 starters is fifth-best in the league and you posted a 128.56 with a pathetic 185.7 ceiling — that roster embarrassed you.",
-      "nickname": "TALENT NO-SHOW",
-      "blurb": "634.1 starters is fifth-best in the league and you posted a 128.56 with a pathetic 185.7 ceiling — that roster embarrassed you."
+      "nickname_friendly": "SCRAPPY MIDDLE",
+      "blurb_friendly": "1-1 despite a modest 297.96 for — you're winning ugly and hanging in the top half, exactly what a rebuild wants.",
+      "nickname_spicy": "LOW BAR CLEARED",
+      "blurb_spicy": "297.96 for is the fewest points of anyone with a win, and your 1,159.5 dynasty is sixth — that .500 is borrowed, not earned.",
+      "nickname": "LOW BAR CLEARED",
+      "blurb": "297.96 for is the fewest points of anyone with a win, and your 1,159.5 dynasty is sixth — that .500 is borrowed, not earned."
+    },
+    "Forshey11": {
+      "nickname_friendly": "SNAKEBIT START",
+      "blurb_friendly": "0-2 but 340.91 for is more than either 1-1 team below the top — the wins are coming once the schedule eases.",
+      "nickname_spicy": "STARTER PROBLEM",
+      "blurb_spicy": "0-2 with a league-worst 484.7 starters among non-cellar teams and 394.46 against — this isn't luck, your lineup is thin.",
+      "nickname": "STARTER PROBLEM",
+      "blurb": "0-2 with a league-worst 484.7 starters among non-cellar teams and 394.46 against — this isn't luck, your lineup is thin."
+    },
+    "SpeedwayJesus": {
+      "nickname_friendly": "CEILING RAISER",
+      "blurb_friendly": "0-2 but a 448.0 ppts says the points are in there — clean up the lineup and the record flips fast.",
+      "nickname_spicy": "GAVE IT AWAY",
+      "blurb_spicy": "331.76 scored against a 448.0 ppts means 116 points sat on your bench across two losses — you beat yourself twice.",
+      "nickname": "GAVE IT AWAY",
+      "blurb": "331.76 scored against a 448.0 ppts means 116 points sat on your bench across two losses — you beat yourself twice."
+    },
+    "Swerve33": {
+      "nickname_friendly": "BUILDING BLOCK",
+      "blurb_friendly": "0-2 but 320.38 for isn't the bottom — a 427.22 ppts hints the ceiling's real once the lineup clicks.",
+      "nickname_spicy": "ROSTER ROT",
+      "blurb_spicy": "0-2 on a league-low 982.7 dynasty and just 482.2 starters — bottom of the value board isn't bad luck, it's the build.",
+      "nickname": "ROSTER ROT",
+      "blurb": "0-2 on a league-low 982.7 dynasty and just 482.2 starters — bottom of the value board isn't bad luck, it's the build."
     },
     "mmmatlock": {
-      "nickname_friendly": "NOWHERE TO GO",
-      "blurb_friendly": "0-1 and a rough 111.14, but the only direction from a league-low 127.74 ceiling is up — one breakout changes everything.",
-      "nickname_spicy": "GOT VAPORIZED",
-      "blurb_spicy": "Smoked 214.62-111.14, dead-last 111.14 points, a league-worst 127.74 ppts AND last in dynasty at 953.8 — a clean sweep of the cellar.",
-      "nickname": "GOT VAPORIZED",
-      "blurb": "Smoked 214.62-111.14, dead-last 111.14 points, a league-worst 127.74 ppts AND last in dynasty at 953.8 — a clean sweep of the cellar."
+      "nickname_friendly": "ONLY WAY UP",
+      "blurb_friendly": "0-2 and outscored, but from a league-low 218.02 there's nowhere to go but up — one healthy week changes the story.",
+      "nickname_spicy": "CELLAR SWEEP",
+      "blurb_spicy": "Dead last in points at 218.02, dead last in ppts at 271.02, dead last in dynasty at 914.1, and a brutal 464.04 against — you own every basement in the league.",
+      "nickname": "CELLAR SWEEP",
+      "blurb": "Dead last in points at 218.02, dead last in ppts at 271.02, dead last in dynasty at 914.1, and a brutal 464.04 against — you own every basement in the league."
     }
   },
   "_comment": "AI personality copy for the Huddlepuffers redesign, auto-generated weekly by scripts/generate_labels.py from that week's numbers. Hand-edit freely; the next run will overwrite."
