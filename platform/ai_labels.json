@@ -1,96 +1,96 @@
 {
-  "generated_for_snapshot": "2026-10-11",
-  "state_of_league": "Four weeks down and only isaacimel survives unbeaten at 4-0, though his 989.5 ppts says he's winning ugly while chochstedler (2-2) quietly leads everyone with a 1,077.68 ppts and the richest 1,453.4 dynasty. Dashboard owner Nmhochstedler sits 3-1 but trails colsheske (3-1, 1,088.64 ppts, 712.9 starters) in nearly every efficiency metric. The basement belongs to mmmatlock, who is 0-4 with a catastrophic 463.92 for and 807.05 against — nearly 350 points worse on defense than the next-worst team.",
+  "generated_for_snapshot": "2026-10-18",
+  "state_of_league": "Five weeks in and isaacimel is the last unbeaten at 5-0, but his 1,238.84 ppts still trails colsheske and Nmhochstedler — he's winning on schedule luck, not ceiling. colsheske (4-1) leads the league with 1,103.99 for and a monster 1,399.85 ppts, while Nmhochstedler (4-1) sits on the richest 1,437.8 dynasty. The basement is a graveyard: mmmatlock is 0-5 with a league-worst 607.5 for and a catastrophic 1,035.37 against, nearly 55 points worse on defense than anyone else.",
   "teams": {
     "isaacimel": {
-      "nickname_friendly": "STILL FLAWLESS",
-      "blurb_friendly": "4-0 and the only unbeaten left, with 860.34 for leading the entire league — you just refuse to lose.",
-      "nickname_spicy": "LUCK MERCHANT",
-      "blurb_spicy": "4-0 but your 989.5 ppts is the worst of any team above .500, so you're banking wins on matchups while five teams out-ceiling you.",
-      "nickname_friendly_prev": "STILL UNBEATEN",
-      "nickname": "LUCK MERCHANT",
-      "blurb": "4-0 but your 989.5 ppts is the worst of any team above .500, so you're banking wins on matchups while five teams out-ceiling you."
-    },
-    "Nmhochstedler": {
-      "nickname_friendly": "DEEP THRONE",
-      "blurb_friendly": "3-1 on a stacked 1,423.2 dynasty and 820.9 for — the roster's loaded and the losses are basically one bad week.",
-      "nickname_spicy": "LINEUP LEAK",
-      "blurb_spicy": "3-1 but a 1,058.52 ppts against just 820.9 actual means 237 points rotted on your bench, and your 580.3 starters rank behind colsheske and chochstedler.",
-      "nickname_friendly_prev": "IRON THRONE",
-      "nickname": "LINEUP LEAK",
-      "blurb": "3-1 but a 1,058.52 ppts against just 820.9 actual means 237 points rotted on your bench, and your 580.3 starters rank behind colsheske and chochstedler."
+      "nickname_friendly": "PERFECT FIVE",
+      "blurb_friendly": "5-0 and still the only unbeaten, riding 1,088.66 for and the league's stingiest 913.84 against — you simply find a way every week.",
+      "nickname_spicy": "SCHEDULE DARLING",
+      "blurb_spicy": "5-0 but your 1,238.84 ppts ranks below both colsheske and Nmhochstedler — you're cashing the softest matchups in the building, not out-rostering anyone.",
+      "nickname_friendly_prev": "STILL FLAWLESS",
+      "nickname": "SCHEDULE DARLING",
+      "blurb": "5-0 but your 1,238.84 ppts ranks below both colsheske and Nmhochstedler — you're cashing the softest matchups in the building, not out-rostering anyone."
     },
     "colsheske": {
-      "nickname_friendly": "STARTER SUPREME",
-      "blurb_friendly": "3-1 with the league's best 712.9 starters and a tidy 690.55 against — your lineup is the cleanest in the building.",
-      "nickname_spicy": "BENCH HOARDER",
-      "blurb_spicy": "3-1 but a 1,088.64 ppts against 820.88 for means 268 points sat idle — best starters in the league and you still misplayed a quarter of your points.",
-      "nickname_friendly_prev": "LOADED AND LURKING",
-      "nickname": "BENCH HOARDER",
-      "blurb": "3-1 but a 1,088.64 ppts against 820.88 for means 268 points sat idle — best starters in the league and you still misplayed a quarter of your points."
+      "nickname_friendly": "LEAGUE'S BEST",
+      "blurb_friendly": "4-1 with a league-high 1,103.99 for, a monster 1,399.85 ppts, and the top 670.0 winnow starters — the most complete team in the house.",
+      "nickname_spicy": "ONE-LOSS LEAK",
+      "blurb_spicy": "4-1 with a league-best 1,399.85 ppts but only 1,103.99 scored — nearly 296 points rotted on your bench, enough to be undefeated instead of chasing isaacimel.",
+      "nickname_friendly_prev": "STARTER SUPREME",
+      "nickname": "ONE-LOSS LEAK",
+      "blurb": "4-1 with a league-best 1,399.85 ppts but only 1,103.99 scored — nearly 296 points rotted on your bench, enough to be undefeated instead of chasing isaacimel."
+    },
+    "Nmhochstedler": {
+      "nickname_friendly": "THRONE ROOM",
+      "blurb_friendly": "4-1 on the richest 1,437.8 dynasty and 1,430.3 winnow in the league — the roster is the deepest asset base in the building and the record finally matches it.",
+      "nickname_spicy": "BENCH VAULT",
+      "blurb_spicy": "4-1 but a 1,296.3 ppts against just 1,023.74 for means 272 points sat idle, and your 630.0 starters trail both colsheske and isaacimel despite the fattest dynasty.",
+      "nickname_friendly_prev": "DEEP THRONE",
+      "nickname": "BENCH VAULT",
+      "blurb": "4-1 but a 1,296.3 ppts against just 1,023.74 for means 272 points sat idle, and your 630.0 starters trail both colsheske and isaacimel despite the fattest dynasty."
     },
     "chochstedler": {
-      "nickname_friendly": "FIREPOWER KING",
-      "blurb_friendly": "2-2 with 851.76 for, the richest 1,453.4 dynasty, and a league-low-ish 686.63 against — the most talented team on paper, bar none.",
-      "nickname_spicy": "WASTED ROYALTY",
-      "blurb_spicy": "League-best dynasty and a 1,077.68 ppts, yet 226 points benched turned a juggernaut into a .500 team — nobody wastes more ammo than you.",
-      "nickname_friendly_prev": "SCOREBOARD KING",
-      "nickname": "WASTED ROYALTY",
-      "blurb": "League-best dynasty and a 1,077.68 ppts, yet 226 points benched turned a juggernaut into a .500 team — nobody wastes more ammo than you."
+      "nickname_friendly": "LOADED THREAT",
+      "blurb_friendly": "3-2 with 1,071.76 for and a strong 1,320.88 ppts — the talent's there and you're a bounce or two from the top tier.",
+      "nickname_spicy": "WASTED ARSENAL",
+      "blurb_spicy": "3-2 with the second-best 1,320.88 ppts but a league-worst 572.5 starters — you keep leaving 249 points benched and calling it a .600 team.",
+      "nickname_friendly_prev": "FIREPOWER KING",
+      "nickname": "WASTED ARSENAL",
+      "blurb": "3-2 with the second-best 1,320.88 ppts but a league-worst 572.5 starters — you keep leaving 249 points benched and calling it a .600 team."
     },
     "aigo100": {
-      "nickname_friendly": "DEEP AND EVEN",
-      "blurb_friendly": "2-2 on a 35-man roster and 795.18 for — the depth keeps you squarely in the mix every week.",
-      "nickname_spicy": "COIN FLIP KID",
-      "blurb_spicy": "2-2 with the lowest ppts of any non-loser at 947.04 and 748.88 against — you're living on razor margins, not actual separation.",
-      "nickname_friendly_prev": "DEEP AND STEADY",
-      "nickname": "COIN FLIP KID",
-      "blurb": "2-2 with the lowest ppts of any non-loser at 947.04 and 748.88 against — you're living on razor margins, not actual separation."
+      "nickname_friendly": "STEADY STACK",
+      "blurb_friendly": "3-2 on a deep 35-man roster and 1,019.57 for — the depth keeps you in the hunt every single week.",
+      "nickname_spicy": "MARGIN MERCHANT",
+      "blurb_spicy": "3-2 with the lowest ppts of any winning team at 1,205.55 and 948.55 against — you're surviving on thin margins, not real separation.",
+      "nickname_friendly_prev": "DEEP AND EVEN",
+      "nickname": "MARGIN MERCHANT",
+      "blurb": "3-2 with the lowest ppts of any winning team at 1,205.55 and 948.55 against — you're surviving on thin margins, not real separation."
     },
     "Swerve33": {
-      "nickname_friendly": "CLIMBING STILL",
-      "blurb_friendly": "2-2 and back to .500 despite a league-low 1,009.3 dynasty — you're punching way above your roster's weight.",
-      "nickname_spicy": "OVERACHIEVING FLOOR",
-      "blurb_spicy": "2-2 is a mirage on 403.5 starters and the league's worst dynasty — the value board says regression is coming for that record.",
-      "nickname_friendly_prev": "GRINDING UP",
-      "nickname": "OVERACHIEVING FLOOR",
-      "blurb": "2-2 is a mirage on 403.5 starters and the league's worst dynasty — the value board says regression is coming for that record."
+      "nickname_friendly": "PUNCHING UP",
+      "blurb_friendly": "2-3 despite a league-low 1,018.6 dynasty and a league-worst 404.9 starters — you're squeezing wins out of the thinnest roster in the house.",
+      "nickname_spicy": "EMPTY TANK",
+      "blurb_spicy": "2-3 with the worst dynasty (1,018.6), worst starters (404.9), and a league-low 871.72 for — the value board says this record is living on borrowed time.",
+      "nickname_friendly_prev": "CLIMBING STILL",
+      "nickname": "EMPTY TANK",
+      "blurb": "2-3 with the worst dynasty (1,018.6), worst starters (404.9), and a league-low 871.72 for — the value board says this record is living on borrowed time."
     },
     "thedukestill": {
-      "nickname_friendly": "SCRAPPY RISER",
-      "blurb_friendly": "2-2 with a solid 619.8 starters and 671.74 against — you're winning the games you should and hanging around.",
-      "nickname_spicy": "LOW CEILING",
-      "blurb_spicy": "2-2 but a league-worst 782.99 ppts and just 643.68 for mean you've got the thinnest firepower of any .500 team — this record is borrowed.",
-      "nickname_friendly_prev": "SCRAPPY SLEEPER",
-      "nickname": "LOW CEILING",
-      "blurb": "2-2 but a league-worst 782.99 ppts and just 643.68 for mean you've got the thinnest firepower of any .500 team — this record is borrowed."
+      "nickname_friendly": "SCRAPPY STILL",
+      "blurb_friendly": "2-3 with a respectable 621.5 starters and only 891.74 against — you're hanging tough despite the thinnest firepower around.",
+      "nickname_spicy": "LOW OCTANE",
+      "blurb_spicy": "2-3 with a league-low 1,019.78 ppts and just 841.52 for — the second-stingiest defense is the only thing keeping this from being an ugly record.",
+      "nickname_friendly_prev": "SCRAPPY RISER",
+      "nickname": "LOW OCTANE",
+      "blurb": "2-3 with a league-low 1,019.78 ppts and just 841.52 for — the second-stingiest defense is the only thing keeping this from being an ugly record."
     },
     "SpeedwayJesus": {
-      "nickname_friendly": "FIREPOWER WAITING",
-      "blurb_friendly": "1-3 but a 919.58 ppts says the talent's real — flip the right starts and this record swings fast.",
-      "nickname_spicy": "SELF SABOTAGE",
-      "blurb_spicy": "1-3 with 695.86 scored against a 919.58 ppts — 224 points on your bench keep losing you games your roster should win.",
-      "nickname_friendly_prev": "POINTS ARE THERE",
-      "nickname": "SELF SABOTAGE",
-      "blurb": "1-3 with 695.86 scored against a 919.58 ppts — 224 points on your bench keep losing you games your roster should win."
+      "nickname_friendly": "TALENT TRAPPED",
+      "blurb_friendly": "1-4 but a 1,166.51 ppts says the firepower's real — fix the starts and this record flips in a hurry.",
+      "nickname_spicy": "OWN WORST ENEMY",
+      "blurb_spicy": "1-4 with 895.53 scored against an 1,166.51 ppts — 271 points buried on your bench keep handing away games your roster should win.",
+      "nickname_friendly_prev": "FIREPOWER WAITING",
+      "nickname": "OWN WORST ENEMY",
+      "blurb": "1-4 with 895.53 scored against an 1,166.51 ppts — 271 points buried on your bench keep handing away games your roster should win."
     },
     "Forshey11": {
-      "nickname_friendly": "FIGHTING BACK",
-      "blurb_friendly": "1-3 but 665.91 for tops the two teams below you — the first win's on the board and the arrow's turning.",
-      "nickname_spicy": "SIEVE SQUAD",
-      "blurb_spicy": "1-3 with 779.98 against, second-worst in the league, and only 533.9 starters to answer — you can't outscore the hole your defense digs.",
-      "nickname_friendly_prev": "DUE FOR ONE",
-      "nickname": "SIEVE SQUAD",
-      "blurb": "1-3 with 779.98 against, second-worst in the league, and only 533.9 starters to answer — you can't outscore the hole your defense digs."
+      "nickname_friendly": "STILL SWINGING",
+      "blurb_friendly": "1-4 with 814.66 for topping two teams below you — the arrow's trying to turn if the breaks fall your way.",
+      "nickname_spicy": "LEAKY HULL",
+      "blurb_spicy": "1-4 with 980.82 against, second-worst in the league, and only 520.7 starters to answer — you can't outrun the hole your defense keeps digging.",
+      "nickname_friendly_prev": "FIGHTING BACK",
+      "nickname": "LEAKY HULL",
+      "blurb": "1-4 with 980.82 against, second-worst in the league, and only 520.7 starters to answer — you can't outrun the hole your defense keeps digging."
     },
     "mmmatlock": {
-      "nickname_friendly": "NOWHERE BUT UP",
-      "blurb_friendly": "0-4 and buried, but a 463.92 for this low only has room to climb — one healthy stretch changes everything.",
-      "nickname_spicy": "TOTAL COLLAPSE",
-      "blurb_spicy": "0-4 and dead last everywhere: 463.92 for, 604.07 ppts, 897.9 dynasty, and a grotesque 807.05 against — you own every basement in the house by a landslide.",
-      "nickname_friendly_prev": "ROCK BOTTOM RESET",
-      "nickname": "TOTAL COLLAPSE",
-      "blurb": "0-4 and dead last everywhere: 463.92 for, 604.07 ppts, 897.9 dynasty, and a grotesque 807.05 against — you own every basement in the house by a landslide."
+      "nickname_friendly": "ONLY UPWARD",
+      "blurb_friendly": "0-5 and buried, but a 607.5 for this low has nowhere to go but up — one healthy stretch and the floor rises fast.",
+      "nickname_spicy": "LEAGUE BASEMENT",
+      "blurb_spicy": "0-5 and dead last everywhere: a league-worst 607.5 for, 771.89 ppts, 968.5 dynasty, and a grotesque 1,035.37 against that's 55 points worse than anyone else.",
+      "nickname_friendly_prev": "NOWHERE BUT UP",
+      "nickname": "LEAGUE BASEMENT",
+      "blurb": "0-5 and dead last everywhere: a league-worst 607.5 for, 771.89 ppts, 968.5 dynasty, and a grotesque 1,035.37 against that's 55 points worse than anyone else."
     }
   },
   "_comment": "AI personality copy for the Huddlepuffers redesign, auto-generated weekly by scripts/generate_labels.py from that week's numbers. Hand-edit freely; the next run will overwrite."
