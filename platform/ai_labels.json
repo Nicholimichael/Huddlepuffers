@@ -1,96 +1,96 @@
 {
-  "generated_for_snapshot": "2026-11-01",
-  "state_of_league": "Seven weeks in and isaacimel is still the lone unbeaten at 7-0, but it's a mirage: his 1,691.44 ppts is the LOWEST of the top five and Nmhochstedler (6-1) actually outscores him 1,492.34 to 1,461.68 with a fatter 1,414.8 dynasty. colsheske (5-2) owns the league's best starters at 757.3, while the middle is a knife fight — chochstedler, aigo100, and thedukestill all sit 4-3. The basement stays grim: mmmatlock is 0-7 with a league-worst 905.59 for and a catastrophic 1,431.72 against.",
+  "generated_for_snapshot": "2026-11-08",
+  "state_of_league": "isaacimel stays perfect at 8-0, but the mirage holds: his 1,942.32 ppts is the LOWEST of the top four and Nmhochstedler (7-1) actually leads the league in real points at 1,746.34 with a monster 2,123.78 ppts. colsheske (6-2) owns the fattest dynasty (1,464.7) and best starters (753.4), while chochstedler and aigo100 bunch up at 5-3. The basement is a bloodbath — mmmatlock is 0-8 with a league-worst 1,010.24 for and a grim 1,614.28 against, with Swerve33, Forshey11, and SpeedwayJesus all drowning below them in value.",
   "teams": {
     "isaacimel": {
-      "nickname_friendly": "STILL FLAWLESS",
-      "blurb_friendly": "7-0 and the last unbeaten standing, outscoring opponents 1,461.68 to 1,255.01 — you just keep finding a way.",
-      "nickname_spicy": "SCHEDULE DARLING",
-      "blurb_spicy": "7-0 but your 1,691.44 ppts is dead last in the top five and Nmhochstedler outscores you by 30 real points — this is a soft slate, not a juggernaut.",
-      "nickname_friendly_prev": "STILL UNBEATEN",
-      "nickname": "SCHEDULE DARLING",
-      "blurb": "7-0 but your 1,691.44 ppts is dead last in the top five and Nmhochstedler outscores you by 30 real points — this is a soft slate, not a juggernaut."
+      "nickname_friendly": "STILL PERFECT",
+      "blurb_friendly": "8-0 and the last unbeaten in the house, outscoring opponents 1,694.26 to 1,381.77 — nobody's solved you yet.",
+      "nickname_spicy": "LUCKIEST SLATE",
+      "blurb_spicy": "8-0 but your 1,942.32 ppts is the lowest of the top four and Nmhochstedler outscores you by 52 real points — the clock on this schedule is ticking.",
+      "nickname_friendly_prev": "STILL FLAWLESS",
+      "nickname": "LUCKIEST SLATE",
+      "blurb": "8-0 but your 1,942.32 ppts is the lowest of the top four and Nmhochstedler outscores you by 52 real points — the clock on this schedule is ticking."
     },
     "Nmhochstedler": {
-      "nickname_friendly": "TRUE LEADER",
-      "blurb_friendly": "6-1 with the league's top 1,492.34 for and a stingy 1,228.05 against — the richest dynasty finally scoring like the best team.",
+      "nickname_friendly": "SCOREBOARD KING",
+      "blurb_friendly": "7-1 and now the league's top scorer at 1,746.34 for on a loaded 1,420.9 dynasty — the best team by the numbers finally has the record to prove it.",
       "nickname_spicy": "BENCH BILLIONAIRE",
-      "blurb_spicy": "6-1 but 1,859.36 ppts against 1,492.34 scored means 367 points rotted on your bench, and your 644.2 starters still trail colsheske's 757.3 despite owning a 1,414.8 dynasty.",
-      "nickname_friendly_prev": "THRONE HOLDS",
+      "blurb_spicy": "7-1 but 2,123.78 ppts against 1,746.34 scored means 377 points rotted on your bench, and your 679.5 starters still trail colsheske's 753.4 despite the deepest roster in the building.",
+      "nickname_friendly_prev": "TRUE LEADER",
       "nickname": "BENCH BILLIONAIRE",
-      "blurb": "6-1 but 1,859.36 ppts against 1,492.34 scored means 367 points rotted on your bench, and your 644.2 starters still trail colsheske's 757.3 despite owning a 1,414.8 dynasty."
+      "blurb": "7-1 but 2,123.78 ppts against 1,746.34 scored means 377 points rotted on your bench, and your 679.5 starters still trail colsheske's 753.4 despite the deepest roster in the building."
     },
     "colsheske": {
-      "nickname_friendly": "DEEPEST STARTERS",
-      "blurb_friendly": "5-2 with the league's best 757.3 dynasty starters and a tidy 1,175.05 against — the most dangerous lineup in the house.",
+      "nickname_friendly": "BEST ROSTER",
+      "blurb_friendly": "6-2 with the league's fattest 1,464.7 dynasty and best 753.4 starters plus a tidy 1,279.7 against — the most dangerous lineup alive.",
       "nickname_spicy": "CEILING WASTER",
-      "blurb_spicy": "5-2 with a monster 1,795.15 ppts but only 1,436.78 scored — 358 points left to rot is exactly why you're chasing 7-0 isaacimel instead of being him.",
-      "nickname_friendly_prev": "LEAGUE'S BEST",
+      "blurb_spicy": "6-2 with a sky-high 2,033.66 ppts but only 1,619.84 scored — 414 points left to rot is exactly why you're chasing 8-0 isaacimel instead of being him.",
+      "nickname_friendly_prev": "DEEPEST STARTERS",
       "nickname": "CEILING WASTER",
-      "blurb": "5-2 with a monster 1,795.15 ppts but only 1,436.78 scored — 358 points left to rot is exactly why you're chasing 7-0 isaacimel instead of being him."
+      "blurb": "6-2 with a sky-high 2,033.66 ppts but only 1,619.84 scored — 414 points left to rot is exactly why you're chasing 8-0 isaacimel instead of being him."
     },
     "chochstedler": {
-      "nickname_friendly": "RICHEST ROSTER",
-      "blurb_friendly": "4-3 with the league's fattest 1,428.3 dynasty and 1,442.48 for — the talent's real and still cashing.",
-      "nickname_spicy": "HOARDER SLIPS",
-      "blurb_spicy": "4-3 with 1,797.8 ppts but only 1,442.48 scored — 355 points stranded on the fattest 1,428.3 dynasty, and you've slid from 4-2 into a three-way logjam.",
-      "nickname_friendly_prev": "LOADED THREAT",
-      "nickname": "HOARDER SLIPS",
-      "blurb": "4-3 with 1,797.8 ppts but only 1,442.48 scored — 355 points stranded on the fattest 1,428.3 dynasty, and you've slid from 4-2 into a three-way logjam."
+      "nickname_friendly": "LOADED ENGINE",
+      "blurb_friendly": "5-3 with 1,654.44 for and a healthy 1,418.0 dynasty — the talent is real and still cashing checks.",
+      "nickname_spicy": "HOARDER STRANDS",
+      "blurb_spicy": "5-3 with 2,038.66 ppts but only 1,654.44 scored — 384 points marooned on a 1,418.0 dynasty, and you've slid two games back of the leaders.",
+      "nickname_friendly_prev": "RICHEST ROSTER",
+      "nickname": "HOARDER STRANDS",
+      "blurb": "5-3 with 2,038.66 ppts but only 1,654.44 scored — 384 points marooned on a 1,418.0 dynasty, and you've slid two games back of the leaders."
     },
     "aigo100": {
-      "nickname_friendly": "GRIND MACHINE",
-      "blurb_friendly": "4-3 with a healthy 1,442.29 for on a balanced 34-man roster — you keep stacking wins without the hype.",
+      "nickname_friendly": "QUIET GRINDER",
+      "blurb_friendly": "5-3 with 1,608.23 for on a balanced 34-man roster — you keep stacking wins without ever making the highlight reel.",
       "nickname_spicy": "LEAKY MARGIN",
-      "blurb_spicy": "4-3 with the lowest ppts of any winning team at 1,654.77 and a top-five-worst 1,354.19 against — your defense is bailing water and your luck won't last.",
-      "nickname_friendly_prev": "STEADY STACK",
+      "blurb_spicy": "5-3 with the lowest ppts of any winning team at 1,880.67 and a top-five-worst 1,466.37 against — the smallest starters (615.6) up top, and your luck is running thin.",
+      "nickname_friendly_prev": "GRIND MACHINE",
       "nickname": "LEAKY MARGIN",
-      "blurb": "4-3 with the lowest ppts of any winning team at 1,654.77 and a top-five-worst 1,354.19 against — your defense is bailing water and your luck won't last."
+      "blurb": "5-3 with the lowest ppts of any winning team at 1,880.67 and a top-five-worst 1,466.37 against — the smallest starters (615.6) up top, and your luck is running thin."
     },
     "thedukestill": {
-      "nickname_friendly": "STINGY SCRAPPER",
-      "blurb_friendly": "4-3 with the league's best 1,162.02 against — you win by locking the door, not kicking it down.",
+      "nickname_friendly": "DEAD EVEN",
+      "blurb_friendly": "4-4 and square, riding a near-dead-even 1,410.46 for to 1,416.02 against — you win the games you're supposed to.",
       "nickname_spicy": "LOW OCTANE",
-      "blurb_spicy": "4-3 with a league-low 1,436.37 ppts, just 1,212.21 for, and bottom-tier 472.8 starters — your defense carries a team that can barely score.",
-      "nickname_friendly_prev": "DEAD EVEN",
+      "blurb_spicy": "4-4 with a near-league-low 1,668.95 ppts, just 1,410.46 scored, and bottom-tier 576.0 starters — one cold week and this .500 mirage collapses.",
+      "nickname_friendly_prev": "STINGY SCRAPPER",
       "nickname": "LOW OCTANE",
-      "blurb": "4-3 with a league-low 1,436.37 ppts, just 1,212.21 for, and bottom-tier 472.8 starters — your defense carries a team that can barely score."
+      "blurb": "4-4 with a near-league-low 1,668.95 ppts, just 1,410.46 scored, and bottom-tier 576.0 starters — one cold week and this .500 mirage collapses."
     },
     "Swerve33": {
       "nickname_friendly": "PUNCHING UP",
-      "blurb_friendly": "2-5 with a league-low 1,031.2 dynasty and worst 412.5 starters — you're squeezing every drop from the thinnest roster in the building.",
+      "blurb_friendly": "2-6 with a league-low 1,058.6 dynasty — you're wringing wins out of the thinnest roster in the building.",
       "nickname_spicy": "EMPTY TANK",
-      "blurb_spicy": "2-5 with the worst dynasty (1,031.2), worst starters (412.5), and a brutal 1,394.89 against — the value board says the bottom is still below you.",
+      "blurb_spicy": "2-6 with the worst dynasty (1,058.6), worst starters (463.2), and a brutal 1,610.35 against — the value board says you belong even lower.",
       "nickname_friendly_prev": "PUNCHING UP",
       "nickname": "EMPTY TANK",
-      "blurb": "2-5 with the worst dynasty (1,031.2), worst starters (412.5), and a brutal 1,394.89 against — the value board says the bottom is still below you."
+      "blurb": "2-6 with the worst dynasty (1,058.6), worst starters (463.2), and a brutal 1,610.35 against — the value board says you belong even lower."
     },
     "Forshey11": {
       "nickname_friendly": "STILL SWINGING",
-      "blurb_friendly": "2-5 and clawing — a league-low 1,120.0 for but you're still throwing punches at the teams above you.",
-      "nickname_spicy": "LEAKY HULL",
-      "blurb_spicy": "2-5 with just 1,120.0 for, a nasty 1,337.72 against, and only 448.8 starters — you can't outrun the hole your lineup keeps digging.",
+      "blurb_friendly": "2-6 and scrapping — a league-low 1,235.68 for but you keep throwing hands at the teams above you.",
+      "nickname_spicy": "SINKING HULL",
+      "blurb_spicy": "2-6 with just 1,235.68 for, a nasty 1,503.66 against, and the league's worst 411.8 starters — your lineup digs the hole faster than you climb out.",
       "nickname_friendly_prev": "STILL SWINGING",
-      "nickname": "LEAKY HULL",
-      "blurb": "2-5 with just 1,120.0 for, a nasty 1,337.72 against, and only 448.8 starters — you can't outrun the hole your lineup keeps digging."
+      "nickname": "SINKING HULL",
+      "blurb": "2-6 with just 1,235.68 for, a nasty 1,503.66 against, and the league's worst 411.8 starters — your lineup digs the hole faster than you climb out."
     },
     "SpeedwayJesus": {
       "nickname_friendly": "TALENT TRAPPED",
-      "blurb_friendly": "1-6 but a 1,575.86 ppts says the firepower's real — fix the lineups and this record turns in a hurry.",
+      "blurb_friendly": "1-7 but a 1,748.77 ppts proves the firepower's real — set the right lineup and this record flips fast.",
       "nickname_spicy": "OWN WORST ENEMY",
-      "blurb_spicy": "1-6 with only 1,194.48 scored against a 1,575.86 ppts — 381 points buried on your bench keep torching games your roster should win.",
+      "blurb_spicy": "1-7 with only 1,321.24 scored against 1,748.77 ppts — 427 points buried on your bench, the biggest waste in the league, torching games you should win.",
       "nickname_friendly_prev": "TALENT TRAPPED",
       "nickname": "OWN WORST ENEMY",
-      "blurb": "1-6 with only 1,194.48 scored against a 1,575.86 ppts — 381 points buried on your bench keep torching games your roster should win."
+      "blurb": "1-7 with only 1,321.24 scored against 1,748.77 ppts — 427 points buried on your bench, the biggest waste in the league, torching games you should win."
     },
     "mmmatlock": {
       "nickname_friendly": "NOWHERE BUT UP",
-      "blurb_friendly": "0-7 and buried, but a floor this low at 905.59 for only has room to climb — one healthy stretch and it lifts fast.",
+      "blurb_friendly": "0-8 and buried, but a floor this low at 1,010.24 for only has room to climb — one healthy run and it lifts fast.",
       "nickname_spicy": "LEAGUE BASEMENT",
-      "blurb_spicy": "0-7 and last everywhere: a league-worst 905.59 for, 1,133.96 ppts, and a grotesque 1,431.72 against — the worst defense in the building by 37 points.",
-      "nickname_friendly_prev": "ONLY UPWARD",
+      "blurb_spicy": "0-8 and last everywhere: a league-worst 1,010.24 for, 1,268.01 ppts, and a grotesque 1,614.28 against — the worst defense in the building on the worst dynasty at 951.3.",
+      "nickname_friendly_prev": "NOWHERE BUT UP",
       "nickname": "LEAGUE BASEMENT",
-      "blurb": "0-7 and last everywhere: a league-worst 905.59 for, 1,133.96 ppts, and a grotesque 1,431.72 against — the worst defense in the building by 37 points."
+      "blurb": "0-8 and last everywhere: a league-worst 1,010.24 for, 1,268.01 ppts, and a grotesque 1,614.28 against — the worst defense in the building on the worst dynasty at 951.3."
     }
   },
   "_comment": "AI personality copy for the Huddlepuffers redesign, auto-generated weekly by scripts/generate_labels.py from that week's numbers. Hand-edit freely; the next run will overwrite."
